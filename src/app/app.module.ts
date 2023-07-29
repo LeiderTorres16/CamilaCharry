@@ -29,11 +29,12 @@ import { RegistroPrendaComponent } from './Modulos/Contenidos/registro-prenda/re
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore())
+    provideFirebaseApp(() => initializeApp(environment.firebase )),
+    provideFirestore(() => getFirestore()),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule
   ],
   providers: [
-
   ],
   bootstrap: [AppComponent]
 })
