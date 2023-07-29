@@ -21,14 +21,7 @@ import { FooterComponent } from './Modulos/footer/footer.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase )),
-    provideFirestore(() => getFirestore()),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
-  ],
-  providers: [
+    FormsModule
   ],
   bootstrap: [AppComponent]
 })
