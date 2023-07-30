@@ -1,1 +1,15 @@
-
+<div class="container mt-5" style="padding-top:10%">
+    <h2>Carrito de Compra</h2>
+    <div *ngIf="productosCarrito.length === 0" class="alert alert-info">
+      No hay productos en el carrito.
+    </div>
+    <div *ngFor="let producto of productosCarrito; let i = index" class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ producto.nombre }}</h5>
+        <p class="card-text">Precio: ${{ producto.precio }}</p>
+        <p class="card-text">{{ producto.descripcion }}</p>
+        <button class="btn btn-danger" (click)="eliminarProducto(i)">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  
