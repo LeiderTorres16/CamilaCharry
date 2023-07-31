@@ -1,8 +1,16 @@
+#UpData { height: 30px; 
+font-family: Lato;
+color: #fff;}
+
+
 /* button */
 .bg-primary{
     background-color: var(--pink)!important;
 }
-
+.Logo{
+    width: 300px;
+    height: 100px;
+}
 .btn:not(.nav-btns button){
     background-color: #fff;
     color: rgb(85, 85, 85);
