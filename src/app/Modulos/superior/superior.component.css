@@ -8,8 +8,8 @@ color: #fff;}
     background-color: var(--pink)!important;
 }
 .Logo{
-    width: 300px;
-    height: 100px;
+    width: 260px;
+    height: 60px;
 }
 .btn:not(.nav-btns button){
     background-color: #fff;
