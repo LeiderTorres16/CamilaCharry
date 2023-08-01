@@ -11,81 +11,23 @@ import { Prenda } from 'src/app/Models/prenda_class';
 })
 
 export class RegistroPrendaComponent {
-  prenda: FormGroup;
-  imagen: File | null = null;
-
-  constructor(private formBuilder: FormBuilder, private prendasService: PrendasService) {
-    this.prenda = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      precio: [null, [Validators.required, Validators.min(0)]],
-      descripcion: ['', Validators.required],
-      colores: ['', Validators.required],
-      imagenprenda: [this.imagenUrl]
-    });
+  prenda: any = {};
+  constructor() {
+        // Datos de ejemplo para la prenda
+        this.prenda.nombre = 'Camiseta de Manga Corta';
+        this.prenda.precio = 29.99;
+        this.prenda.descripcion = 'Una cómoda camiseta de manga corta para uso diario.';
+        this.prenda.colores = 'Rojo, Azul, Verde';
   }
-  showAlert: boolean = false;
-  imagenUrl: string = '';
 
-
- async submitForm() {
-    if (this.prenda.valid && this.imagen) {
-      const nuevaPrenda = new Prenda(
-        'try',
-        this.prenda.value.nombre,
-        this.prenda.value.precio,
-        this.prenda.value.descripcion,
-        this.prenda.value.colores.split(',').map((color: string) => color.trim()), 
-        this.imagenUrl
-      );
-    const response  = await this.prendasService.addPrenda(nuevaPrenda);
-     console.log(response);
-
-      console.log(nuevaPrenda);
-      console.log('Imagen seleccionada:', nuevaPrenda.imagen);
-    } else {
-      console.error('Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.');
-    }
-  }
-  getImagenURL(): any {
-    return this.imagen ? URL.createObjectURL(this.imagen) : null;
+  submitForm() {
+    // Aquí puedes enviar los datos del formulario a tu servidor o realizar la lógica que necesites
+    console.log('Datos de la prenda registrados:', this.prenda);
   }
 
   onFileSelected(event: any) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const maxSize = 1024 * 1024;
-      const maxWidth = 800;
-      const maxHeight = 600;
-
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
-
-      image.onload = async () => {
-        if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight) {
-          this.imagen = file;
-          const response = await this.prendasService.addImage(this.imagen);
-          this.imagenUrl = response;
-
-          console.log(this.imagenUrl );
-        } else {
-
-          const mensaje = 'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
-          Swal.fire({
-            title: 'Error!',
-            text: mensaje,
-            icon: 'error',
-            confirmButtonText: 'Cool'
-          });
-          this.imagen = null;
-          input.value = '';
-        }
-      };
-    }
-
-
+    // Aquí puedes manejar la lógica para obtener la imagen seleccionada y procesarla si es necesario
+    console.log(event.target.files[0]);
   }
-  
-
 }
 
