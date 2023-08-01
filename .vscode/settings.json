@@ -26,6 +26,7 @@
         "Deportivos",
         "descripcion",
         "Descripción",
+        "Destacados",
         "diario",
         "disponibles",
         "Disponibles",
@@ -33,6 +34,7 @@
         "elegantes",
         "eliminar",
         "enviar",
+        "Especiales",
         "formulario",
         "imagen",
         "lógica",
@@ -41,7 +43,9 @@
         "necesario",
         "necesites",
         "nombre",
+        "Nuevo",
         "obtener",
+        "Ofertas",
         "Pantalones",
         "precio",
         "procesarla",
@@ -58,6 +62,8 @@
         "seleccionada",
         "Separar",
         "servidor",
+        "Ultimos",
+        "Vendido",
         "Zapatos"
     ]
 }
