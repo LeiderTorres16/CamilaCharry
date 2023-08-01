@@ -23,15 +23,24 @@ export class RegistroPrendaComponent {
     });
   }
   showAlert: boolean = false;
+  imagenUrl: string = '';
 
 
  async submitForm() {
     if (this.prenda.valid && this.imagen) {
-    const response  = await this.prendasService.addPrenda(this.prenda.value);
+      const nuevaPrenda = new Prenda(
+        'try',
+        this.prenda.value.nombre,
+        this.prenda.value.precio,
+        this.prenda.value.descripcion,
+        this.prenda.value.colores.split(',').map((color: string) => color.trim()), 
+        this.imagenUrl
+      );
+    const response  = await this.prendasService.addPrenda(nuevaPrenda);
      console.log(response);
 
-      console.log(this.prenda.value);
-      console.log('Imagen seleccionada:', this.imagen);
+      console.log(nuevaPrenda);
+      console.log('Imagen seleccionada:', nuevaPrenda.imagen);
     } else {
       console.error('Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.');
     }
@@ -51,9 +60,13 @@ export class RegistroPrendaComponent {
       const image = new Image();
       image.src = URL.createObjectURL(file);
 
-      image.onload = () => {
+      image.onload = async () => {
         if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight) {
           this.imagen = file;
+          const response = await this.prendasService.addImage(this.imagen);
+          this.imagenUrl = response;
+
+          console.log(this.imagenUrl );
         } else {
 
           const mensaje = 'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
@@ -68,8 +81,8 @@ export class RegistroPrendaComponent {
         }
       };
     }
-  }
-  
 
+
+  }
 }
 
