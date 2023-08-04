@@ -32,6 +32,7 @@ import { AngularFireStorageModule } from "@angular/fire/compat/storage";
   ],
   imports: [
     BrowserModule,
+
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
