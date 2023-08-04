@@ -1,6 +1,6 @@
 /* button */
 .bg-primary{
-    background-color: var(--pink)!important;
+    background-color: #caa565!important;
 }
 
 
@@ -20,7 +20,7 @@
 
 /* text color */
 .text-primary{
-    color: var(--pink)!important;
+    color: #caa565!important;
 }
 
 /* navbar */
@@ -107,6 +107,38 @@
     -webkit-transform: scale(1.2);
         -ms-transform: scale(1.2);
             transform: scale(1.2);
+}
+
+.tarjeta {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    transition: background-color 0.2s ease-in-out; /* Transición suave para el cambio de color */
+}
+
+.tarjeta:hover{
+    background-color: #caa565; /* Cambio de color cuando el cursor está sobre la tarjeta */
+    
+}
+
+.boton-agregar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 /* offers */
@@ -197,14 +229,4 @@ footer a:hover{
 img {
     max-width: 100%;
     height: auto;
-}
-
-.tarjeta {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    margin-right: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
 }
