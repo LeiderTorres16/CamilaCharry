@@ -16,7 +16,7 @@ export class PrendasService {
     private fireStorage:AngularFireStorage
   ) { }
 
-  addPrenda(prenda: Prenda) {
+  addPrenda(prenda: Prenda):string {
     try {
       const prendaRef = collection(this.firestore, 'prendas');
       
@@ -31,7 +31,7 @@ export class PrendasService {
         });
       return 'Bien';
     } catch (error) {
-      return error;
+      return 'error';
     }
 
   }

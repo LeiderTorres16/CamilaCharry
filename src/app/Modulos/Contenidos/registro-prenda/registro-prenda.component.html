@@ -5,6 +5,13 @@
     <div class="row">
       <div class="col-md-8">
         <h2>Registro de Prenda</h2>
+        <div class="form-group">
+          <label for="idPrenda">Codigo de la prenda:</label>
+          <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
+          <div *ngIf="prenda.controls['id'].invalid && prenda.controls['id'].touched" class="text-danger">
+            Codigo de la prenda es requerido.
+          </div>
+        </div>
           <div class="form-group">
             <label for="nombrePrenda">Nombre de la prenda:</label>
             <input type="text" class="form-control" id="nombrePrenda" name="nombrePrenda" formControlName="nombre">
@@ -42,7 +49,7 @@
           <label for="imagenPrenda">Imagen de la prenda:</label>
           <input type="file" class="form-control-file" id="imagenPrenda" name="imagenPrenda" (change)="onFileSelected($event)"
             required>
-          <div *ngIf="!imagen" class="text-danger">
+          <div *ngIf="showAlert" class="text-danger">
             Por favor, selecciona una imagen.
           </div>
         </div>

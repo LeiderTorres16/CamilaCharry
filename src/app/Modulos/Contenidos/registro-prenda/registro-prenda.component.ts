@@ -16,6 +16,7 @@ export class RegistroPrendaComponent {
 
   constructor(private formBuilder: FormBuilder, private prendasService: PrendasService) {
     this.prenda = this.formBuilder.group({
+      id:['', Validators.required],
       nombre: ['', Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
       descripcion: ['', Validators.required],
@@ -30,18 +31,25 @@ export class RegistroPrendaComponent {
  async submitForm() {
     if (this.prenda.valid && this.imagen) {
       const nuevaPrenda = new Prenda(
-        'try',
+        this.prenda.value.id,
         this.prenda.value.nombre,
         this.prenda.value.precio,
         this.prenda.value.descripcion,
         this.prenda.value.colores.split(',').map((color: string) => color.trim()), 
         this.imagenUrl
       );
-    const response  = await this.prendasService.addPrenda(nuevaPrenda);
+     const response : string  = await this.prendasService.addPrenda(nuevaPrenda);
      console.log(response);
-
-      console.log(nuevaPrenda);
-      console.log('Imagen seleccionada:', nuevaPrenda.imagen);
+     Swal.fire({
+      title: 'Error!',
+      text: response,
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    });
+     this.prenda.reset();
+     this.imagen = null;
+        this.imagenUrl = '';
+              
     } else {
       console.error('Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.');
     }
@@ -68,6 +76,8 @@ export class RegistroPrendaComponent {
           this.imagenUrl = response;
 
           console.log(this.imagenUrl );
+          this.showAlert = false  ;
+
         } else {
 
           const mensaje = 'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
@@ -79,6 +89,8 @@ export class RegistroPrendaComponent {
           });
           this.imagen = null;
           input.value = '';
+          this.showAlert = true;
+
         }
       };
     }
