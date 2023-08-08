@@ -17,6 +17,10 @@ import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from "@angular/fire/compat/";
 import { AngularFireStorageModule } from "@angular/fire/compat/storage";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -32,14 +36,17 @@ import { AngularFireStorageModule } from "@angular/fire/compat/storage";
   ],
   imports: [
     BrowserModule,
-
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase )),
     provideFirestore(() => getFirestore()),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatChipsModule
   ],
   providers: [
   ],

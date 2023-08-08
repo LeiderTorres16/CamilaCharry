@@ -4,7 +4,9 @@
 }
 
 
-
+.example-chip-list {
+    width: 100%;
+  }
 .btn:not(.nav-btns button){
     background-color: #fff;
     color: rgb(85, 85, 85);

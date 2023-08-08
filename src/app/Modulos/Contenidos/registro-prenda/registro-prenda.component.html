@@ -2,16 +2,16 @@
 
   <div class="container">
     <form [formGroup]="prenda" (ngSubmit)="submitForm()">
-    <div class="row">
-      <div class="col-md-8">
-        <h2>Registro de Prenda</h2>
-        <div class="form-group">
-          <label for="idPrenda">Codigo de la prenda:</label>
-          <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
-          <div *ngIf="prenda.controls['id'].invalid && prenda.controls['id'].touched" class="text-danger">
-            Codigo de la prenda es requerido.
+      <div class="row">
+        <div class="col-md-8">
+          <h2>Registro de Prenda</h2>
+          <div class="form-group">
+            <label for="idPrenda">Codigo de la prenda:</label>
+            <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
+            <div *ngIf="prenda.controls['id'].invalid && prenda.controls['id'].touched" class="text-danger">
+              Codigo de la prenda es requerido.
+            </div>
           </div>
-        </div>
           <div class="form-group">
             <label for="nombrePrenda">Nombre de la prenda:</label>
             <input type="text" class="form-control" id="nombrePrenda" name="nombrePrenda" formControlName="nombre">
@@ -28,37 +28,82 @@
           </div>
           <div class="form-group">
             <label for="descripcionPrenda">Descripción:</label>
-            <textarea class="form-control" id="descripcionPrenda" name="descripcionPrenda" formControlName="descripcion"></textarea>
+            <textarea class="form-control" id="descripcionPrenda" name="descripcionPrenda"
+              formControlName="descripcion"></textarea>
             <div *ngIf="prenda.controls['descripcion'].invalid && prenda.controls['descripcion'].touched"
               class="text-danger">
               Descripción es requerida.
             </div>
           </div>
-          <div class="form-group">
-            <label for="coloresDisponibles">Colores disponibles:</label>
-            <input type="text" class="form-control" id="coloresDisponibles" name="coloresDisponibles" formControlName="colores">
-            <div *ngIf="prenda.controls['colores'].invalid && prenda.controls['colores'].touched" class="text-danger">
-              Colores disponibles es requerido.
-            </div>
-            <small class="form-text text-muted">Separar los colores por comas (Ejemplo: Rojo, Azul, Verde)</small>
-          </div>
+          <mat-form-field class="example-chip-list">
+            <mat-label>Colores</mat-label>
+            <mat-chip-grid #chipGridColores aria-label="Ingrese Colores">
+              <mat-chip-row
+                *ngFor="let color of colores"
+                (removed)="removeColores(color)"
+                [editable]="true"
+                (edited)="editColores(color, $event)"
+                [aria-description]="'Presione enter para editar' + color"
+              >
+                {{ color }}
+                <button matChipRemove [attr.aria-label]="'Remover ' + color">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              <input
+                placeholder="Nuevo Color..."
+                [matChipInputFor]="chipGridColores"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addColores($event)"
+              />
+            </mat-chip-grid>
+          </mat-form-field>
+          
+          <mat-form-field class="example-chip-list">
+            <mat-label>Categorias</mat-label>
+            <mat-chip-grid #chipGridCategorias aria-label="Ingrese Categorias">
+              <mat-chip-row
+                *ngFor="let categoria of categorias"
+                (removed)="remove(categoria)"
+                [editable]="true"
+                (edited)="edit(categoria, $event)"
+                [aria-description]="'Presione enter para editar' + categoria"
+              >
+                {{ categoria }}
+                <button matChipRemove [attr.aria-label]="'Remover ' + categoria">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              <input
+                placeholder="Nueva Categoria..."
+                [matChipInputFor]="chipGridCategorias"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)"
+              />
+            </mat-chip-grid>
+          </mat-form-field>
+          
+
           <button type="submit" class="btn btn-primary">Registrar Prenda</button>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="imagenPrenda">Imagen de la prenda:</label>
-          <input type="file" class="form-control-file" id="imagenPrenda" name="imagenPrenda" (change)="onFileSelected($event)"
-            required>
-          <div *ngIf="showAlert" class="text-danger">
-            Por favor, selecciona una imagen.
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="imagenPrenda">Imagen de la prenda:</label>
+            <input type="file" class="form-control-file" id="imagenPrenda" name="imagenPrenda"
+              (change)="onFileSelected($event)" required>
+            <div *ngIf="showAlert" class="text-danger">
+              Por favor, selecciona una imagen.
+            </div>
+          </div>
+          <div class="form-group" *ngIf="imagen">
+            <label>Imagen seleccionada:</label>
+            <img [src]="getImagenURL()" alt="Imagen seleccionada">
           </div>
         </div>
-        <div class="form-group" *ngIf="imagen">
-          <label>Imagen seleccionada:</label>
-          <img [src]="getImagenURL()" alt="Imagen seleccionada">
-        </div>
       </div>
-    </div>
     </form>
   </div>
 

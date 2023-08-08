@@ -27,18 +27,25 @@ export class PrendasService {
           precio: prenda.precio,
           descripcion: prenda.descripcion,
           colores: prenda.colores,
-          imagen: prenda.imagen
+          imagen: prenda.imagen,
+          categorias: prenda.categorias
         });
-      return 'Bien';
-    } catch (error) {
-      return 'error';
+      return 'Prenda registrada con exito';
+    } catch (error : string | any) {
+      return error;
     }
 
   }
 
   async addImage(image:any){
-    const path = `prendas/${image.name}`;
-    const uploadTask = await this.fireStorage.upload(path, image);
-    return await uploadTask.ref.getDownloadURL();
+
+    try {
+      const path = `prendas/${image.name}`;
+      const uploadTask = await this.fireStorage.upload(path, image);
+      return await uploadTask.ref.getDownloadURL();
+    } catch (error) {
+      return 'error'
+    }
+
   }
 }
