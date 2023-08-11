@@ -1,4 +1,4 @@
-<header id="header" class="vh-100 carousel slide" data-bs-ride="carousel" style="padding-top: 104px">
+<header id="header" class="vh-100 carousel slide" data-bs-ride="carousel">
   <app-header></app-header>
 </header>
 <section id="collection" class="py-5">
@@ -7,22 +7,27 @@
       <h2 class="position-relative d-inline-block">New Collection</h2>
     </div>
     <!-- special products -->
-    <section id="special" class="py-5">
-      <div class="container">
-        <div class="title text-center py-5">
-          <h2>Productos Destacados</h2>
-        </div>
-        <div class="row d-flex align-items-center justify-content-center">
-          <div class="tarjeta col-3" *ngFor="let producto of productosDestacados; let i = index">
-            <img src="{{producto.imagen}}" alt="Producto">
-            <p class="tituloProducto" style="color: #caa565;">{{producto.nombreProducto}}</p>
-            <p>Codigo - {{producto.codigo}}</p>
-            <p>${{producto.precio}}</p>
-            <button class="btn">Agregar al Carrito</button>
+    <div class="container">
+      <div class="title text-center py-5">
+        <h2>Productos Destacados</h2>
+      </div>
+      <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-3 mb-4" *ngFor="let producto of productosDestacados; let i = index">
+          <div class="product-card">
+            <div class="product-image">
+              <img src="{{producto.imagen}}" alt="Producto">
+            </div>
+            <div class="product-details">
+              <p>{{producto.nombreProducto}}</p>
+              <p>Codigo - {{producto.codigo}}</p>
+              <p>${{producto.precio}}</p>
+              <button>Agregar al Carrito</button>
+            </div>
           </div>
         </div>
+
       </div>
-    </section>
+    </div>
     <!-- end of special products -->
 
     <!-- collection -->
@@ -45,29 +50,25 @@
         </button>
       </div>
 
-      <div class="collection-list mt-4 row gx-0 gy-3">
-        <div *ngFor="let producto of productosEspeciales; let i = index" class="col-md-3 p-2 best"
-          style="box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.10);">
-          <div class="collection-img position-relative">
-            <img src="{{producto.imagen}}" class="w-100" />
-            <span
-              class="position-absolute bg-primary text-white d-flex align-items-center justify-content-center">sale</span>
-          </div>
-          <div class="text-center">
-            <div class="rating mt-3">
-              <span class="text-primary"><i class="fas fa-star"></i></span>
-              <span class="text-primary"><i class="fas fa-star"></i></span>
-              <span class="text-primary"><i class="fas fa-star"></i></span>
-              <span class="text-primary"><i class="fas fa-star"></i></span>
-              <span class="text-primary"><i class="fas fa-star"></i></span>
+      <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+          <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="{{producto.imagen}}" alt="Producto">
+              </div>
+              <div class="product-details">
+                <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
+                <span class="fw-bold">$ {{producto.precio}}</span>
+                <button>Agregar al Carrito</button>
+              </div>
             </div>
-            <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
-            <span class="fw-bold">$ {{producto.precio}}</span>
           </div>
         </div>
       </div>
     </div>
     <!-- end of collection -->
+
     <!-- Informacion -->
     <div>
       <div class="title text-center" style="padding-top: 50px;">

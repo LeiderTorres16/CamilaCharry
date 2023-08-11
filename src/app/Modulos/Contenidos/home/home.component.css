@@ -109,37 +109,7 @@
             transform: scale(1.2);
 }
 
-.tarjeta {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    margin-right: 10px;
-    margin-top: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
-    transition: background-color 0.2s ease-in-out; /* Transición suave para el cambio de color */
-}
 
-.tarjeta:hover{
-    background-color: #caa565; /* Cambio de color cuando el cursor está sobre la tarjeta */
-    
-}
-
-.boton-agregar {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
 
 /* offers */
 #offers{
@@ -226,7 +196,107 @@ footer a:hover{
     border-color: #caa565!important;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
+
+
+.col-md-3 {
+    max-width: 25%; /* Para asegurarse de que haya cuatro tarjetas en una fila */
 }
+
+.mb-4 {
+    margin-bottom: 20px; /* Espacio inferior entre las tarjetas */
+}
+
+.tarjeta {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    transition: background-color 0.2s ease-in-out; /* Transición suave para el cambio de color */
+}
+
+.tarjeta:hover{
+    background-color: #caa565; /* Cambio de color cuando el cursor está sobre la tarjeta */
+    
+}
+
+.boton-agregar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* ================================================================= */
+
+.product-card {
+    display: inline-block;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: background-color 0.3s;
+    box-sizing: border-box; /* Agregado */
+    max-width: 300px;
+    text-align: center;
+}
+
+.product-card:hover {
+    background-color: #D8A762;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%; /* Ajuste */
+    object-fit: cover; /* Ajuste */
+    display: block;
+    vertical-align: top;
+}
+
+.product-details {
+    padding: 20px;
+    color: black;
+    transition: color 0.3s;
+}
+
+.product-card:hover .product-details {
+    color: white;
+}
+
+.product-details h2 {
+    margin-top: 0;
+}
+
+.product-details p {
+    margin: 5px 0;
+}
+
+.product-details button {
+    background-color: #D8A762;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-card:hover button {
+    background-color: white;
+    color: black;
+}
+
+
+
+
+
