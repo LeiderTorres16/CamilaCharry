@@ -31,7 +31,7 @@ export class RegistroPrendaComponent {
       nombre: ['', Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
       descripcion: ['', Validators.required],
-      colores: ['', Validators.required],
+      colores: [''],
       imagenprenda: ['']
     });
   }
