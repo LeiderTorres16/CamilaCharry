@@ -31,7 +31,6 @@ import {MatIconModule} from '@angular/material/icon';
     SuperiorComponent,
     RegistroPrendaComponent,
     CarritoComponent,
-    
   ],
   imports: [
     BrowserModule,
