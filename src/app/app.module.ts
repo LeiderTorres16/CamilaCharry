@@ -25,7 +25,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     SuperiorComponent,
     RegistroPrendaComponent,
     CarritoComponent,
-    
   ],
   imports: [
     BrowserModule,
