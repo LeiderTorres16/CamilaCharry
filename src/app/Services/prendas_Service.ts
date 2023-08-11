@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Firestore, collection, addDoc } from "@angular/fire/firestore";
+import { Firestore, collection, addDoc, collectionData } from "@angular/fire/firestore";
 import { Prenda } from "../Models/prenda_class";
 import { doc, setDoc } from "firebase/firestore";
 import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { Observable } from "rxjs";
 
 
 
@@ -16,7 +17,7 @@ export class PrendasService {
     private fireStorage:AngularFireStorage
   ) { }
 
-  addPrenda(prenda: Prenda) {
+  addPrenda(prenda: Prenda):string {
     try {
       const prendaRef = collection(this.firestore, 'prendas');
       
@@ -27,18 +28,30 @@ export class PrendasService {
           precio: prenda.precio,
           descripcion: prenda.descripcion,
           colores: prenda.colores,
-          imagen: prenda.imagen
+          imagen: prenda.imagen,
+          categorias: prenda.categorias
         });
-      return 'Bien';
-    } catch (error) {
+      return 'Prenda registrada con exito';
+    } catch (error : string | any) {
       return error;
     }
 
   }
 
   async addImage(image:any){
-    const path = `prendas/${image.name}`;
-    const uploadTask = await this.fireStorage.upload(path, image);
-    return await uploadTask.ref.getDownloadURL();
+
+    try {
+      const path = `prendas/${image.name}`;
+      const uploadTask = await this.fireStorage.upload(path, image);
+      return await uploadTask.ref.getDownloadURL();
+    } catch (error) {
+      return 'error'
+    }
+
+  }
+
+  getPrendas(): Observable<Prenda[]>{
+    const prendaRef = collection(this.firestore,'prendas');
+    return collectionData(prendaRef, {idField: 'id'})as Observable<Prenda[]>;
   }
 }
