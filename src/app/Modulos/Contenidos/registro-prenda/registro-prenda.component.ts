@@ -18,6 +18,7 @@ import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/ma
 
 export class RegistroPrendaComponent {
   prenda: FormGroup;
+  prendas:Prenda[];
   imagen: File | null = null;
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -201,6 +202,10 @@ export class RegistroPrendaComponent {
 
   }
   
-
+ngOnInit():void{
+  this.prendasService.getPrendas().subscribe(prendas=> {
+    console.log(prendas);
+  })
+}
 }
 
