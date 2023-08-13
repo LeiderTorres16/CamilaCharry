@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { PrendasService } from 'src/app/Services/prendas_Service';
+import { Prenda } from 'src/app/Models/prenda_class';
 
 @Component({
   selector: 'app-home',
@@ -9,48 +11,8 @@ export class HomeComponent {
   productosDestacados: any[] = [];
   productosEspeciales: any[] = [];
 
-  constructor() {
+  constructor(private prendasService: PrendasService) {
     // Agregar algunos productos de ejemplo al carrito
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Blanca',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Negra',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Blanca',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Blanca',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Blanca',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-    this.agregarProducto({
-      imagen: '../../../assets/images/c_formal_gray_shirt.png',
-      nombreProducto: 'Camiseta Blanca',
-      codigo: 'CM001',
-      precio: 99.99,
-    });
-
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
@@ -95,11 +57,21 @@ export class HomeComponent {
     });
   }
 
-  agregarProducto(producto: any) {
-    this.productosDestacados.push(producto);
+  agregarProducto(prenda: Prenda) {
+    this.productosDestacados.push(prenda);
   }
 
   agregarProductoE(producto: any) {
     this.productosEspeciales.push(producto);
+  }
+
+  ngOnInit():void{
+    this.prendasService.getPrendas().subscribe(prendas=> {
+      
+      prendas.forEach(prenda => {
+        this.agregarProducto(prenda);
+      });    
+        console.log(prendas);
+    })
   }
 }

@@ -203,10 +203,10 @@ export class RegistroPrendaComponent {
 
   }
   
-ngOnInit():void{
-  this.prendasService.getPrendas().subscribe(prendas=> {
-    console.log(prendas);
-  })
-}
+  ngOnInit():void{
+    this.prendasService.getPrendas().subscribe(prendas=> {
+      console.log(prendas);
+    })
+  }
 }
 
