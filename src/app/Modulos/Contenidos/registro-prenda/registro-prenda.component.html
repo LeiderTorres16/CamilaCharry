@@ -1,4 +1,4 @@
-<section id="collection" style="padding-top: 50px;">
+<section id="collection" style="padding-top: 50px; padding-bottom: 30px;">
   <div class="container">
     <form [formGroup]="prenda" (ngSubmit)="submitForm()">
       <div class="row">
@@ -37,53 +37,35 @@
           <mat-form-field class="example-chip-list">
             <mat-label>Colores</mat-label>
             <mat-chip-grid #chipGridColores aria-label="Ingrese Colores">
-              <mat-chip-row
-                *ngFor="let color of colores"
-                (removed)="removeColores(color)"
-                [editable]="true"
-                (edited)="editColores(color, $event)"
-                [aria-description]="'Presione enter para editar' + color"
-              >
+              <mat-chip-row *ngFor="let color of colores" (removed)="removeColores(color)" [editable]="true"
+                (edited)="editColores(color, $event)" [aria-description]="'Presione enter para editar' + color">
                 {{ color }}
                 <button matChipRemove [attr.aria-label]="'Remover ' + color">
                   <mat-icon>cancel</mat-icon>
                 </button>
               </mat-chip-row>
-              <input
-                placeholder="Nuevo Color..."
-                [matChipInputFor]="chipGridColores"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                [matChipInputAddOnBlur]="addOnBlur"
-                (matChipInputTokenEnd)="addColores($event)"
-              />
+              <input placeholder="Nuevo Color..." [matChipInputFor]="chipGridColores"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addColores($event)" />
             </mat-chip-grid>
           </mat-form-field>
-          
+
           <mat-form-field class="example-chip-list">
             <mat-label>Categorias</mat-label>
             <mat-chip-grid #chipGridCategorias aria-label="Ingrese Categorias">
-              <mat-chip-row
-                *ngFor="let categoria of categorias"
-                (removed)="remove(categoria)"
-                [editable]="true"
-                (edited)="edit(categoria, $event)"
-                [aria-description]="'Presione enter para editar' + categoria"
-              >
+              <mat-chip-row *ngFor="let categoria of categorias" (removed)="remove(categoria)" [editable]="true"
+                (edited)="edit(categoria, $event)" [aria-description]="'Presione enter para editar' + categoria">
                 {{ categoria }}
                 <button matChipRemove [attr.aria-label]="'Remover ' + categoria">
                   <mat-icon>cancel</mat-icon>
                 </button>
               </mat-chip-row>
-              <input
-                placeholder="Nueva Categoria..."
-                [matChipInputFor]="chipGridCategorias"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                [matChipInputAddOnBlur]="addOnBlur"
-                (matChipInputTokenEnd)="add($event)"
-              />
+              <input placeholder="Nueva Categoria..." [matChipInputFor]="chipGridCategorias"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)" />
             </mat-chip-grid>
           </mat-form-field>
-          
+
 
           <button type="submit" class="btn btn-primary">Registrar Prenda</button>
         </div>
