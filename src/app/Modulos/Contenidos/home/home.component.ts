@@ -52,17 +52,27 @@ export class HomeComponent {
       precio: 45.50,
     });
 
-    this.agregarProductoE({
-      imagen: '../../../assets/images/c_western-shirt.png',
-      nombreProducto: 'Camisa Gris',
-      precio: 45.50,
+    this.agregarProducto({
+      imagen: '../../../assets/images/c_formal_gray_shirt.png',
+      nombreProducto: 'Camiseta Negra',
+      codigo: 'CM001',
+      precio: 99.99,
     });
 
-    this.agregarProductoE({
-      imagen: '../../../assets/images/c_western-shirt.png',
-      nombreProducto: 'Camisa Gris',
-      precio: 45.50,
+    this.agregarProducto({
+      imagen: '../../../assets/images/c_formal_gray_shirt.png',
+      nombreProducto: 'Camiseta Blanca',
+      codigo: 'CM001',
+      precio: 99.99,
     });
+
+    this.agregarProducto({
+      imagen: '../../../assets/images/c_formal_gray_shirt.png',
+      nombreProducto: 'Camiseta Blanca',
+      codigo: 'CM001',
+      precio: 99.99,
+    });
+
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
