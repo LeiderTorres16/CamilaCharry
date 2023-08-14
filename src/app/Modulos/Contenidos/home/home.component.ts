@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+<<<<<<< HEAD
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
+=======
+import { Router } from '@angular/router';
+>>>>>>> be19ef8 (Detalle prenda)
 
 @Component({
   selector: 'app-home',
@@ -12,7 +15,7 @@ export class HomeComponent {
   productosDestacados: any[] = [];
   productosEspeciales: any[] = [];
 
-  constructor(private router: Router) {
+  constructor(private prendasService: PrendasService) {
     // Agregar algunos productos de ejemplo al carrito
     this.agregarProducto({
       imagen: '../../../assets/images/c_formal_gray_shirt.png',
