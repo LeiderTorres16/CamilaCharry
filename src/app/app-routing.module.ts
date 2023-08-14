@@ -4,6 +4,7 @@ import { PrincipalComponent } from './Modulos/principal/principal.component';
 import { HomeComponent } from './Modulos/Contenidos/home/home.component';
 import { CarritoComponent } from './Modulos/Contenidos/carrito/carrito.component';
 import { RegistroPrendaComponent } from './Modulos/Contenidos/registro-prenda/registro-prenda.component';
+import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/detalle-prenda.component';
 
 const routes: Routes = [
   {path: '',redirectTo: '/Principal', pathMatch: 'full'},
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'Home',component: HomeComponent},
   {path: 'Carrito',component: CarritoComponent},
   {path: 'RegistroPrenda',component: RegistroPrendaComponent},
+  {path: 'DetallePrenda',component: DetallePrendaComponent},
   
 ];
 

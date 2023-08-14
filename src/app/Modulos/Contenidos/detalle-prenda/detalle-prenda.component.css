@@ -1,0 +1,52 @@
+.detalle-prenda {
+  display: flex;
+  margin-left: 200px;
+  margin-right: 200px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 25px 10px #f6f4fd;
+}
+
+.imagen-prenda {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.imagen-prenda img {
+  max-width: 100%;
+  height: auto;
+}
+
+.info-prenda {
+  flex: 2;
+  margin-left: 20px;
+}
+
+.titulo-detalle {
+  color: #333;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.info-prenda button {
+    background-color: #D8A762;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+

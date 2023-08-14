@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
+import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/detalle-prenda.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {MatIconModule} from '@angular/material/icon';
     SuperiorComponent,
     RegistroPrendaComponent,
     CarritoComponent,
+    DetallePrendaComponent,
   ],
   imports: [
     BrowserModule,
