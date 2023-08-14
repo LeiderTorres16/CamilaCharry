@@ -170,14 +170,16 @@ export class RegistroPrendaComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const maxSize = 1024 * 1024;
-      const maxWidth = 800;
-      const maxHeight = 600;
+      const maxWidth = 370;
+      const maxHeight = 370;
+      const minWidth = 370;
+      const minHeight = 370;
 
       const image = new Image();
       image.src = URL.createObjectURL(file);
 
       image.onload = async () => {
-        if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight) {
+        if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight && image.width >= minWidth && image.height >= minHeight) {
           this.imagen = file;
           this.showAlert = false  ;
 
