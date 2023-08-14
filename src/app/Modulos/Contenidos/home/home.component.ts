@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { PrendasService } from 'src/app/Services/prendas_Service';
-import { Prenda } from 'src/app/Models/prenda_class';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +36,10 @@ export class HomeComponent {
 
   agregarProductoE(producto: any) {
     this.productosEspeciales.push(producto);
+
+  }
+  detallePrenda(){
+    this.router.navigateByUrl('/DetallePrenda');
   }
 
   detallePrenda(prenda: Prenda){

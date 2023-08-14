@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'Home',component: HomeComponent},
   {path: 'Carrito',component: CarritoComponent},
   {path: 'RegistroPrenda',component: RegistroPrendaComponent},
-  { path: 'DetallePrenda/:id', component: DetallePrendaComponent },
+  {path: 'DetallePrenda',component: DetallePrendaComponent},
   
 ];
 
