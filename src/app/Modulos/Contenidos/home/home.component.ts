@@ -41,8 +41,10 @@ export class HomeComponent {
     this.productosEspeciales.push(producto);
   }
 
-  detallePrenda(){
-    this.router.navigateByUrl('/DetallePrenda');
+  detallePrenda(prenda: Prenda){
+    console.log(prenda.id);
+    
+    this.router.navigate(['/DetallePrenda', prenda.id]);
   }
   detallePrenda(){
     this.router.navigateByUrl('/DetallePrenda');
