@@ -5,26 +5,25 @@
     </div>
     <div class="detalle-prenda">
         <div class="imagen-prenda">
-            <img id="imagen" src="../../../assets/images/best_selling_1.jpg" alt="Prenda">
+            <img id="imagen" src="{{ prenda.imagen }}" alt="Prenda">
         </div>
         <div class="info-prenda">
-            <h1 id="nombre-prenda">Saco</h1>
+            <h1 id="nombre-prenda">{{ prenda.nombre }}</h1>
             <div
                 style="color: #5c5c5c; font-size: 16px; font-weight: 400; text-transform: capitalize; line-height: 29px; word-wrap: break-word">
-                <p>$100.000</p>
+                <p>${{ prenda.precio }}</p>
             </div>
 
             <div>
             <p style=" color: #5c5c5c; font-size: 16px; font-weight: 600; word-wrap: break-word">Color</p>
-            <p>Gris, Negro, Rojo</p>
+            <p>{{ prenda.colores }}</p>
             </div>
 
             <div>
                 <p
                     style="width: 100%; color: #5c5c5c; font-size: 16px; font-weight: 600; line-height: 29px; word-wrap: break-word">
-                    Descipcion</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tellus porttitor purus, et volutpat
-                    sit.</p>
+                    Descripcion</p>
+                <p>{{ prenda.descripcion }}</p>
             </div>
 
             <button>Personalizar</button>
@@ -32,7 +31,7 @@
             <div>
                 <p style="color: #5c5c5c; font-size: 16px; font-weight: 600; line-height: 29px; word-wrap: break-word">
                     Categorias</p>
-                <p>Hombre, Saco</p>
+                <p>{{ prenda.categorias }}</p>
             </div>
         </div>
     </div>
