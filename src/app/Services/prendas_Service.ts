@@ -4,6 +4,7 @@ import { Prenda } from "../Models/prenda_class";
 import { doc, setDoc } from "firebase/firestore";
 import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { Observable } from "rxjs";
+import { map } from 'rxjs/operators';
 
 
 
@@ -12,7 +13,7 @@ import { Observable } from "rxjs";
 })
 
 export class PrendasService {
-
+  private prendas: Prenda[];
   constructor(private firestore: Firestore,
     private fireStorage:AngularFireStorage
   ) { }
@@ -37,6 +38,20 @@ export class PrendasService {
     }
 
   }
+getPrendaPorId(id: string): Observable<Prenda | undefined> {
+  return this.getPrendas().pipe(
+    map(prendas => {
+      console.log('Todas las prendas:', prendas);
+      console.log('ID', id);
+
+      const prendaEncontrada = prendas.find(prenda => prenda.id === id);
+      console.log('Prenda encontrada:', prendaEncontrada);
+      return prendaEncontrada;
+    })
+  );
+}
+
+  
 
   async addImage(image:any){
 
