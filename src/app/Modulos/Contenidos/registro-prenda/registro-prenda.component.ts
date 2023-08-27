@@ -6,6 +6,8 @@ import { Prenda } from 'src/app/Models/prenda_class';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {Cloudinary} from '@cloudinary/url-gen'
+import { ImageUploaderService } from 'src/app/Services/image_service';
 
 
 
@@ -19,13 +21,13 @@ import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/ma
 export class RegistroPrendaComponent {
   prenda: FormGroup;
   prendas:Prenda[];
-  imagen: File | null = null;
+  imagen: File | null;
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
   colores: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private prendasService: PrendasService) {
+  constructor(private formBuilder: FormBuilder, private prendasService: PrendasService, private imageService: ImageUploaderService) {
     this.prenda = this.formBuilder.group({
       id:['', Validators.required],
       nombre: ['', Validators.required],
@@ -98,10 +100,19 @@ export class RegistroPrendaComponent {
   }
 
  async submitForm() {
+
+// const response = await this.imageService.uploadImage(this.imagen!);
   const response = await this.prendasService.addImage(this.imagen);
   if (response!= 'error') {
-    this.imagenUrl = response;
 
+    // try {
+    //   const cloudinaryObject = JSON.parse(response);
+    //   const secureUrl = cloudinaryObject.secure_url;
+    //   console.log(secureUrl); // Imprime la URL segura
+    // } catch (error) {
+    //   console.error("Error al analizar el JSON:", error);
+    // }    
+    this.imagenUrl = response;
     if (this.prenda.valid && this.imagen) {
       const nuevaPrenda = new Prenda(
         this.prenda.value.id,
@@ -179,7 +190,8 @@ export class RegistroPrendaComponent {
       image.src = URL.createObjectURL(file);
 
       image.onload = async () => {
-        if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight && image.width >= minWidth && image.height >= minHeight) {
+        // if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight && image.width >= minWidth && image.height >= minHeight) {
+        if (file.size > 0) {
           this.imagen = file;
           this.showAlert = false  ;
 
@@ -206,6 +218,8 @@ export class RegistroPrendaComponent {
   }
   
   ngOnInit():void{
+    const cld = new Cloudinary({cloud: {cloudName: 'prendas'}});
+
     this.prendasService.getPrendas().subscribe(prendas=> {
       console.log(prendas);
     })

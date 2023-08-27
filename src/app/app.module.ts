@@ -21,6 +21,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/detalle-prenda.component';
+import {CloudinaryModule} from '@cloudinary/ng';
+import { ImageUploaderDirective } from './Services/image_directive';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -33,10 +37,13 @@ import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/deta
     RegistroPrendaComponent,
     CarritoComponent,
     DetallePrendaComponent,
+    ImageUploaderDirective
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
+    CloudinaryModule,
     FormsModule,
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase )),
