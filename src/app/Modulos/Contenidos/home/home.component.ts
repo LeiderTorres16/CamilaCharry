@@ -46,12 +46,6 @@ export class HomeComponent {
     
     this.router.navigate(['/DetallePrenda', prenda.id]);
   }
-  detallePrenda(){
-    this.router.navigateByUrl('/DetallePrenda');
-  }
-  detallePrenda(){
-    this.router.navigateByUrl('/DetallePrenda');
-  }
 
   ngOnInit():void{
     this.prendasService.getPrendas().subscribe(prendas=> {

@@ -81,7 +81,9 @@
           </div>
           <div class="form-group" *ngIf="imagen">
             <label>Imagen seleccionada:</label>
-            <img [src]="getImagenURL()" alt="Imagen seleccionada">
+            <div class="imagen-prenda">
+              <img [src]="getImagenURL()" alt="Imagen seleccionada">
+            </div>
           </div>
         </div>
       </div>
