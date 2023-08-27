@@ -25,24 +25,19 @@
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
       <div class="container">
-        <a href="index.html">
+        <a (click)="Principal()" style="cursor: pointer">
           <img class="Logo" src="../../../assets/images/Logo.png" alt="Logo" />
         </a>
 
         <div class="order-lg-2 nav-btns">
-          <button type="button" class="btn position-relative" (click)="Carrito()">
-            <i class="fa fa-shopping-cart"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge bg-primary">5</span>
+          <button type="button" class="boton position-relative" (click)="Carrito()">
+            <i class="fas fa-shopping-cart"></i>
           </button>
-          <button type="button" class="btn position-relative">
-            <i class="fa fa-heart"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge bg-primary">2</span>
+          <button type="button" class="boton position-relative">
+            <i class="fas fa-heart"></i>
           </button>
-          <button type="button" class="btn position-relative">
-            <i class="fa fa-search"></i>
-          </button>
-          <button type="button" class="btn position-relative" (click)="registroPrenda()">
-            <i class="bi bi-plus-circle"></i>
+          <button type="button" class="boton position-relative" (click)="registroPrenda()">
+            <i class="fas fa-plus-circle"></i>
           </button>
         </div>
 
@@ -53,19 +48,19 @@
         <div class="collapse navbar-collapse order-lg-1" id="navMenu">
           <ul class="navbar-nav mx-auto text-center">
             <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" href="#header">Inicio</a>
+              <a class="nav-link text-uppercase text-dark" (click)="Principal()">Inicio</a>
             </li>
             <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" href="#collection">hombre</a>
+              <a class="nav-link text-uppercase text-dark" >hombre</a>
             </li>
             <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" href="#special">Mujer</a>
+              <a class="nav-link text-uppercase text-dark" >Mujer</a>
             </li>
             <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" href="#about">Niños</a>
+              <a class="nav-link text-uppercase text-dark" >Niños</a>
             </li>
             <li class="nav-item px-2 py-2 border-0">
-              <a class="nav-link text-uppercase text-dark" href="#popular">Niñas</a>
+              <a class="nav-link text-uppercase text-dark" >Niñas</a>
             </li>
           </ul>
         </div>

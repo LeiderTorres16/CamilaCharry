@@ -16,4 +16,8 @@ export class SuperiorComponent {
   registroPrenda() {
     this.router.navigateByUrl('/RegistroPrenda');
   }
+
+  Principal() {
+    this.router.navigateByUrl('/Principal');
+  }
 }
