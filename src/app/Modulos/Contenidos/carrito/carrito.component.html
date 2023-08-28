@@ -1,40 +1,42 @@
-<div class="container mt-5" style="padding-top: 50px; padding-bottom: 30px;">
-  <h2>Carrito de Compra</h2>
-  <div class="row">
-    <div class="col-md-8">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let producto of productosCarrito; let i = index">
-            <td>
-              <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50">
-              {{ producto.nombre }}
-            </td>
-            <td>${{ producto.precio }}</td>
-            <td>
-              <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1">
-            </td>
-            <td>${{ producto.precio * cantidades[i] }}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-md-4">
-      <h3>Precio Total: ${{ totalCarrito }}</h3>
-      <button class="btn btn-primary">Finalizar Compra</button>
+<section style="padding-top: 50px; padding-bottom: 60px;">
+  <div class="container mt-5">
+    <h2>Carrito de Compra</h2>
+    <div class="row">
+      <div class="col-md-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productosCarrito; let i = index">
+              <td>
+                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50">
+                {{ producto.nombre }}
+              </td>
+              <td>${{ producto.precio }}</td>
+              <td>
+                <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1">
+              </td>
+              <td>${{ producto.precio * cantidades[i] }}</td>
+              <td>
+                <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4">
+        <h3>Precio Total: ${{ totalCarrito }}</h3>
+        <button class="btn btn-primary">Finalizar Compra</button>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 
   
