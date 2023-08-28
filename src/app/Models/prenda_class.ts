@@ -7,6 +7,7 @@ export class Prenda{
     imagen:string;
     categorias:string[];
     personalizacion:string [];
+    estado:string;
 
     constructor(
         id: string,
@@ -17,7 +18,9 @@ export class Prenda{
         colores: string[],
         categorias: string[],
 
-        imagen: string
+        imagen: string,
+        estado: string
+
       ) {
         this.id = id;
         this.nombre = nombre;
@@ -26,5 +29,7 @@ export class Prenda{
         this.colores = colores;
         this.imagen = imagen;
         this.categorias = categorias;
+        this.estado = estado;
+
       }
 }

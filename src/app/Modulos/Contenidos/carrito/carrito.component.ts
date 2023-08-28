@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CartService } from 'src/app/Services/cart_service';
 
 @Component({
   selector: 'app-carrito-compra',
@@ -8,25 +9,8 @@ import { Component } from '@angular/core';
 export class CarritoComponent {
   productosCarrito: any[] = [];
 
-  constructor() {
-    // Agregar algunos productos de ejemplo al carrito
-    this.agregarProducto({
-      nombre: 'Camiseta Roja',
-      precio: 25.99,
-      descripcion: 'Una camiseta roja de algodón.',
-    });
-
-    this.agregarProducto({
-      nombre: 'Pantalones Vaqueros',
-      precio: 39.99,
-      descripcion: 'Pantalones vaqueros de corte clásico.',
-    });
-
-    this.agregarProducto({
-      nombre: 'Zapatos Deportivos',
-      precio: 59.99,
-      descripcion: 'Zapatos deportivos cómodos y elegantes.',
-    });
+  constructor(private cartService: CartService) {
+    this.productosCarrito = this.cartService.getItems();
   }
 
   agregarProducto(producto: any) {

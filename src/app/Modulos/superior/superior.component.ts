@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartService } from 'src/app/Services/cart_service';
 
 @Component({
   selector: 'app-superior',
@@ -7,7 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./superior.component.css'],
 })
 export class SuperiorComponent {
-  constructor(private router: Router) {}
+  productosCarrito: any[] = [];
+
+  constructor(private router: Router,private cartService: CartService) {
+    this.productosCarrito = this.cartService.getItems();
+
+  }
 
   Carrito() {
     this.router.navigateByUrl('/Carrito');

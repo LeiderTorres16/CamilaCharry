@@ -32,6 +32,8 @@
         <div class="order-lg-2 nav-btns">
           <button type="button" class="boton position-relative" (click)="Carrito()">
             <i class="fas fa-shopping-cart"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge badge-custom-color">{{ productosCarrito.length }}</span>
+
           </button>
           <button type="button" class="boton position-relative">
             <i class="fas fa-heart"></i>
