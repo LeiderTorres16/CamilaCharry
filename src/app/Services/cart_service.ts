@@ -14,9 +14,9 @@ import Swal from 'sweetalert2';
           this.cartItems.push(prenda);
           Swal.fire({
             icon: 'success',
-            title: 'La prenda ha sido añadida al carrito con éxito.',
+            text: 'La prenda ha sido añadida al carrito con éxito.',
             showConfirmButton: false,
-            timer: 1500
+            timer: 1000
           })
         } else {
             Swal.fire({

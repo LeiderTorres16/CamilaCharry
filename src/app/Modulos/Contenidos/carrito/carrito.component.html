@@ -1,15 +1,40 @@
 <div class="container mt-5" style="padding-top: 50px; padding-bottom: 30px;">
-    <h2>Carrito de Compra</h2>
-    <div *ngIf="productosCarrito.length === 0" class="alert alert-info">
-      No hay productos en el carrito.
+  <h2>Carrito de Compra</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productosCarrito; let i = index">
+            <td>
+              <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50">
+              {{ producto.nombre }}
+            </td>
+            <td>${{ producto.precio }}</td>
+            <td>
+              <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1">
+            </td>
+            <td>${{ producto.precio * cantidades[i] }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div *ngFor="let producto of productosCarrito; let i = index" class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">{{ producto.nombre }}</h5>
-        <p class="card-text">Precio: ${{ producto.precio }}</p>
-        <p class="card-text">{{ producto.descripcion }}</p>
-        <button class="btn btn-danger" (click)="eliminarProducto(i)">Eliminar</button>
-      </div>
+    <div class="col-md-4">
+      <h3>Precio Total: ${{ totalCarrito }}</h3>
+      <button class="btn btn-primary">Finalizar Compra</button>
     </div>
   </div>
+</div>
+
+
   
