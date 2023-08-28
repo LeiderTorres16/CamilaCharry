@@ -122,6 +122,7 @@ export class RegistroPrendaComponent {
         this.colores,
         this.categorias,
         this.imagenUrl,
+        'activo'
       );
      const response : string  = await this.prendasService.addPrenda(nuevaPrenda);
      console.log(response);

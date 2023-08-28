@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
 import { Router } from '@angular/router';
+import { CartService } from 'src/app/Services/cart_service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomeComponent {
   productosDestacados: any[] = [];
   productosEspeciales: any[] = [];
 
-  constructor(private prendasService: PrendasService, private router: Router) {
+  constructor(private prendasService: PrendasService, private router: Router,private cartService: CartService) {
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
@@ -45,6 +46,9 @@ export class HomeComponent {
     console.log(prenda.id);
     
     this.router.navigate(['/DetallePrenda', prenda.id]);
+  }
+  addToCart(prenda: Prenda): void {
+    this.cartService.addToCart(prenda);
   }
 
   ngOnInit():void{

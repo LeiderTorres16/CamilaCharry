@@ -16,7 +16,7 @@
               <p>{{producto.nombreProducto}}</p>
               <p>Codigo - {{producto.id}}</p>
               <p>${{producto.precio}}</p>
-              <button>Agregar al Carrito</button>
+        <button (click)="addToCart(producto); $event.stopPropagation()">Agregar al Carrito</button>
             </div>
           </div>
         </div>

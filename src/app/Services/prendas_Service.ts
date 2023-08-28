@@ -30,7 +30,8 @@ export class PrendasService {
           descripcion: prenda.descripcion,
           colores: prenda.colores,
           imagen: prenda.imagen,
-          categorias: prenda.categorias
+          categorias: prenda.categorias,
+          estado:prenda.estado
         });
       return 'Prenda registrada con exito';
     } catch (error : string | any) {

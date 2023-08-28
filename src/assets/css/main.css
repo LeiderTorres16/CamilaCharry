@@ -12,3 +12,8 @@ body{
     font-family: 'Lato';
     src: url('../../assets/fonts/Lato-Bold.ttf');
 }
+.badge-custom-color {
+    background-color: #caa565;
+    color: white; /* Ajusta el color del texto si es necesario */
+  }
+  
