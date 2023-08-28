@@ -39,6 +39,42 @@ export class PrendasService {
     }
 
   }
+  async actualizarEstadoEnBaseDeDatos(productos: Prenda[]) {
+
+    try {
+      for (const producto of productos) {
+        producto.estado = 'vendido';
+        await this.updatePrenda(producto);
+      }
+      return 'Prenda actualizada con exito';
+
+    } catch (error) {
+      return 'error';
+    }
+
+  }
+  async updatePrenda(prenda: Prenda): Promise<string> {
+    try {
+      const prendaRef = collection(this.firestore, 'prendas');
+      await setDoc(
+        doc(this.firestore, 'prendas', prenda.id),
+        {
+          id: prenda.id,
+          nombre: prenda.nombre,
+          precio: prenda.precio,
+          descripcion: prenda.descripcion,
+          colores: prenda.colores,
+          imagen: prenda.imagen,
+          categorias: prenda.categorias,
+          estado: prenda.estado
+        },
+        { merge: true }
+      );
+      return 'Prenda actualizada con exito';
+    } catch (error: string | any) {
+      return error;
+    }
+  }
 getPrendaPorId(id: string): Observable<Prenda | undefined> {
   return this.getPrendas().pipe(
     map(prendas => {

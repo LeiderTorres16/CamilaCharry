@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/Services/cart_service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-superior',
@@ -9,12 +10,24 @@ import { CartService } from 'src/app/Services/cart_service';
 })
 export class SuperiorComponent {
   productosCarrito: any[] = [];
+  private cartItemsSubscription: Subscription;
 
-  constructor(private router: Router,private cartService: CartService) {
+  constructor(private router: Router, private cartService: CartService) {}
+
+  ngOnInit(): void {
     this.productosCarrito = this.cartService.getItems();
 
+    this.cartItemsSubscription = this.cartService.getItemsChangedObservable()
+      .subscribe((cartItems: any[]) => {
+        this.productosCarrito = cartItems;
+      });
   }
 
+  ngOnDestroy(): void {
+    if (this.cartItemsSubscription) {
+      this.cartItemsSubscription.unsubscribe();
+    }
+  }
   Carrito() {
     this.router.navigateByUrl('/Carrito');
   }
