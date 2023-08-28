@@ -50,3 +50,20 @@ p {
     cursor: pointer;
 }
 
+.personalizacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.personalizacion img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.personalizacion select {
+  margin: 5px;
+}
+

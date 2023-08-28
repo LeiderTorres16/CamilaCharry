@@ -15,8 +15,8 @@
             </div>
 
             <div>
-            <p style=" color: #5c5c5c; font-size: 16px; font-weight: 600; word-wrap: break-word">Color</p>
-            <p>{{ prenda.colores }}</p>
+                <p style=" color: #5c5c5c; font-size: 16px; font-weight: 600; word-wrap: break-word">Color</p>
+                <p>{{ prenda.colores }}</p>
             </div>
 
             <div>
@@ -26,13 +26,82 @@
                 <p>{{ prenda.descripcion }}</p>
             </div>
 
-            <button>Personalizar</button>
+            <button (click)="mostrarPersonalizacion = true">Personalizar</button>
 
             <div>
                 <p style="color: #5c5c5c; font-size: 16px; font-weight: 600; line-height: 29px; word-wrap: break-word">
                     Categorias</p>
                 <p>{{ prenda.categorias }}</p>
             </div>
+        </div>
+    </div>
+</section>
+<section *ngIf="mostrarPersonalizacion"
+    style="background-color: #F6F5FF; display: flex; justify-content: center; align-items: center;">
+    <!-- Comboboxes a la izquierda -->
+    <div class="personalizacion">
+        <div>
+            <p>Cuello</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Cuello 1</option>
+                <option>Cuello 2</option>
+                <option>Cuello 3</option>
+            </select>
+        </div>
+        <div>
+            <p>Manga</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Manga 1</option>
+                <option>Manga 2</option>
+                <option>Manga 3</option>
+            </select>
+        </div>
+        <div>
+            <p>Estanpado</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Estanpado 1</option>
+                <option>Estanpado 2</option>
+                <option>Estanpado 3</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Imagen en el centro -->
+    <div class="personalizacion">
+        <img src="{{ prenda.imagen }}" alt="Prenda Personalizada">
+    </div>
+
+    <!-- Comboboxes a la derecha -->
+    <div class="personalizacion">
+        <div>
+            <p>Encaje</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Encaje 1</option>
+                <option>Encaje 2</option>
+                <option>Encaje 3</option>
+            </select>
+        </div>
+        <div>
+            <p>Botones</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Boton 1</option>
+                <option>Boton 2</option>
+                <option>Boton 3</option>
+            </select>
+        </div>
+        <div>
+            <p>Doblez</p>
+            <select class="form-select mb-3">
+                <option selected>Ninguno</option>
+                <option>Doblez 1</option>
+                <option>Doblez 2</option>
+                <option>Doblez 3</option>
+            </select>
         </div>
     </div>
 </section>

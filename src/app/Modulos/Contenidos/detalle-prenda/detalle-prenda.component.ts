@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class DetallePrendaComponent implements OnInit{
   prenda: Prenda;
   prendaId: string;
-
+  mostrarPersonalizacion = false;
 
   constructor(
     private route: ActivatedRoute,
