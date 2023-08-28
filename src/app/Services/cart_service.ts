@@ -12,6 +12,12 @@ import Swal from 'sweetalert2';
     addToCart(prenda: Prenda): void {
         if (this.validation(prenda)) {
           this.cartItems.push(prenda);
+          Swal.fire({
+            icon: 'success',
+            title: 'La prenda ha sido añadida al carrito con éxito.',
+            showConfirmButton: false,
+            timer: 1500
+          })
         } else {
             Swal.fire({
                 title: 'Error!',

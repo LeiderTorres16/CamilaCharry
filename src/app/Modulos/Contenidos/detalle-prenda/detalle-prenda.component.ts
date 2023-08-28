@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from 'src/app/Services/cart_service';
 
 @Component({
   selector: 'app-detalle-prenda',
@@ -16,8 +17,15 @@ export class DetallePrendaComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
 
-    private prendasService: PrendasService
+    private prendasService: PrendasService,
+
+    private cartService: CartService
   ) {}
+
+  addToCart(prenda: Prenda): void {
+    this.cartService.addToCart(prenda);
+  }
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.prendaId = params['id']; 
