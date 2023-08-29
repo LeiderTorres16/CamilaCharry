@@ -66,6 +66,7 @@ export class PrendasService {
           colores: prenda.colores,
           imagen: prenda.imagen,
           categorias: prenda.categorias,
+          personalizacion:prenda.personalizacion,
           estado: prenda.estado
         },
         { merge: true }
