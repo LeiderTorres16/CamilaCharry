@@ -5,13 +5,16 @@ import { Component } from '@angular/core';
   templateUrl: './inventario-ventas.component.html',
   styleUrls: ['./inventario-ventas.component.css']
 })
-export class InventarioVentasComponent {
+export class InventarioVentasComponent{
   mostrarInventario = false;
   mostrarVentas = false;
   
   // Aquí podrías agregar la lógica para cargar productos de inventario y ventas
   productosEspeciales: any[] = []; // Agrega tus productos aquí
-
+  ngOnInit(): void {
+    this.mostrarInventario = true; // Inicialmente mostrar el inventario
+    this.mostrarVentas = false; 
+  }
   constructor() {
 
     this.agregarProductoE({

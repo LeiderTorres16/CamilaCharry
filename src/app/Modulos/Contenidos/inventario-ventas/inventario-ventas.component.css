@@ -107,6 +107,12 @@
     border-color: #caa565!important;
   }
 
+  .btn.active {
+    background-color: #caa565!important;
+    color: #fff;
+    border-color: #caa565!important;
+  }
+
   .btn + .btn {
     margin-left: 10px; /* Ajusta este valor según tus preferencias */
   }

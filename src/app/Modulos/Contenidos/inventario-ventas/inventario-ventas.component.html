@@ -1,11 +1,13 @@
 <div class="container" style="padding-top:30px;">
     <h1 style="margin-bottom:30px;">Inventario y Ventas</h1>
-    <div style="margin-bottom:30px;">
-        <button type="button" class="btn" [ngClass]="{'active-filter-btn': mostrarInventario}"
+    <div style="margin-bottom: 30px;">
+        <button type="button" class="btn active" [ngClass]="{'active': mostrarInventario}"
             (click)="mostrarInventario = true; mostrarVentas = false;">Inventario</button>
-        <button type="button" class="btn" [ngClass]="{'active-filter-btn': mostrarVentas}"
+        <button type="button" class="btn active" [ngClass]="{'active': mostrarVentas}"
             (click)="mostrarInventario = false; mostrarVentas = true;">Ventas</button>
     </div>
+
+
 
     <!-- Contenido de inventario o ventas dependiendo de los flags -->
     <div *ngIf="mostrarInventario">
