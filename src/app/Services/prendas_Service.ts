@@ -61,12 +61,12 @@ export class PrendasService {
         {
           id: prenda.id,
           nombre: prenda.nombre,
-          precio: prenda.precio,
+          // precio: prenda.precio,
           descripcion: prenda.descripcion,
           colores: prenda.colores,
           imagen: prenda.imagen,
           categorias: prenda.categorias,
-          personalizacion:prenda.personalizacion,
+          // personalizacion:prenda.personalizacion,
           estado: prenda.estado
         },
         { merge: true }

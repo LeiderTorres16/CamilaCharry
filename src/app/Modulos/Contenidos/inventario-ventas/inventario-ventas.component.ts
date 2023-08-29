@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Prenda } from 'src/app/Models/prenda_class';
+import { PrendasService } from 'src/app/Services/prendas_Service';
 
 @Component({
   selector: 'app-inventario-ventas',
@@ -11,32 +13,33 @@ export class InventarioVentasComponent{
   
   // Aquí podrías agregar la lógica para cargar productos de inventario y ventas
   productosEspeciales: any[] = []; // Agrega tus productos aquí
-  ngOnInit(): void {
-    this.mostrarInventario = true; // Inicialmente mostrar el inventario
-    this.mostrarVentas = false; 
-  }
-  constructor() {
+  productosDestacados: any[] = [];
 
-    this.agregarProductoE({
-      imagen: '../../../assets/images/c_western-shirt.png',
-      nombreProducto: 'Camisa Gris',
-      precio: 45.50,
-    });
-
-    this.agregarProductoE({
-      imagen: '../../../assets/images/c_western-shirt.png',
-      nombreProducto: 'Camisa Gris',
-      precio: 45.50,
-    });
-
-    this.agregarProductoE({
-      imagen: '../../../assets/images/c_western-shirt.png',
-      nombreProducto: 'Camisa Gris',
-      precio: 45.50,
-    });
+  constructor(private prendasService: PrendasService) {
   }
 
   agregarProductoE(producto: any) {
     this.productosEspeciales.push(producto);
+  }
+  agregarProducto(prenda: Prenda) {
+    this.productosDestacados.push(prenda);
+  }
+  ngOnInit():void{
+    this.mostrarInventario = true; // Inicialmente mostrar el inventario
+    this.mostrarVentas = false; 
+
+    this.prendasService.getPrendas().subscribe(prendas=> {
+      
+    
+      prendas.forEach(prenda => {
+        if(prenda.estado == 'activo'){
+          this.agregarProducto(prenda);
+        }else{
+          this.agregarProductoE(prenda);
+
+        }
+      });    
+        console.log(prendas);
+    })
   }
 }
