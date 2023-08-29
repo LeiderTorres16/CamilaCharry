@@ -5,6 +5,8 @@ import { HomeComponent } from './Modulos/Contenidos/home/home.component';
 import { CarritoComponent } from './Modulos/Contenidos/carrito/carrito.component';
 import { RegistroPrendaComponent } from './Modulos/Contenidos/registro-prenda/registro-prenda.component';
 import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/detalle-prenda.component';
+import { InventarioVentasComponent } from './Modulos/Contenidos/inventario-ventas/inventario-ventas.component';
+InventarioVentasComponent
 
 const routes: Routes = [
   {path: '',redirectTo: '/Principal', pathMatch: 'full'},
@@ -13,6 +15,7 @@ const routes: Routes = [
   {path: 'Carrito',component: CarritoComponent},
   {path: 'RegistroPrenda',component: RegistroPrendaComponent},
   { path: 'DetallePrenda/:id', component: DetallePrendaComponent },
+  {path: 'InventarioVentas',component: InventarioVentasComponent},
   
 ];
 

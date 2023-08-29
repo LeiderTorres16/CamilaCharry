@@ -13,6 +13,7 @@ export class DetallePrendaComponent implements OnInit{
   prenda: Prenda;
   prendaId: string;
   mostrarPersonalizacion = false;
+  precioFinal: number = 0;
 
   cuelloSeleccionado: string = 'Ninguno';
   mangaSeleccionada: string = 'Ninguno';
@@ -29,25 +30,8 @@ export class DetallePrendaComponent implements OnInit{
   ) {}
 
   addToCart(prenda: Prenda): void {
-     let precioFinal = this.prenda.precio;
-    if (this.cuelloSeleccionado !== 'Ninguno') {
-      precioFinal += 20000;
-    }
-    if (this.mangaSeleccionada !== 'Ninguno') {
-      precioFinal += 25000;
-    }
-    if (this.estampadoSeleccionado !== 'Ninguno') {
-      precioFinal += 24000;
-    }
-    if (this.encajeSeleccionado !== 'Ninguno') {
-      precioFinal += 30000;
-    }
-    if (this.botonSeleccionado !== 'Ninguno') {
-      precioFinal += 10000;
-    }
-    if (this.doblezSeleccionado !== 'Ninguno') {
-      precioFinal += 15000;
-    }
+    this.actualizarPrecio();
+    
     const listaAtributos = [
       this.cuelloSeleccionado,
       this.mangaSeleccionada,
@@ -56,7 +40,7 @@ export class DetallePrendaComponent implements OnInit{
       this.botonSeleccionado,
       this.doblezSeleccionado,
     ].filter(valor => valor !== null);
-    prenda.precio = precioFinal;
+    prenda.precio = this.precioFinal;
     prenda.personalizacion = listaAtributos;
 
     this.cartService.addToCart(prenda);
@@ -70,6 +54,7 @@ export class DetallePrendaComponent implements OnInit{
       this.prendasService.getPrendaPorId(this.prendaId).subscribe(prenda => {
         if (prenda) {
           this.prenda = prenda;
+          this.precioFinal = this.prenda.precio;
           console.log(this.prenda.id);
         } else {
           console.log('noprenda');
@@ -78,4 +63,29 @@ export class DetallePrendaComponent implements OnInit{
       
     });
   }
+
+  actualizarPrecio(): void {
+    this.precioFinal = this.prenda.precio;
+
+    if (this.cuelloSeleccionado !== 'Ninguno') {
+        this.precioFinal += 20000;
+    }
+    if (this.mangaSeleccionada !== 'Ninguno') {
+        this.precioFinal += 25000;
+    }
+    if (this.estampadoSeleccionado !== 'Ninguno') {
+        this.precioFinal += 24000;
+    }
+    if (this.encajeSeleccionado !== 'Ninguno') {
+        this.precioFinal += 30000;
+    }
+    if (this.botonSeleccionado !== 'Ninguno') {
+        this.precioFinal += 10000;
+    }
+    if (this.doblezSeleccionado !== 'Ninguno') {
+        this.precioFinal += 15000;
+    }
+}
+
+
 }

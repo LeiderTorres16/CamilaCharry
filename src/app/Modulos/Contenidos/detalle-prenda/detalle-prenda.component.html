@@ -55,7 +55,7 @@
         <div class="personalizacion" style="width: 100%;flex: 2;">
             <div style="width: 100%;">
                 <p>Cuello</p>
-                <select class="form-select mb-3"[(ngModel)]="cuelloSeleccionado">
+                <select class="form-select mb-3"[(ngModel)]="cuelloSeleccionado" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Cuello 1</option>
                     <option>Cuello 2</option>
@@ -64,7 +64,7 @@
             </div>
             <div>
                 <p>Manga</p>
-                <select class="form-select mb-3"[(ngModel)]="mangaSeleccionada">
+                <select class="form-select mb-3"[(ngModel)]="mangaSeleccionada" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Manga 1</option>
                     <option>Manga 2</option>
@@ -73,7 +73,7 @@
             </div>
             <div>
                 <p>Estampado</p>
-                <select class="form-select mb-3"[(ngModel)]="estampadoSeleccionado">
+                <select class="form-select mb-3"[(ngModel)]="estampadoSeleccionado" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Estampado 1</option>
                     <option>Estampado 2</option>
@@ -92,7 +92,7 @@
         <div class="personalizacion" style="width: 100%;flex: 2;">
             <div style="width: 100%;">
                 <p>Encaje</p>
-                <select class="form-select mb-3"[(ngModel)]="encajeSeleccionado">
+                <select class="form-select mb-3"[(ngModel)]="encajeSeleccionado" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Encaje 1</option>
                     <option>Encaje 2</option>
@@ -101,7 +101,7 @@
             </div>
             <div>
                 <p>Botones</p>
-                <select class="form-select mb-3"[(ngModel)]="botonSeleccionado">
+                <select class="form-select mb-3"[(ngModel)]="botonSeleccionado" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Boton 1</option>
                     <option>Boton 2</option>
@@ -110,7 +110,7 @@
             </div>
             <div>
                 <p>Doblez</p>
-                <select class="form-select mb-3"[(ngModel)]="doblezSeleccionado">
+                <select class="form-select mb-3"[(ngModel)]="doblezSeleccionado" (ngModelChange)="actualizarPrecio()">
                     <option selected>Ninguno</option>
                     <option>Doblez 1</option>
                     <option>Doblez 2</option>
@@ -119,6 +119,11 @@
             </div>
         </div>
     </div>
+    <div class="d-flex justify-content-center mt-3">
+        <p>{{ precioFinal}}</p>
+        <p></p>
+    </div>
+    
     <div class="d-flex justify-content-center mt-3">
         <button class="btn btn-primary" (click)="addToCart(prenda)">Añadir al carrito</button>
       </div>

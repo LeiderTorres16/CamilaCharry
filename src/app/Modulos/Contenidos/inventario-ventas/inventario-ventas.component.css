@@ -1,0 +1,113 @@
+
+
+/* collection */
+.active-filter-btn{
+    background-color: #caa565!important;
+    color: #fff!important;
+    border-color: #caa565!important;
+}
+.filter-button-group .btn:hover{
+    color: #fff!important;
+    background-color: #caa565!important;
+    border-color: #caa565!important;
+}
+.collection-img span{
+    top: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+}
+
+.col-md-3 {
+    max-width: 25%; /* Para asegurarse de que haya cuatro tarjetas en una fila */
+}
+
+.mb-4 {
+    margin-bottom: 20px; /* Espacio inferior entre las tarjetas */
+}
+
+/* ================================================================= */
+
+.product-card {
+    display: inline-block;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: background-color 0.3s;
+    box-sizing: border-box; /* Agregado */
+    max-width: 300px;
+    text-align: center;
+}
+
+.product-card:hover {
+    background-color: #D8A762;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%; /* Ajuste */
+    object-fit: cover; /* Ajuste */
+    display: block;
+    vertical-align: top;
+}
+
+.product-details {
+    padding: 20px;
+    color: black;
+    transition: color 0.3s;
+}
+
+.product-card:hover .product-details {
+    color: white;
+}
+
+.product-details h2 {
+    margin-top: 0;
+}
+
+.product-details p {
+    margin: 5px 0;
+}
+
+.product-details button {
+    background-color: #caa565!important;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: #fff;
+    border-radius: 25px;
+    border: 1px solid #caa565!important;
+}
+
+.product-card:hover button {
+    background-color: #fff!important;
+    color: rgb(85, 85, 85);
+    border-color: #fff!important;
+}
+
+.container {
+    text-align: center; /* Centra el contenido horizontalmente */
+    padding-top: 40px; /* Agrega espacio arriba del contenido */
+  }
+  
+  
+  .btn{
+    background-color: #fff;
+    color: rgb(85, 85, 85);
+    padding: 10px 28px;
+    border-radius: 25px;
+    border: 1px solid rgb(85, 85, 85);
+  }
+  
+  .btn:hover {
+    background-color: #caa565!important;
+    color: #fff;
+    border-color: #caa565!important;
+  }
+
+  .btn + .btn {
+    margin-left: 10px; /* Ajusta este valor según tus preferencias */
+  }
+  

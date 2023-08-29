@@ -24,6 +24,7 @@ import { DetallePrendaComponent } from './Modulos/Contenidos/detalle-prenda/deta
 import {CloudinaryModule} from '@cloudinary/ng';
 import { ImageUploaderDirective } from './Services/image_directive';
 import { HttpClientModule } from '@angular/common/http';
+import { InventarioVentasComponent } from './Modulos/Contenidos/inventario-ventas/inventario-ventas.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     RegistroPrendaComponent,
     CarritoComponent,
     DetallePrendaComponent,
-    ImageUploaderDirective
+    ImageUploaderDirective,
+    InventarioVentasComponent
   ],
   imports: [
     BrowserModule,

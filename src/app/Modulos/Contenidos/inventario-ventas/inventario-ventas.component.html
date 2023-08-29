@@ -1,0 +1,59 @@
+<div class="container" style="padding-top:30px;">
+    <h1 style="margin-bottom:30px;">Inventario y Ventas</h1>
+    <div style="margin-bottom:30px;">
+        <button type="button" class="btn" [ngClass]="{'active-filter-btn': mostrarInventario}"
+            (click)="mostrarInventario = true; mostrarVentas = false;">Inventario</button>
+        <button type="button" class="btn" [ngClass]="{'active-filter-btn': mostrarVentas}"
+            (click)="mostrarInventario = false; mostrarVentas = true;">Ventas</button>
+    </div>
+
+    <!-- Contenido de inventario o ventas dependiendo de los flags -->
+    <div *ngIf="mostrarInventario">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
+                <div class="product-card" style="cursor: pointer;">
+                    <div class="product-image">
+                        <img src="{{producto.imagen}}" alt="Producto">
+                    </div>
+                    <div class="product-details">
+                        <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
+                        <span class="fw-bold">$ {{producto.precio}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="mostrarVentas">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
+                <div class="product-card" style="cursor: pointer;">
+                    <div class="product-image">
+                        <img src="{{producto.imagen}}" alt="Producto">
+                    </div>
+                    <div class="product-details">
+                        <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
+                        <span class="fw-bold">$ {{producto.precio}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contenido de inventario o ventas dependiendo de los flags -->
+<div *ngIf="mostrarInventario">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
+            <!-- Aquí va tu diseño de tarjeta -->
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrarVentas">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
+            <!-- Aquí va tu diseño de tarjeta para ventas -->
+        </div>
+    </div>
+</div>

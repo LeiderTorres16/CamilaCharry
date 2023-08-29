@@ -39,4 +39,8 @@ export class SuperiorComponent {
   Principal() {
     this.router.navigateByUrl('/Principal');
   }
+
+  InventarioVentas() {
+    this.router.navigateByUrl('/InventarioVentas');
+  }
 }
