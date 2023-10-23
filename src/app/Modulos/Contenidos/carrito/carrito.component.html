@@ -1,44 +1,47 @@
-<section style="padding-top: 50px; padding-bottom: 60px;">
-  <div class="container mt-5">
-    <h2>Carrito de Compra</h2>
-    <div class="row">
-      <div class="col-md-8">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let producto of productosCarrito; let i = index">
-              <td>
-                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50">
-                {{ producto.nombre }}
-              </td>
-              <td>${{ producto.precio }}</td>
-              <td>
-                <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1">
-              </td>
-              <td>${{ producto.precio * cantidades[i] }}</td>
-              <td>
-                <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col-md-4">
-        <h3>Precio Total: ${{ totalCarrito }}</h3>
-        <button class="btn btn-primary"(click)="finalizarCompra()">Finalizar Compra</button>
-      </div>
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4">Carrito de Compra</h2>
+    <div *ngIf="productosCarrito.length === 0; else carritoNotEmpty">
+      <p>No hay productos en el carrito.</p>
     </div>
+    <ng-template #carritoNotEmpty>
+      <div class="row">
+        <div class="col-md-8">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of productosCarrito; let i = index">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50" class="mr-2">
+                    {{ producto.nombre }}
+                  </div>
+                </td>
+                <td>${{ producto.precio }}</td>
+                <td>
+                  <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1" class="form-control">
+                </td>
+                <td>${{ producto.precio * cantidades[i] }}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-4">
+          <h3 class="mb-3">Precio Total: ${{ totalCarrito }}</h3>
+          <button class="btn btn-primary" (click)="finalizarCompra()">Finalizar Compra</button>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </section>
-
-
-
-
-  

@@ -48,14 +48,15 @@
       <div class="container">
         <div class="row d-flex align-items-center justify-content-center">
           <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
-            <div class="product-card" style="cursor: pointer;">
+            <div class="product-card" (click)="detallePrenda(producto)" style="cursor: pointer;">
               <div class="product-image">
                 <img src="{{producto.imagen}}" alt="Producto">
               </div>
               <div class="product-details">
-                <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
-                <span class="fw-bold">$ {{producto.precio}}</span>
-                <button>Agregar al Carrito</button>
+                <p>{{producto.nombreProducto}}</p>
+                <p>Codigo - {{producto.id}}</p>
+                <p>${{producto.precio}}</p>
+                <button (click)="addToCart(producto); $event.stopPropagation()">Agregar al Carrito</button>
               </div>
             </div>
           </div>

@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PrincipalComponent } from './Modulos/principal/principal.component';
 import { HeaderComponent } from './Modulos/header/header.component';
-import { FooterComponent } from './Modulos/footer/footer.component';
 import { HomeComponent } from './Modulos/Contenidos/home/home.component';
 import { SuperiorComponent } from './Modulos/superior/superior.component';
 import { CarritoComponent } from './Modulos/Contenidos/carrito/carrito.component';
@@ -25,6 +24,7 @@ import {CloudinaryModule} from '@cloudinary/ng';
 import { ImageUploaderDirective } from './Services/image_directive';
 import { HttpClientModule } from '@angular/common/http';
 import { InventarioVentasComponent } from './Modulos/Contenidos/inventario-ventas/inventario-ventas.component';
+import { FooterComponent } from './Modulos/footer/footer.component';
 
 
 @NgModule({
@@ -32,14 +32,14 @@ import { InventarioVentasComponent } from './Modulos/Contenidos/inventario-venta
     AppComponent,
     PrincipalComponent,
     HeaderComponent,
-    FooterComponent,
     HomeComponent,
     SuperiorComponent,
     RegistroPrendaComponent,
     CarritoComponent,
     DetallePrendaComponent,
     ImageUploaderDirective,
-    InventarioVentasComponent
+    InventarioVentasComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
