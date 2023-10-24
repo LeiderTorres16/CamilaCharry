@@ -24,6 +24,17 @@ export class InventarioVentasComponent{
   agregarProducto(prenda: Prenda) {
     this.productosDestacados.push(prenda);
   }
+  
+  editarProducto(producto: any){
+
+  }
+
+  eliminarProducto(producto: any){
+
+  }
+
+
+
   ngOnInit():void{
     this.mostrarInventario = true; // Inicialmente mostrar el inventario
     this.mostrarVentas = false; 

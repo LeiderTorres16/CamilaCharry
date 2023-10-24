@@ -1,10 +1,13 @@
 .footer {
-    background-color: #f2f0ff;
-    padding: 10px;
-  }
-  
-  .footer p {
-    margin: 0;
-    color: #333; /* Cambia el color de texto según tus preferencias */
-  }
-  
+  background-color: #f2f0ff;
+  padding: 10px;
+}
+
+.footer p {
+  margin: 0;
+  color: #333; /* Cambia el color de texto según tus preferencias */
+}
+
+.container{
+  padding-top: 30px;
+}
