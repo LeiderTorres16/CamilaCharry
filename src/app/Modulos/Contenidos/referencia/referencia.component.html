@@ -1,0 +1,24 @@
+<div *ngIf="venta" style="padding-top: 120px">
+    <h2>Detalles de la venta {{ referencia }}</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Producto</th>
+          <th>Codigo</th>
+          <th>Precio</th>
+          <!-- Otros campos necesarios -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of venta.productos">
+          <td><img [src]="producto.imagen" alt="Producto" width="50" class="img-thumbnail"></td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.id }}</td>
+          <td>{{ producto.precio | currency }}</td>
+          <!-- Otros campos necesarios -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

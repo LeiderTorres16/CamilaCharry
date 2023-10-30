@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PrincipalComponent } from './Modulos/principal/principal.component';
-import { HeaderComponent } from './Modulos/header/header.component';
+
 import { HomeComponent } from './Modulos/Contenidos/home/home.component';
-import { SuperiorComponent } from './Modulos/superior/superior.component';
+
 import { CarritoComponent } from './Modulos/Contenidos/carrito/carrito.component';
 import { FormsModule } from '@angular/forms';
 import { RegistroPrendaComponent } from './Modulos/Contenidos/registro-prenda/registro-prenda.component';
@@ -25,6 +25,12 @@ import { ImageUploaderDirective } from './Services/image_directive';
 import { HttpClientModule } from '@angular/common/http';
 import { InventarioVentasComponent } from './Modulos/Contenidos/inventario-ventas/inventario-ventas.component';
 import { FooterComponent } from './Modulos/footer/footer.component';
+import { SuperiorComponent } from './Modulos/menu-superior/superior.component';
+import { HeaderComponent } from './Modulos/banner/header.component';
+import { LoginComponent } from './Modulos/Contenidos/login/login.component';
+import { RegistroComponent } from './Modulos/Contenidos/registro/registro.component';
+import { DataService } from './Services/data.service';
+import { ReferenciaComponent } from './Modulos/Contenidos/referencia/referencia.component';
 
 
 @NgModule({
@@ -40,6 +46,9 @@ import { FooterComponent } from './Modulos/footer/footer.component';
     ImageUploaderDirective,
     InventarioVentasComponent,
     FooterComponent,
+    LoginComponent,
+    RegistroComponent,
+    ReferenciaComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +67,7 @@ import { FooterComponent } from './Modulos/footer/footer.component';
     MatChipsModule
   ],
   providers: [
-
+    DataService
   ],
   bootstrap: [AppComponent]
 })

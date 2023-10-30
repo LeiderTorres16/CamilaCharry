@@ -1,0 +1,64 @@
+<section class="registration-page">
+    <div class="background-images">
+        <div class="background-image" style="background-image: url('../../../../assets/images/mq-fondo.jpg')"></div>
+        <div class="background-image" style="background-image: url('../../../../assets/images/regis.jpg');"></div>
+        <div class="background-image" style="background-image: url('../../../../assets/images/c-fondo.jpg');"></div>
+    </div>
+    <div class="registration-container">
+        <div class="registration-form">
+            <h2>Regístrate</h2>
+            <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <!-- Columna izquierda -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="direccion">Direccion</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion"
+                                formControlName="direccion">
+                        </div>
+                        <div class="form-group">
+                            <label for="contraseña">Contraseña</label>
+                            <input type="password" class="form-control" id="contraseña" name="contraseña"
+                                formControlName="contraseña">
+                        </div>
+                    </div>
+                    <!-- Columna derecha -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" formControlName="apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electronico</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                formControlName="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="cContraseña">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="cContraseña" name="cContraseña"
+                                formControlName="cContraseña">  
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center"> <!-- Esto centrará el botón horizontalmente -->
+                    <button type="submit" class="btn btn-primary btn-register" style="width: 200px;">Registrarse</button> <!-- Cambia el ancho según tus necesidades -->
+                </div>
+            </form>
+
+        </div>
+        <div class="text-center mb-4 mt-4">
+            <div class="separator">
+                <div class="line"></div>
+                <div class="or">O</div>
+                <div class="line"></div>
+            </div>
+        </div>
+        <div class="text-center"> <!-- Esto centrará el botón horizontalmente -->
+            <button class="btn btn-primary btn-register" style="width: 200px; background-color: white; color: #D8A762" (click)="Login()">Iniciar sesion</button> <!-- Cambia el ancho según tus necesidades -->
+        </div>
+    </div>
+</section>

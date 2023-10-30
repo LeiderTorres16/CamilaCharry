@@ -34,6 +34,15 @@
               Descripción es requerida.
             </div>
           </div>
+          <div class="form-group">
+            <label for="existenciasPrenda">Existencias:</label>
+            <input type="number" class="form-control" id="existenciasPrenda" name="existenciasPrenda"
+              formControlName="existencias">
+            <div *ngIf="prenda.controls['existencias'].invalid && prenda.controls['existencias'].touched"
+              class="text-danger">
+              Necesitas registrar al menos una existencia.
+            </div>
+          </div>
           <mat-form-field class="example-chip-list">
             <mat-label>Colores</mat-label>
             <mat-chip-grid #chipGridColores aria-label="Ingrese Colores">
@@ -66,25 +75,26 @@
             </mat-chip-grid>
           </mat-form-field>
 
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="imagenPrenda" class="form-label">Imagen de la prenda:</label>
+              <input type="file" class="form-control" id="imagenPrenda" name="imagenPrenda"
+                (change)="onFileSelected($event)" required>
+              <div *ngIf="showAlert" class="text-danger">
+                Por favor, selecciona una imagen.
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="imagen">
+              <label for="imagenSeleccionada" class="form-label">Imagen seleccionada:</label>
+              <div class="imagen-prenda">
+                <img [src]="imagenPreview" alt="Imagen seleccionada" class="img-fluid" id="imagenPrendaPreview">
+              </div>
+            </div>
+          </div>
+
+
 
           <button type="submit" class="btn btn-primary">Registrar Prenda</button>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="imagenPrenda">Imagen de la prenda:</label>
-            <input type="file" class="form-control-file" id="imagenPrenda" name="imagenPrenda"
-              (change)="onFileSelected($event)" required>
-            <div *ngIf="showAlert" class="text-danger">
-              Por favor, selecciona una imagen.
-            </div>
-          </div>
-          <div class="form-group" *ngIf="imagen">
-            <label>Imagen seleccionada:</label>
-            <div class="imagen-prenda">
-              <img [src]="getImagenURL()" alt="Imagen seleccionada">
-            </div>
-          </div>
         </div>
       </div>
     </form>

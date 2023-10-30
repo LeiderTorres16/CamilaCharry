@@ -20,6 +20,11 @@ color: #fff;}
     letter-spacing: 2px;
     font-family: var(--lg-font);
 }
+
+.texto-login{
+    font-family: Lato
+}
+
 .nav-link:hover{
     color: #caa565!important;
 }

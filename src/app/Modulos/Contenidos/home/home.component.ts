@@ -3,6 +3,8 @@ import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/Services/cart_service';
+import { DataService } from 'src/app/Services/data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +14,9 @@ import { CartService } from 'src/app/Services/cart_service';
 export class HomeComponent {
   productosDestacados: any[] = [];
   productosEspeciales: any[] = [];
+  data: any;
 
-  constructor(private prendasService: PrendasService, private router: Router,private cartService: CartService) {
+  constructor(private prendasService: PrendasService, private router: Router,private cartService: CartService, private dataService: DataService) {
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
@@ -57,7 +60,6 @@ export class HomeComponent {
       prendas.forEach(prenda => {
         this.agregarProducto(prenda);
       });    
-        console.log(prendas);
     })
   }
 }
