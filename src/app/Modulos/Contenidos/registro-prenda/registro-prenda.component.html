@@ -77,17 +77,18 @@
 
           <div class="col-md-8">
             <div class="mb-3">
-              <label for="imagenPrenda" class="form-label">Imagen de la prenda:</label>
+              <label for="imagenPrenda" class="form-label">Imágenes de la prenda:</label>
               <input type="file" class="form-control" id="imagenPrenda" name="imagenPrenda"
-                (change)="onFileSelected($event)" required>
+                     (change)="onFileSelected($event)" required multiple>
               <div *ngIf="showAlert" class="text-danger">
-                Por favor, selecciona una imagen.
+                Por favor, selecciona al menos una imagen.
               </div>
+              
             </div>
             <div class="mb-3" *ngIf="imagen">
               <label for="imagenSeleccionada" class="form-label">Imagen seleccionada:</label>
-              <div class="imagen-prenda">
-                <img [src]="imagenPreview" alt="Imagen seleccionada" class="img-fluid" id="imagenPrendaPreview">
+              <div class="imagen-prenda" *ngFor="let imagenPreview of imagenesPreview">
+                <img  [src]="imagenPreview" alt="Imagen seleccionada" class="img-fluid" id="imagenPrendaPreview">
               </div>
             </div>
           </div>

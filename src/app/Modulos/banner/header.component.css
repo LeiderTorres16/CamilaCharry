@@ -1,21 +1,39 @@
-/* header */
-#header{
-    background-color: #F2F0FF;
-}
-.carousel-inner h1{
-    font-size: 60px;
-    font-family: var(--lg-font);
-}
-.carousel-item .btn{
-    background-color: #fff;
-    color: rgb(85, 85, 85);
-    padding: 10px 28px;
-    border-radius: 25px;
-    border: 1px solid rgb(85, 85, 85);
-}
-.carousel-item .btn:hover{
-    background-color: #caa565;
-    color: #fff;
-    border-color: #caa565;
+/* Establece estilos para el fondo del carousel */
+.carousel-item {
+  background-color: white;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: black; /* Cambia el color del texto */
+  text-align: center; /* Alinea el contenido al centro del elemento */
+  height: 100%;
+  width: auto;
+  padding-top: 200px;
+  padding-bottom: 260px;
 }
 
+.carrusel{
+    background-color: #f2f0ff;
+}
+
+/* Establece estilos para el título en cada elemento del carousel */
+.carousel-item h2 {
+  font-size: 60px;
+  font-family: var(--lg-font);
+}
+
+/* Establece estilos para el botón en cada elemento del carousel */
+.carousel-item .btn {
+  background-color: #fff;
+  color: rgb(85, 85, 85);
+  padding: 10px 28px;
+  border-radius: 25px;
+  border: 1px solid rgb(85, 85, 85);
+}
+
+/* Establece estilos para el botón al pasar el ratón por encima */
+.carousel-item .btn:hover {
+  background-color: #caa565;
+  color: #fff;
+  border-color: #caa565;
+}

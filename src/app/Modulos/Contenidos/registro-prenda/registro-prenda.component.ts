@@ -23,10 +23,12 @@ export class RegistroPrendaComponent {
   prendas: Prenda[];
   imagen: File | null;
   addOnBlur = true;
+  imagenes: File[] = [];
+
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
   colores: string[] = [];
-  imagenPreview: string | null;
+  imagenesPreview: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,74 +108,65 @@ export class RegistroPrendaComponent {
   }
 
   async submitForm() {
-    // const response = await this.imageService.uploadImage(this.imagen!);
-    const response = await this.prendasService.addImage(this.imagen);
-    if (response != 'error') {
-      // try {
-      //   const cloudinaryObject = JSON.parse(response);
-      //   const secureUrl = cloudinaryObject.secure_url;
-      //   console.log(secureUrl); // Imprime la URL segura
-      // } catch (error) {
-      //   console.error("Error al analizar el JSON:", error);
-      // }
-      this.imagenUrl = response;
-      if (this.prenda.valid && this.imagen) {
-        const nuevaPrenda = new Prenda(
-          this.prenda.value.id,
-          this.prenda.value.nombre,
-          this.prenda.value.precio,
-          this.prenda.value.descripcion,
-          this.colores,
-          this.categorias,
-          this.imagenUrl,
-          'activo',
-          this.prenda.value.existencias
-        );
-        const response: string = await this.prendasService.addPrenda(
-          nuevaPrenda
-        );
-        console.log(response);
-        if (response == 'Prenda registrada con exito') {
-          Swal.fire({
-            text: response,
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else {
-          Swal.fire({
-            title: 'Error!',
-            text: response,
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            confirmButtonColor: '#CAA565',
-          });
-        }
+    if (this.prenda.valid && this.imagenes.length > 0) {
+      const urls: string[] = [];
 
-        this.prenda.reset();
-        this.imagen = null;
-        this.imagenUrl = '';
-        this.colores = [];
-        this.categorias = [];
+      for (let i = 0; i < this.imagenes.length; i++) {
+        const response = await this.prendasService.addImage(this.imagenes[i]);
+        if (response != 'error') {
+          this.imagenUrl = response;
+          urls.push(response);
+        }
+      }
+
+      const nuevaPrenda = new Prenda(
+        this.prenda.value.id,
+        this.prenda.value.nombre,
+        this.prenda.value.precio,
+        this.prenda.value.descripcion,
+        this.colores,
+        this.categorias,
+        urls,
+        'activo',
+        this.prenda.value.existencias
+      );
+
+      const response: string = await this.prendasService.addPrenda(nuevaPrenda);
+
+      if (response == 'Prenda registrada con exito') {
+        Swal.fire({
+          text: response,
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
         Swal.fire({
           title: 'Error!',
-          text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.',
+          text: response,
           icon: 'error',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#CAA565',
         });
       }
+
+      this.prenda.reset();
+      this.imagenes = [];
+      this.imagenUrl = '';
+      this.colores = [];
+      this.categorias = [];
+
     } else {
       Swal.fire({
         title: 'Error!',
-        text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.',
+        text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
         icon: 'error',
         confirmButtonText: 'Ok',
         confirmButtonColor: '#CAA565',
       });
     }
   }
+
   getImagenURL(): any {
     return this.imagen ? URL.createObjectURL(this.imagen) : null;
   }
@@ -181,59 +174,68 @@ export class RegistroPrendaComponent {
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const maxSize = 1024 * 1024;
-      const maxWidth = 370;
-      const maxHeight = 370;
+      for (let i = 0; i < input.files.length; i++) {
+      
+        const file = input.files[i];
+        this.imagenes.push(input.files[i]);
+        const maxSize = 3024 * 3024;
+        const maxWidth = 370;
+        const maxHeight = 370;
+
+        if (file.size <= maxSize) {
+          this.imagen = file;
+          this.showAlert = false;
   
-      if (file.size <= maxSize) {
-        this.imagen = file;
-        this.showAlert = false;
-  
-        // Redimensionar la imagen
-        this.resizeImage(file, maxWidth, maxHeight).then((resizedImage) => {
-          this.imagenPreview = resizedImage;
-  
-          // Resto de la lógica de la función onFileSelected
-        });
-      } else {
-        const mensaje = 'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
-        Swal.fire({
-          title: 'Error!',
-          text: mensaje,
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#CAA565',
-        });
-        this.imagen = null;
-        input.value = '';
-        this.showAlert = true;
+          this.resizeImage(file, maxWidth, maxHeight).then((resizedImage) => {
+            this.imagenesPreview?.push(resizedImage)
+          });
+        } else {
+          const mensaje =
+            'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
+          Swal.fire({
+            title: 'Error!',
+            text: mensaje,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+          this.imagen = null;
+          input.value = '';
+          this.showAlert = true;
+        }
+        
+
+
       }
+
     }
   }
-  
 
-  resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<string> {
+  resizeImage(
+    file: File,
+    maxWidth: number,
+    maxHeight: number
+  ): Promise<string> {
     return new Promise<string>((resolve) => {
       const image = new Image();
       image.src = URL.createObjectURL(file);
-  
+
       image.onload = () => {
         const canvas = document.createElement('canvas');
         if (!canvas) {
           console.error('No se pudo crear el canvas.');
           return;
         }
-        
+
         const context = canvas.getContext('2d');
         if (!context) {
           console.error('No se pudo obtener el contexto del canvas.');
           return;
         }
-  
+
         let width = image.width;
         let height = image.height;
-  
+
         if (width > maxWidth || height > maxHeight) {
           if (width > height) {
             height *= maxWidth / width;
@@ -243,18 +245,16 @@ export class RegistroPrendaComponent {
             height = maxHeight;
           }
         }
-  
+
         canvas.width = width;
         canvas.height = height;
         context.drawImage(image, 0, 0, width, height);
-  
+
         const resizedImage = canvas.toDataURL('image/jpeg');
         resolve(resizedImage);
       };
     });
   }
-  
-  
 
   ngOnInit(): void {
     const cld = new Cloudinary({ cloud: { cloudName: 'prendas' } });

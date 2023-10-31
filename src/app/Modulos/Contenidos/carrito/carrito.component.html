@@ -21,7 +21,7 @@
               <tr *ngFor="let producto of productosCarrito; let i = index">
                 <td>
                   <div class="d-flex align-items-center">
-                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" width="50" class="mr-2">
+                    <img src="{{ getImageUrl(producto) }}" alt="{{ producto.nombre }}" width="50" class="mr-2">
                     {{ producto.nombre }}
                   </div>
                 </td>

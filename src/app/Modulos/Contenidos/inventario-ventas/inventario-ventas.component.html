@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let producto of productosInventario">
-                        <td><img [src]="producto.imagen" alt="Producto" width="50" class="img-thumbnail"></td>
+                        <td><img [src]="getImageUrl(producto)" alt="Producto" width="50" class="img-thumbnail"></td>
                         <td>{{producto.nombre}}</td>
                         <td>{{producto.id}}</td>
                         <td>{{producto.precio | currency}}</td>

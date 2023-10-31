@@ -89,6 +89,14 @@ export class CarritoComponent {
     this.actualizarTotal();
   }
 
+  getImageUrl(producto: any): string {
+    if (producto.imagenes && producto.imagenes.length > 0) {
+      return producto.imagenes[0];
+    } else {
+      return '';
+    }
+  }
+
   private actualizarTotal() {
     this.totalCarrito = this.productosCarrito.reduce(
       (total, producto, index) =>

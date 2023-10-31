@@ -4,7 +4,7 @@ export class Prenda{
     precio: number;
     descripcion: string;
     colores: string [];
-    imagen:string;
+    imagenes:string[];
     categorias:string[];
     personalizacion:string [];
     estado:string;
@@ -19,7 +19,7 @@ export class Prenda{
         colores: string[],
         categorias: string[],
 
-        imagen: string,
+        imagenes: string[],
         estado: string,
         existencias: number
 
@@ -29,7 +29,7 @@ export class Prenda{
         this.precio = precio;
         this.descripcion = descripcion;
         this.colores = colores;
-        this.imagen = imagen;
+        this.imagenes = imagenes;
         this.categorias = categorias;
         this.estado = estado;
         this.existencias = existencias;

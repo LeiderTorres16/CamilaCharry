@@ -12,28 +12,32 @@ import Swal from 'sweetalert2';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  productosDestacados: any[] = [];
+  productosDestacados: Prenda[] = [];
   productosEspeciales: any[] = [];
   data: any;
 
-  constructor(private prendasService: PrendasService, private router: Router,private cartService: CartService, private dataService: DataService) {
-
+  constructor(
+    private prendasService: PrendasService,
+    private router: Router,
+    private cartService: CartService,
+    private dataService: DataService
+  ) {
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
       nombreProducto: 'Camisa Gris',
-      precio: 45.50,
+      precio: 45.5,
     });
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
       nombreProducto: 'Camisa Gris',
-      precio: 45.50,
+      precio: 45.5,
     });
 
     this.agregarProductoE({
       imagen: '../../../assets/images/c_western-shirt.png',
       nombreProducto: 'Camisa Gris',
-      precio: 45.50,
+      precio: 45.5,
     });
   }
 
@@ -45,21 +49,29 @@ export class HomeComponent {
     this.productosEspeciales.push(producto);
   }
 
-  detallePrenda(prenda: Prenda){
+  detallePrenda(prenda: Prenda) {
     console.log(prenda.id);
-    
+
     this.router.navigate(['/DetallePrenda', prenda.id]);
   }
   addToCart(prenda: Prenda): void {
     this.cartService.addToCart(prenda);
   }
 
-  ngOnInit():void{
-    this.prendasService.getPrendas().subscribe(prendas=> {
-      
-      prendas.forEach(prenda => {
+  getImageUrl(producto: any): string {
+    if (producto.imagenes && producto.imagenes.length > 0) {
+      return producto.imagenes[0];
+    } else {
+      return '';
+    }
+  }
+
+  ngOnInit(): void {
+    this.productosDestacados = [];
+    this.prendasService.getPrendas().subscribe((prendas) => {
+      prendas.forEach((prenda) => {
         this.agregarProducto(prenda);
-      });    
-    })
+      });
+    });
   }
 }

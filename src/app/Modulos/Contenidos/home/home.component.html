@@ -10,10 +10,10 @@
         <div class="col-md-3 mb-4" *ngFor="let producto of productosDestacados; let i = index">
           <div class="product-card" (click)="detallePrenda(producto)" style="cursor: pointer;">
             <div class="product-image">
-              <img src="{{producto.imagen}}" alt="Producto">
+              <img src="{{getImageUrl(producto)}}" alt="Producto">
             </div>
             <div class="product-details">
-              <p>{{producto.nombreProducto}}</p>
+              <p>{{producto.nombre}}</p>
               <p>Codigo - {{producto.id}}</p>
               <p>${{producto.precio}}</p>
               <button (click)="addToCart(producto); $event.stopPropagation()">Agregar al Carrito</button>

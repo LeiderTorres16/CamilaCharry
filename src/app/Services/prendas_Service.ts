@@ -32,7 +32,7 @@ import { Venta } from '../Models/venta.class';
           precio: prenda.precio,
           descripcion: prenda.descripcion,
           colores: prenda.colores,
-          imagen: prenda.imagen,
+          imagenes: prenda.imagenes,
           categorias: prenda.categorias,
           estado: prenda.estado,
           existencias: prenda.existencias
@@ -66,7 +66,7 @@ import { Venta } from '../Models/venta.class';
             // precio: prenda.precio,
             descripcion: prenda.descripcion,
             colores: prenda.colores,
-            imagen: prenda.imagen,
+            imagen: prenda.imagenes,
             categorias: prenda.categorias,
             // personalizacion:prenda.personalizacion,
             estado: prenda.estado,
