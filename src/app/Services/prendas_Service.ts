@@ -6,10 +6,10 @@
     collectionData,
   } from '@angular/fire/firestore';
   import { Prenda } from '../Models/prenda_class';
-  import { doc, setDoc } from 'firebase/firestore';
+  import { doc, setDoc, updateDoc } from 'firebase/firestore';
   import { AngularFireStorage } from '@angular/fire/compat/storage';
   import { Observable } from 'rxjs';
-  import { map } from 'rxjs/operators';
+  import { map, distinctUntilChanged  } from 'rxjs/operators';
 import { Venta } from '../Models/venta.class';
   
   @Injectable({
@@ -43,36 +43,35 @@ import { Venta } from '../Models/venta.class';
       }
     }
   
-    async actualizarEstadoEnBaseDeDatos(productos: Prenda[]) {
+    async desactivarPrenda(producto: Prenda) {
       try {
-        for (const producto of productos) {
-          producto.estado = 'vendido';
-          await this.updatePrenda(producto);
-        }
-        return 'Prenda actualizada con exito';
+        await updateDoc(
+          doc(this.firestore, 'prendas', producto.id),
+          {
+            estado: 'desactivado',
+          },
+        );
+        return 'Prenda eliminada con exito';
       } catch (error) {
         return 'error';
       }
     }
   
-    async updatePrenda(prenda: Prenda): Promise<string> {
+    updatePrenda(prenda: Prenda): string {
       try {
-        const prendaRef = collection(this.firestore, 'prendas');
-        await setDoc(
+        updateDoc(
           doc(this.firestore, 'prendas', prenda.id),
           {
             id: prenda.id,
             nombre: prenda.nombre,
-            // precio: prenda.precio,
+            precio: prenda.precio,
             descripcion: prenda.descripcion,
             colores: prenda.colores,
-            imagen: prenda.imagenes,
+            imagenes: prenda.imagenes,
             categorias: prenda.categorias,
-            // personalizacion:prenda.personalizacion,
             estado: prenda.estado,
             existencias: prenda.existencias,
           },
-          { merge: true }
         );
         return 'Prenda actualizada con exito';
       } catch (error: string | any) {
@@ -83,11 +82,7 @@ import { Venta } from '../Models/venta.class';
     getPrendaPorId(id: string): Observable<Prenda | undefined> {
       return this.getPrendas().pipe(
         map((prendas) => {
-          console.log('Todas las prendas:', prendas);
-          console.log('ID', id);
-  
           const prendaEncontrada = prendas.find((prenda) => prenda.id === id);
-          console.log('Prenda encontrada:', prendaEncontrada);
           return prendaEncontrada;
         })
       );
@@ -114,7 +109,8 @@ import { Venta } from '../Models/venta.class';
     }
 
     getVentaPorReferencia(referencia: number){
-      return this.getVentas().pipe(map((ventas) => {
+      return this.getVentas().pipe(
+        map((ventas) => {
         const ventasEncontradas = ventas.find((venta) => venta.referencia === referencia);
         return ventasEncontradas;
       }))

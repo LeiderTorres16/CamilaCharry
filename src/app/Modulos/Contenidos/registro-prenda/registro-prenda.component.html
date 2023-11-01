@@ -3,7 +3,7 @@
     <form [formGroup]="prenda" (ngSubmit)="submitForm()">
       <div class="row">
         <div class="col-md-8">
-          <h2>Registro de Prenda</h2>
+          <h2>{{ isEditMode ? 'Editar Prenda' : 'Registrar Prenda' }}</h2>
           <div class="form-group">
             <label for="idPrenda">Codigo de la prenda:</label>
             <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
@@ -75,27 +75,73 @@
             </mat-chip-grid>
           </mat-form-field>
 
-          <div class="col-md-8">
+          <div class="col-md-8" *ngIf="isEditMode">
             <div class="mb-3">
               <label for="imagenPrenda" class="form-label">Imágenes de la prenda:</label>
+              <div class="mb-3" *ngIf="imagenesAntiguas.length > 0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let imagen of imagenesAntiguas; let i = index">
+                      <td>
+                        <img [src]="imagen" alt="Imagen seleccionada" width="100" class="img-thumbnail"
+                          id="imagenPrendaPreview">
+                      </td>
+                      <td>
+                        <button (click)="eliminarImagenE(i)" class="btn btn-danger">Eliminar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="imagenPrenda" class="form-label">Anañdir Nuevas Imagenes:</label>
               <input type="file" class="form-control" id="imagenPrenda" name="imagenPrenda"
-                     (change)="onFileSelected($event)" required multiple>
+                (change)="onFileSelected($event)" required multiple>
               <div *ngIf="showAlert" class="text-danger">
                 Por favor, selecciona al menos una imagen.
               </div>
-              
+
             </div>
-            <div class="mb-3" *ngIf="imagen">
-              <label for="imagenSeleccionada" class="form-label">Imagen seleccionada:</label>
-              <div class="imagen-prenda" *ngFor="let imagenPreview of imagenesPreview">
-                <img  [src]="imagenPreview" alt="Imagen seleccionada" class="img-fluid" id="imagenPrendaPreview">
+            <div class="mb-3">
+              <div class="mb-3" *ngIf="imagenesPreview.length > 0">
+                <label for="imagenSeleccionada" class="form-label">Imagen seleccionada:</label>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let imagen of imagenesPreview; let i = index">
+                      <td>
+                        <img [src]="imagen" alt="Imagen seleccionada" width="50" class="img-thumbnail"
+                          id="imagenPrendaPreview">
+                      </td>
+                      <td>
+                        <button (click)="eliminarImagen(i)" class="btn btn-danger">Eliminar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
 
 
-          <button type="submit" class="btn btn-primary">Registrar Prenda</button>
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Modificar Prenda' : 'Registrar Prenda'
+            }}</button>
         </div>
       </div>
     </form>

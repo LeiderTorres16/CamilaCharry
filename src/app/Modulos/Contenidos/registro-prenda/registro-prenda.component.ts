@@ -12,6 +12,7 @@ import {
 } from '@angular/material/chips';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { ImageUploaderService } from 'src/app/Services/image_service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro-prenda',
@@ -24,16 +25,21 @@ export class RegistroPrendaComponent {
   imagen: File | null;
   addOnBlur = true;
   imagenes: File[] = [];
+  imagenesNuevas: string[] = [];
+  imagenesAntiguas: string[] = [];
+  isEditMode = false;
+  imagenesPreview: string[] = [];
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
   colores: string[] = [];
-  imagenesPreview: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private prendasService: PrendasService,
-    private imageService: ImageUploaderService
+    private imageService: ImageUploaderService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.prenda = this.formBuilder.group({
       id: ['', Validators.required],
@@ -108,58 +114,87 @@ export class RegistroPrendaComponent {
   }
 
   async submitForm() {
-    if (this.prenda.valid && this.imagenes.length > 0) {
-      const urls: string[] = [];
+    if (this.isEditMode) {
+      if (this.prenda.valid && this.imagenesAntiguas.length > 0) {
+        this.showAlert = false;
+        const urlsNuevas: string[] = [];
 
-      for (let i = 0; i < this.imagenes.length; i++) {
-        const response = await this.prendasService.addImage(this.imagenes[i]);
-        if (response != 'error') {
-          this.imagenUrl = response;
-          urls.push(response);
+        for (let i = 0; i < this.imagenes.length; i++) {
+          const response = await this.prendasService.addImage(this.imagenes[i]);
+          if (response != 'error') {
+            this.imagenUrl = response;
+            urlsNuevas.push(response);
+          }
         }
-      }
 
-      const nuevaPrenda = new Prenda(
-        this.prenda.value.id,
-        this.prenda.value.nombre,
-        this.prenda.value.precio,
-        this.prenda.value.descripcion,
-        this.colores,
-        this.categorias,
-        urls,
-        'activo',
-        this.prenda.value.existencias
-      );
-
-      const response: string = await this.prendasService.addPrenda(nuevaPrenda);
-
-      if (response == 'Prenda registrada con exito') {
-        Swal.fire({
-          text: response,
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      } else {
+        this.updatePrenda(urlsNuevas,this.imagenesAntiguas);
+      }else{
         Swal.fire({
           title: 'Error!',
-          text: response,
+          text: 'Formulario no válido. Por favor, verifica los campos y asegúrate tener al menos una imagen registrada de la prenda',
           icon: 'error',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#CAA565',
         });
       }
+    } else {
+      if (this.prenda.valid && this.imagenes.length > 0) {
+        const urls: string[] = [];
 
-      this.prenda.reset();
-      this.imagenes = [];
-      this.imagenUrl = '';
-      this.colores = [];
-      this.categorias = [];
+        for (let i = 0; i < this.imagenes.length; i++) {
+          const response = await this.prendasService.addImage(this.imagenes[i]);
+          if (response != 'error') {
+            this.imagenUrl = response;
+            urls.push(response);
+          }
+        }
 
+        this.createPrenda(urls);
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#CAA565',
+        });
+      }
+    }
+  }
+
+  updatePrenda(imageUrlsNuevas: string[], imageUrlsViejas: string[]) {
+    const prendaId = this.prenda.value.id;
+
+    imageUrlsNuevas.forEach(img => {
+      imageUrlsViejas.push(img);
+    });
+
+    const newPrenda = new Prenda(
+      prendaId,
+      this.prenda.value.nombre,
+      this.prenda.value.precio,
+      this.prenda.value.descripcion,
+      this.colores,
+      this.categorias,
+      imageUrlsViejas,
+      'activo',
+      this.prenda.value.existencias
+    );
+
+    const response = this.prendasService.updatePrenda(newPrenda);
+
+    if (response === 'Prenda actualizada con exito') {
+      this.router.navigateByUrl('/Principal');
+      Swal.fire({
+        text: response,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
       Swal.fire({
         title: 'Error!',
-        text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+        text: response,
         icon: 'error',
         confirmButtonText: 'Ok',
         confirmButtonColor: '#CAA565',
@@ -167,28 +202,71 @@ export class RegistroPrendaComponent {
     }
   }
 
+  createPrenda(imageUrls: string[]) {
+    const nuevaPrenda = new Prenda(
+      this.prenda.value.id,
+      this.prenda.value.nombre,
+      this.prenda.value.precio,
+      this.prenda.value.descripcion,
+      this.colores,
+      this.categorias,
+      imageUrls,
+      'activo',
+      this.prenda.value.existencias
+    );
+
+    const response = this.prendasService.addPrenda(nuevaPrenda);
+
+    if (response === 'Prenda registrada con exito') {
+      Swal.fire({
+        text: response,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: response,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#CAA565',
+      });
+    }
+
+    this.prenda.reset();
+    this.imagenes = [];
+    this.imagenUrl = '';
+    this.colores = [];
+    this.categorias = [];
+  }
+
   getImagenURL(): any {
     return this.imagen ? URL.createObjectURL(this.imagen) : null;
+  }
+
+  eliminarImagen(index: number) {
+    this.imagenesPreview.splice(index, 1);
+    this.imagenes.splice(index, 1);
+  }
+
+  eliminarImagenE(index: number) {
+    this.imagenesAntiguas.splice(index, 1);
   }
 
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       for (let i = 0; i < input.files.length; i++) {
-      
         const file = input.files[i];
         this.imagenes.push(input.files[i]);
         const maxSize = 3024 * 3024;
-        const maxWidth = 370;
-        const maxHeight = 370;
 
         if (file.size <= maxSize) {
           this.imagen = file;
+          const newFile = URL.createObjectURL(file);
+          this.imagenesPreview.push(newFile);
           this.showAlert = false;
-  
-          this.resizeImage(file, maxWidth, maxHeight).then((resizedImage) => {
-            this.imagenesPreview?.push(resizedImage)
-          });
         } else {
           const mensaje =
             'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
@@ -203,60 +281,61 @@ export class RegistroPrendaComponent {
           input.value = '';
           this.showAlert = true;
         }
-        
-
-
       }
-
     }
   }
 
-  resizeImage(
-    file: File,
-    maxWidth: number,
-    maxHeight: number
-  ): Promise<string> {
-    return new Promise<string>((resolve) => {
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
+  ngOnInit(): void {
+    this.imagenesAntiguas = [];
+    const prendaId = this.route.snapshot.paramMap.get('id');
+    if (prendaId) {
+      this.isEditMode = true;
+      this.loadPrendaForEdit(prendaId);
+    } else {
+      // Estamos en modo de registro
+      this.initNewPrendaForm();
+    }
+  }
 
-      image.onload = () => {
-        const canvas = document.createElement('canvas');
-        if (!canvas) {
-          console.error('No se pudo crear el canvas.');
-          return;
-        }
-
-        const context = canvas.getContext('2d');
-        if (!context) {
-          console.error('No se pudo obtener el contexto del canvas.');
-          return;
-        }
-
-        let width = image.width;
-        let height = image.height;
-
-        if (width > maxWidth || height > maxHeight) {
-          if (width > height) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          } else {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        context.drawImage(image, 0, 0, width, height);
-
-        const resizedImage = canvas.toDataURL('image/jpeg');
-        resolve(resizedImage);
-      };
+  private loadPrendaForEdit(prendaId: string): void {
+    this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
+      this.initEditPrendaForm(prenda!);
     });
   }
 
-  ngOnInit(): void {
-    const cld = new Cloudinary({ cloud: { cloudName: 'prendas' } });
+  private initEditPrendaForm(prenda: Prenda): void {
+    this.prenda = this.formBuilder.group({
+      id: [prenda.id, Validators.required],
+      nombre: [prenda.nombre, Validators.required],
+      precio: [prenda.precio, [Validators.required, Validators.min(0)]],
+      descripcion: [prenda.descripcion, Validators.required],
+      colores: [''],
+      imagenprenda: [''],
+      existencias: [
+        prenda.existencias,
+        [Validators.required, Validators.min(1)],
+      ],
+    });
+
+    this.categorias = prenda.categorias;
+    this.colores = prenda.colores;
+
+    for (let i = 0; i < prenda.imagenes.length; i++) {
+      this.imagenesAntiguas.push(prenda.imagenes[i]);
+    }
+  }
+
+  initNewPrendaForm() {
+    this.prenda = this.formBuilder.group({
+      id: ['', Validators.required],
+      nombre: ['', Validators.required],
+      precio: [null, [Validators.required, Validators.min(0)]],
+      descripcion: ['', Validators.required],
+      colores: [''],
+      imagenprenda: [''],
+      existencias: [1, [Validators.required, Validators.min(1)]],
+    });
+    this.categorias = [];
+    this.colores = [];
   }
 }

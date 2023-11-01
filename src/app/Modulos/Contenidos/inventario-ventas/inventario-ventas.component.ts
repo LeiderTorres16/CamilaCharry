@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Prenda } from 'src/app/Models/prenda_class';
+import { Venta } from 'src/app/Models/venta.class';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import Swal from 'sweetalert2';
 
@@ -13,12 +14,21 @@ export class InventarioVentasComponent {
   mostrarInventario = false;
   mostrarVentas = false;
 
-  productosInventario: any[] = [];
-  productosVentas: any[] = [];
+  productosInventario: Prenda[] = [];
+  productosVentas: Venta[] = [];
 
   constructor(private prendasService: PrendasService, private router: Router) {}
 
-  agregarVentas(producto: any) {
+  ngOnInit(): void {
+    this.productosInventario=[];
+    this.productosVentas = [];
+    this.mostrarInventario = true;
+    this.mostrarVentas = false;
+    this.cargarInventario();
+    this.cargarVentas();
+  }
+
+  agregarVentas(producto: Venta) {
     this.productosVentas.push(producto);
   }
   agregarInventario(prenda: Prenda) {
@@ -26,59 +36,13 @@ export class InventarioVentasComponent {
   }
 
   editarProducto(producto: any) {
-    let nombre: string = producto.nombre;
-    let precio: string = producto.precio;
-    let existencias: number = producto.existencias;
-    
-    Swal.fire({
-      title: `Editar Producto ${producto.id}`,
-      html:
-        `<input id="nombre" class="swal2-input" placeholder="Nombre" value="${producto.nombre}">` +
-        `<input id="precio" class="swal2-input" placeholder="Precio" value="${producto.precio}">` +
-        `<input id="existencias" class="swal2-input" placeholder="Existencias" value="${producto.existencias}">`,
-      showCancelButton: true,
-      confirmButtonText: 'Guardar',
-      confirmButtonColor: '#28A745',
-      cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#DC3545',
-      showLoaderOnConfirm: true,
-      didOpen: () => {
-        const nombreInput = document.getElementById(
-          'nombre'
-        ) as HTMLInputElement;
-        const precioInput = document.getElementById(
-          'precio'
-        ) as HTMLInputElement;
-        const existenciasInput = document.getElementById(
-          'existencias'
-        ) as HTMLInputElement;
-
-        nombreInput.addEventListener('input', () => {
-          nombre = nombreInput.value;
-        });
-
-        precioInput.addEventListener('input', () => {
-          precio = precioInput.value;
-        });
-
-        existenciasInput.addEventListener('input', () => {
-          existencias = parseInt(existenciasInput.value);
-        });
-      },
-      preConfirm: () => {
-        console.log({
-          name: nombre,
-          price: precio,
-          exis: existencias
-        })
-      },
-    });
+    this.productosVentas = [];
+    this.productosInventario=[];
+    const id = producto.id;
+    this.router.navigate(['/EditarPrenda', id]);
   }
 
-
-  
-  eliminarProducto(producto:any) {
-
+  eliminarProducto(producto: any) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: `¿Quieres eliminar el producto ${producto.nombre}?`,
@@ -88,30 +52,42 @@ export class InventarioVentasComponent {
       confirmButtonColor: '#28A745',
       cancelButtonText: 'Cancelar',
       cancelButtonColor: '#DC3545',
-      preConfirm: () => {
-
-        Swal.fire({
-          title: 'Se elimino con exito!',
-          text: `El producto ${producto.nombre} se elimino`,
-          icon: 'success',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#28A745',
-        });
-      }
+      preConfirm: async () => {
+        const response = await this.prendasService.desactivarPrenda(producto);
+        if(response == "Prenda eliminada con exito"){
+          Swal.fire({
+            title: 'Se elimino con exito!',
+            text: `El producto ${producto.nombre} se elimino`,
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#28A745',
+          });
+        }else{
+          Swal.fire({
+            title: 'Error!',
+            text: "Hubo un error al eliminar la prenda",
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+        }
+      },
     });
   }
-  
-  
 
   cargarInventario() {
+    this.productosInventario = []; 
     this.prendasService.getPrendas().subscribe((prendas) => {
       prendas.forEach((prenda) => {
-        this.agregarInventario(prenda);
+        if(prenda.estado == 'activo'){
+          this.agregarInventario(prenda);
+        }
       });
     });
   }
 
   cargarVentas() {
+    this.productosVentas = []; 
     this.prendasService.getVentas().subscribe((ventas) => {
       ventas.forEach((venta) => {
         this.agregarVentas(venta);
@@ -131,12 +107,5 @@ export class InventarioVentasComponent {
     }
   }
 
-  
 
-  ngOnInit(): void {
-    this.mostrarInventario = true;
-    this.mostrarVentas = false;
-    this.cargarInventario();
-    this.cargarVentas();
-  }
 }

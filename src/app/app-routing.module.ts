@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'InventarioVentas', component: InventarioVentasComponent },
   { path: 'InicioSesion', component: LoginComponent },
   { path: 'Registro', component: RegistroComponent },
+  { path: 'EditarPrenda/:id', component: RegistroPrendaComponent },
   {path: 'Referencia/:referencia', component: ReferenciaComponent}
 ];
 

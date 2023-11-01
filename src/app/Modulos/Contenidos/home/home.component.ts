@@ -70,7 +70,9 @@ export class HomeComponent {
     this.productosDestacados = [];
     this.prendasService.getPrendas().subscribe((prendas) => {
       prendas.forEach((prenda) => {
-        this.agregarProducto(prenda);
+        if(prenda.estado == "activo"){
+          this.agregarProducto(prenda);
+        }
       });
     });
   }
