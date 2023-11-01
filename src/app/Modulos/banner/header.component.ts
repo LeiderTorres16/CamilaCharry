@@ -167,7 +167,7 @@ export class HeaderComponent {
                 'success'
               );
             } else {
-              Swal.fire({
+              Swal.fire({ 
                 title: 'Error!',
                 text: 'Formulario no válido. Por favor, verifica los campos.',
                 icon: 'error',
