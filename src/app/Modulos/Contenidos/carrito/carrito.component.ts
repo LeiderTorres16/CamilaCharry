@@ -37,8 +37,6 @@ export class CarritoComponent {
   eliminarProducto(index: number) {
     this.productosCarrito.splice(index, 1);
     this.cantidades.splice(index, 1);
-    this.cartService.eliminarProducto(index);
-
     this.actualizarTotal();
   }
 

@@ -7,7 +7,7 @@
     <ng-template #carritoNotEmpty>
       <div class="row">
         <div class="col-md-8">
-          <table class="table">
+          <table class="table table-borderless">
             <thead>
               <tr>
                 <th>Producto</th>
@@ -21,13 +21,14 @@
               <tr *ngFor="let producto of productosCarrito; let i = index">
                 <td>
                   <div class="d-flex align-items-center">
-                    <img src="{{ getImageUrl(producto) }}" alt="{{ producto.nombre }}" width="50" class="mr-2">
+                    <img src="{{ getImageUrl(producto) }}" alt="{{ producto.nombre }}" width="50" class="mr-2" style="border-radius: 5px;">
                     {{ producto.nombre }}
                   </div>
                 </td>
                 <td>${{ producto.precio }}</td>
                 <td>
-                  <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1" class="form-control">
+                  <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1"
+                    class="form-control">
                 </td>
                 <td>${{ producto.precio * cantidades[i] }}</td>
                 <td>
@@ -37,9 +38,18 @@
             </tbody>
           </table>
         </div>
-        <div class="col-md-4">
-          <h3 class="mb-3">Precio Total: ${{ totalCarrito }}</h3>
-          <button class="btn btn-primary" (click)="finalizarCompra()">Finalizar Compra</button>
+        <div class="container-carrito col-md-4">
+          <h3 class="mb-3 preciototal text-center">Total de Carrito</h3>
+          <div class="f-compra" style="width: 100%;"> 
+            <div class="row" >
+              <div class="col-auto" style="width: auto; text-align: start;">
+                <h3 class="mb-3 preciototal">Precio Total:</h3>
+              </div>
+              <div class="col" style="width: auto; text-align: end;">${{ totalCarrito }}</div>
+            </div>
+            <div class="line"></div>
+            <button class="btn btn-primary btn-compra" (click)="finalizarCompra()">Finalizar Compra</button>
+          </div>
         </div>
       </div>
     </ng-template>

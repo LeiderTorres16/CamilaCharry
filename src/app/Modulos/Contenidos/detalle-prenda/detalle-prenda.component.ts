@@ -7,13 +7,16 @@ import { CartService } from 'src/app/Services/cart_service';
 @Component({
   selector: 'app-detalle-prenda',
   templateUrl: './detalle-prenda.component.html',
-  styleUrls: ['./detalle-prenda.component.css']
+  styleUrls: ['./detalle-prenda.component.css'],
 })
-export class DetallePrendaComponent implements OnInit{
+export class DetallePrendaComponent implements OnInit {
   prenda: Prenda;
   prendaId: string;
   mostrarPersonalizacion = false;
   precioFinal: number = 0;
+  imagenesPrenda: string[] = [];
+  currentIndex: number = 0;
+  autoChangeInterval: any;
 
   cuelloSeleccionado: string = 'Ninguno';
   mangaSeleccionada: string = 'Ninguno';
@@ -31,7 +34,7 @@ export class DetallePrendaComponent implements OnInit{
 
   addToCart(prenda: Prenda): void {
     this.actualizarPrecio();
-    
+
     const listaAtributos = [
       this.cuelloSeleccionado,
       this.mangaSeleccionada,
@@ -39,7 +42,7 @@ export class DetallePrendaComponent implements OnInit{
       this.encajeSeleccionado,
       this.botonSeleccionado,
       this.doblezSeleccionado,
-    ].filter(valor => valor !== null);
+    ].filter((valor) => valor !== null);
     prenda.precio = this.precioFinal;
     prenda.personalizacion = listaAtributos;
 
@@ -47,45 +50,66 @@ export class DetallePrendaComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.prendaId = params['id']; 
-      console.log('PRENDA ID:', this.prendaId);
-      
-      this.prendasService.getPrendaPorId(this.prendaId).subscribe(prenda => {
-        if (prenda) {
-          this.prenda = prenda;
-          this.precioFinal = this.prenda.precio;
-          console.log(this.prenda.id);
-        } else {
-          console.log('noprenda');
-        }
-      });
-      
+    const prendaId = this.route.snapshot.paramMap.get('id')!;
+
+    this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
+      if (prenda) {
+        this.prenda = prenda;
+        this.precioFinal = this.prenda.precio;
+
+        prenda.imagenes.forEach((imagen) => {
+          this.imagenesPrenda.push(imagen);
+        });
+      } else {
+        console.log('noprenda');
+      }
     });
+
+    this.autoChangeInterval = setInterval(() => {
+      this.siguienteImagen();
+    }, 5000);
+  }
+
+  ngOnDestroy() {
+    if (this.autoChangeInterval) {
+      clearInterval(this.autoChangeInterval);
+    }
   }
 
   actualizarPrecio(): void {
     this.precioFinal = this.prenda.precio;
 
     if (this.cuelloSeleccionado !== 'Ninguno') {
-        this.precioFinal += 20000;
+      this.precioFinal += 20000;
     }
     if (this.mangaSeleccionada !== 'Ninguno') {
-        this.precioFinal += 25000;
+      this.precioFinal += 25000;
     }
     if (this.estampadoSeleccionado !== 'Ninguno') {
-        this.precioFinal += 24000;
+      this.precioFinal += 24000;
     }
     if (this.encajeSeleccionado !== 'Ninguno') {
-        this.precioFinal += 30000;
+      this.precioFinal += 30000;
     }
     if (this.botonSeleccionado !== 'Ninguno') {
-        this.precioFinal += 10000;
+      this.precioFinal += 10000;
     }
     if (this.doblezSeleccionado !== 'Ninguno') {
-        this.precioFinal += 15000;
+      this.precioFinal += 15000;
     }
-}
+  }
 
+  siguienteImagen() {
+    this.currentIndex = (this.currentIndex + 1) % this.imagenesPrenda.length;
+  }
 
+  imagenAnterior() {
+    this.currentIndex =
+      (this.currentIndex - 1 + this.imagenesPrenda.length) %
+      this.imagenesPrenda.length;
+  }
+
+  trackByFn(index: number, item: string) {
+    return index; // Puedes usar un identificador único si lo tienes
+  }
 }

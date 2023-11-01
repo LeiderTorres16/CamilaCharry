@@ -1,11 +1,12 @@
 .detalle-prenda {
   display: flex;
-  margin-left: 200px;
-  margin-right: 200px;
+  margin-left: 300px;
+  margin-right: 300px;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0px 0px 25px 10px #f6f4fd;
+  min-height: 600px;
 }
 
 .imagen-prenda {
@@ -41,9 +42,7 @@ p {
   color: #555;
 }
 
-
-
-.personalizacion-prenda{
+.personalizacion-prenda {
   display: flex;
   margin-left: 200px;
   margin-right: 200px;
@@ -55,12 +54,12 @@ p {
   box-shadow: 0px 0px 25px 10px #f6f4fd;
 }
 
-.imagen-personalizacion{
+.imagen-personalizacion {
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0px 0px 25px 10px #f6f4fd;
-  flex:2;
+  flex: 2;
   margin-left: 70px;
   margin-right: 70px;
 }
@@ -80,12 +79,12 @@ p {
 }
 
 .btn-personalizar:hover {
-  background-color: #fff!important;
+  background-color: #fff !important;
   color: #caa565;
-  border-color: #caa565!important;
+  border-color: #caa565 !important;
 }
 
-.btn{
+.btn {
   background-color: #fff;
   color: rgb(85, 85, 85);
   padding: 10px 28px;
@@ -94,8 +93,44 @@ p {
 }
 
 .btn:hover {
-  background-color: #caa565!important;
+  background-color: #caa565 !important;
   color: #fff;
-  border-color: #caa565!important;
+  border-color: #caa565 !important;
 }
+
+.carousel-container {
+  display: flex;
+  overflow: hidden;
+  width: 100%; /* Ancho máximo del carrusel visible en la pantalla */
+}
+
+
+.imagen-prenda {
+  flex: 0 0 auto; /* Evita que las imágenes cambien de tamaño */
+  margin-right: 10px; /* Espacio entre las imágenes */
+}
+
+.carousel-container.centered {
+  display: flex;
+  align-items: center; /* Alinear verticalmente al centro */
+  justify-content: center; /* Alinear horizontalmente al centro */
+  height: 100%;
+}
+
+/* Estilos para los botones de navegación */
+.nav-icon {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Estilos para el ícono de flecha izquierda */
+.nav-icon.nav-left {
+  margin-right: 10px; /* Espacio entre el ícono de la izquierda y la imagen */
+}
+
+/* Estilos para el ícono de flecha derecha */
+.nav-icon.nav-right {
+  margin-left: 10px; /* Espacio entre el ícono de la derecha y la imagen */
+}
+
 
