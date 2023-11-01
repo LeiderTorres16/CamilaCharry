@@ -58,6 +58,8 @@ export class SuperiorComponent {
   Logout(){
     this.localstorageService.removeItem();
     this.login = 0;
+    this.router.navigateByUrl('/Principal');
+    window.location.reload();
   }
 
   validadorSesion(){

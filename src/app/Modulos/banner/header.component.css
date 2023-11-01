@@ -4,12 +4,14 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  color: black; /* Cambia el color del texto */
+  color: white; /* Cambia el color del texto */
   text-align: center; /* Alinea el contenido al centro del elemento */
   height: 100%;
   width: auto;
   padding-top: 200px;
   padding-bottom: 260px;
+  border-radius: 15px;
+  font-family: Lato, sans-serif;
 }
 
 .carrusel{
@@ -36,4 +38,37 @@
   background-color: #caa565;
   color: #fff;
   border-color: #caa565;
+}
+
+
+/* Estilos para los botones de edición, eliminación y añadir */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boton {
+  background-color: #caa565;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #f2c327;
+}
+
+.delete-button {
+  background-color: #f24c27;
+}
+
+.add-button {
+  background-color: #27f24c;
+}
+
+.boton i {
+  margin-right: 5px;
 }
