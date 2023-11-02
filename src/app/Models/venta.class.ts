@@ -2,14 +2,14 @@ import { Prenda } from "./prenda_class";
 import { User } from "./user_class";
 
 export class Venta {
-    referencia: number;
+    referencia: string;
     prendas: Prenda[];
     total: number;
     cliente: User;
     fecha: string;
 
     constructor(
-        referencia: number,
+        referencia: string,
         prendas: Prenda[],
         total: number,
         cliente: User,

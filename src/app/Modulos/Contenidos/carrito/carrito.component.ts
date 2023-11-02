@@ -42,18 +42,13 @@ export class CarritoComponent {
 
   fechaHora() {
     const fechaHoraActual = new Date();
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'short',
-    };
+    const year = fechaHoraActual.getFullYear().toString();
+    const month = (fechaHoraActual.getMonth() + 1).toString().padStart(2, '0');
+    const day = fechaHoraActual.getDate().toString().padStart(2, '0');
+    const hours = fechaHoraActual.getHours().toString().padStart(2, '0');
+    const minutes = fechaHoraActual.getMinutes().toString().padStart(2, '0');
 
-    const formatter = new Intl.DateTimeFormat('es-ES');
-    this.formatoFechaHora = formatter.format(fechaHoraActual);
+    this.formatoFechaHora = year + month + day + hours + minutes;
   }
   async finalizarCompra() {
     this.dataService.data$.subscribe(async (data) => {
@@ -64,7 +59,7 @@ export class CarritoComponent {
 
         Swal.fire({
           icon: 'success',
-          title: `Gracias por tu compra -REF:${this.formatoFechaHora}`,
+          title: `Gracias por tu compra -REF:${this.formatoFechaHora+data.id}`,
           text: 'El siguiente paso es consignar a xxxxxxxxxxxxxxxx',
           showConfirmButton: false,
         });

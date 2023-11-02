@@ -51,7 +51,7 @@ export class LoginComponent {
   }
 
   Registro(){
-    this.router.navigateByUrl('/InicioSesion');
+    this.router.navigateByUrl('/Registro');
   }
 
 

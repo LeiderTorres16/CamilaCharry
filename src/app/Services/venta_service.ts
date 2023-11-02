@@ -20,6 +20,7 @@ export class VentaService {
   fechaActual: Date;
   fechaActualFormateada: string;
   data: any;
+  fecha: string;
   constructor(
     private firestore: Firestore,
     private fireStorage: AngularFireStorage,
@@ -27,6 +28,8 @@ export class VentaService {
   ) {
     this.fechaActual = new Date();
     this.fechaActualFormateada = this.formatoFechaHora(this.fechaActual);
+    this.fecha = this.formatoFecha(this.fechaActual);
+
   }
   formatoFechaHora(fecha: Date): string {
     const year = fecha.getFullYear().toString();
@@ -36,6 +39,14 @@ export class VentaService {
     const minutes = fecha.getMinutes().toString().padStart(2, '0');
     return year + month + day + hours + minutes;
   }
+
+  formatoFecha(fecha: Date): string {
+    const year = fecha.getFullYear().toString();
+    const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const day = fecha.getDate().toString().padStart(2, '0');
+    return year + "/" + month +"/" + day;
+  }
+
   async addVenta(prendas: Prenda[]): Promise<string> {
     try {
       this.dataService.data$.subscribe(async (data) => {
@@ -47,14 +58,14 @@ export class VentaService {
         const ventasDocRef = doc(
           this.firestore,
           'ventas',
-          this.fechaActualFormateada
+          this.fechaActualFormateada+data.id
         );
         await setDoc(ventasDocRef, { 
-          referencia: parseInt(this.fechaActualFormateada),
+          referencia: this.fechaActualFormateada+data.id,
           productos: prendas,
           total: totalVenta,
           usuario: this.data,
-          fecha: this.fechaActualFormateada
+          fecha: this.fecha
          });
       });
       return 'Venta registrada con exito';

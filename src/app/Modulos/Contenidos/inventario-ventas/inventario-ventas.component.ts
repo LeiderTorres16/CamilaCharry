@@ -15,7 +15,7 @@ export class InventarioVentasComponent {
   mostrarVentas = false;
 
   productosInventario: Prenda[] = [];
-  productosVentas: Venta[] = [];
+  productosVentas: any[] = [];
 
   constructor(private prendasService: PrendasService, private router: Router) {}
 
@@ -26,9 +26,10 @@ export class InventarioVentasComponent {
     this.mostrarVentas = false;
     this.cargarInventario();
     this.cargarVentas();
+    console.log(this.productosVentas)
   }
 
-  agregarVentas(producto: Venta) {
+  agregarVentas(producto: any) {
     this.productosVentas.push(producto);
   }
   agregarInventario(prenda: Prenda) {

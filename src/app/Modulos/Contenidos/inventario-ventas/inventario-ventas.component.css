@@ -32,5 +32,14 @@
   .btn + .btn {
     margin-left: 10px;
   }
+
+  .headers{
+    background-color: #caa565;
+    color: white;
+  }
+
+  .table tbody tr {
+    border-bottom: 1px solid #ddd; /* Puedes ajustar el color y el grosor del borde según tus preferencias */
+  }
   
   

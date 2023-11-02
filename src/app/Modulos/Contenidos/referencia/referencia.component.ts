@@ -8,7 +8,7 @@ import { PrendasService } from 'src/app/Services/prendas_Service';
   styleUrls: ['./referencia.component.css'],
 })
 export class ReferenciaComponent implements OnInit {
-  referencia: number;
+  referencia: string;
   venta: any; // Aquí almacenarás los datos de la venta específica
 
   constructor(
@@ -20,7 +20,7 @@ export class ReferenciaComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const referenciaParam = params.get('referencia');
       if (referenciaParam !== null) {
-        this.referencia = parseInt(referenciaParam);
+        this.referencia = referenciaParam;
         // Realiza la consulta a Firebase para obtener los datos de la venta específica
         this.prendasService.getVentaPorReferencia(this.referencia).subscribe((venta) => {
           this.venta = venta;

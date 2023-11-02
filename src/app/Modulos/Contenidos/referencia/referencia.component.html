@@ -1,24 +1,23 @@
-<div *ngIf="venta" style="padding-top: 120px">
-    <h2>Detalles de la venta {{ referencia }}</h2>
-    <table class="table">
+<div class="container" *ngIf="venta" style="padding-top: 200px; min-height: 70vh;">
+  <h2 style="margin-bottom: 30px;">Detalles de la venta {{ referencia }}</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped table-borderless">
       <thead>
         <tr>
-          <th>Imagen</th>
-          <th>Producto</th>
-          <th>Codigo</th>
-          <th>Precio</th>
-          <!-- Otros campos necesarios -->
+          <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Imagen</th>
+          <th class="headers align-middle">Producto</th>
+          <th class="headers align-middle">Codigo</th>
+          <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Precio</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let producto of venta.productos">
-          <td><img [src]="producto.imagen" alt="Producto" width="50" class="img-thumbnail"></td>
-          <td>{{ producto.nombre }}</td>
-          <td>{{ producto.id }}</td>
-          <td>{{ producto.precio | currency }}</td>
-          <!-- Otros campos necesarios -->
+          <td><img [src]="producto.imagenes[0]" alt="Producto" width="50" style="border-radius: 5px;"></td>
+          <td class="align-middle">{{ producto.nombre }}</td>
+          <td class="align-middle">{{ producto.id }}</td>
+          <td class="align-middle">{{ producto.precio | currency }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  
+</div>

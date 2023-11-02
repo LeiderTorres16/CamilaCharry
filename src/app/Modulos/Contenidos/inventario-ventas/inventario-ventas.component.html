@@ -8,25 +8,25 @@
     </div>
     <div *ngIf="mostrarInventario">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Código</th>
-                        <th>Precio</th>
-                        <th>Existencias</th>
-                        <th>Acciones</th>
+            <table class="table table-hover table-striped table-borderless">
+                <thead >
+                    <tr >
+                        <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Imagen</th>
+                        <th class="headers align-middle">Nombre</th>
+                        <th class="headers align-middle">Código</th>
+                        <th class="headers align-middle">Precio</th>
+                        <th class="headers align-middle">Existencias</th>
+                        <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let producto of productosInventario">
-                        <td><img [src]="getImageUrl(producto)" alt="Producto" width="50" class="img-thumbnail"></td>
-                        <td>{{producto.nombre}}</td>
-                        <td>{{producto.id}}</td>
-                        <td>{{producto.precio | currency}}</td>
-                        <td>{{producto.existencias}}</td>
-                        <td>
+                        <td><img [src]="getImageUrl(producto)" alt="Producto" width="50" style="border-radius: 5px;"></td>
+                        <td class="align-middle">{{producto.nombre}}</td>
+                        <td class="align-middle">{{producto.id}}</td>
+                        <td class="align-middle">{{producto.precio | currency}}</td>
+                        <td class="align-middle">{{producto.existencias}}</td>
+                        <td class="align-middle">
                             <button (click)="editarProducto(producto)" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -45,20 +45,21 @@
 
     <div *ngIf="mostrarVentas">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped">
-                <thead class="table-dark">
+            <table class="table table-hover table-striped table-borderless">
+                <thead>
                     <tr>
-                        <th>Referencia</th>
-                        <th>Total</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
+                        <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Referencia</th>
+                        <th class="headers align-middle">Total</th>
+                        <th class="headers align-middle">Cliente</th>
+                        <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let producto of productosVentas">
-                        <td><a (click)="navigateToReferencia(producto.referencia)">{{producto.referencia}}</a></td>
-                        <td>{{producto.total | currency}}</td>
-                        <td>{{producto.fecha}}</td>
+                        <td class="align-middle"><a (click)="navigateToReferencia(producto.referencia)" style="cursor: pointer; color: rgb(1, 141, 255)">{{producto.referencia}}</a></td>
+                        <td class="align-middle">{{producto.total | currency}}</td>
+                        <td class="align-middle">{{producto?.usuario?.correo}}</td>
+                        <td class="align-middle">{{producto.fecha}}</td>
                     </tr>
                 </tbody>
             </table>

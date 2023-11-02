@@ -103,12 +103,12 @@ import { Venta } from '../Models/venta.class';
       return collectionData(prendaRef, { idField: 'id' }) as Observable<Prenda[]>;
     }
 
-    getVentas(): Observable<Venta[]> {
+    getVentas(): Observable<any[]> {
       const ventaRef = collection(this.firestore, 'ventas');
-      return collectionData(ventaRef, { idField: 'id' }) as Observable<Venta[]>;
+      return collectionData(ventaRef, { idField: 'id' }) as Observable<any[]>;
     }
 
-    getVentaPorReferencia(referencia: number){
+    getVentaPorReferencia(referencia: string){
       return this.getVentas().pipe(
         map((ventas) => {
         const ventasEncontradas = ventas.find((venta) => venta.referencia === referencia);
