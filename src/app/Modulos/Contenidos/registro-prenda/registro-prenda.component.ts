@@ -115,57 +115,139 @@ export class RegistroPrendaComponent {
 
   async submitForm() {
     if (this.isEditMode) {
-      if (this.prenda.valid && this.imagenesAntiguas.length > 0) {
-        this.showAlert = false;
-        const urlsNuevas: string[] = [];
+      Swal.fire({
+        title: 'Por favor, espera...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
-        for (let i = 0; i < this.imagenes.length; i++) {
-          const response = await this.prendasService.addImage(this.imagenes[i]);
-          if (response != 'error') {
-            this.imagenUrl = response;
-            urlsNuevas.push(response);
+      try {
+        if (this.prenda.valid && this.imagenesAntiguas.length > 0) {
+          this.showAlert = false;
+          const urlsNuevas: string[] = [];
+
+          for (let i = 0; i < this.imagenes.length; i++) {
+            const response = await this.prendasService.addImage(
+              this.imagenes[i]
+            );
+            if (response != 'error') {
+              this.imagenUrl = response;
+              urlsNuevas.push(response);
+            }
           }
-        }
 
-        this.updatePrenda(urlsNuevas,this.imagenesAntiguas);
-      }else{
-        Swal.fire({
-          title: 'Error!',
-          text: 'Formulario no válido. Por favor, verifica los campos y asegúrate tener al menos una imagen registrada de la prenda',
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#CAA565',
-        });
+          const response = await this.updatePrenda(
+            urlsNuevas,
+            this.imagenesAntiguas
+          );
+          if (response === 'Prenda actualizada con exito') {
+            this.router.navigateByUrl('/Principal');
+            Swal.fire({
+              text: response,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: response,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          }
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Formulario no válido. Por favor, verifica los campos y asegúrate tener al menos una imagen registrada de la prenda',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+        }
+      } catch (error) {
+      } finally {
       }
     } else {
-      if (this.prenda.valid && this.imagenes.length > 0) {
-        const urls: string[] = [];
+      Swal.fire({
+        title: 'Por favor, espera...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
-        for (let i = 0; i < this.imagenes.length; i++) {
-          const response = await this.prendasService.addImage(this.imagenes[i]);
-          if (response != 'error') {
-            this.imagenUrl = response;
-            urls.push(response);
+      try {
+        if (this.prenda.valid && this.imagenes.length > 0) {
+          const urls: string[] = [];
+
+          for (let i = 0; i < this.imagenes.length; i++) {
+            const response = await this.prendasService.addImage(
+              this.imagenes[i]
+            );
+            if (response != 'error') {
+              this.imagenUrl = response;
+              urls.push(response);
+            }
           }
-        }
 
-        this.createPrenda(urls);
-      } else {
+          const response = await this.createPrenda(urls);
+          if (response === 'Prenda registrada con exito') {
+            Swal.fire({
+              text: response,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: response,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          }
+
+          this.prenda.reset();
+          this.imagenes = [];
+          this.imagenUrl = '';
+          this.colores = [];
+          this.categorias = [];
+          this.imagenesPreview = [];
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+        }
+      } catch (error) {
         Swal.fire({
           title: 'Error!',
-          text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+          text: 'Ha ocurrido un error inesperado.',
           icon: 'error',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#CAA565',
         });
+      } finally {
+        Swal.hideLoading();
       }
     }
   }
 
-  updatePrenda(imageUrlsNuevas: string[], imageUrlsViejas: string[]) {
+  async updatePrenda(
+    imageUrlsNuevas: string[],
+    imageUrlsViejas: string[]
+  ): Promise<string> {
     const prendaId = this.prenda.value.id;
 
-    imageUrlsNuevas.forEach(img => {
+    imageUrlsNuevas.forEach((img) => {
       imageUrlsViejas.push(img);
     });
 
@@ -181,28 +263,16 @@ export class RegistroPrendaComponent {
       this.prenda.value.existencias
     );
 
-    const response = this.prendasService.updatePrenda(newPrenda);
+    const response = await this.prendasService.updatePrenda(newPrenda);
 
     if (response === 'Prenda actualizada con exito') {
-      this.router.navigateByUrl('/Principal');
-      Swal.fire({
-        text: response,
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      return response;
     } else {
-      Swal.fire({
-        title: 'Error!',
-        text: response,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#CAA565',
-      });
+      return 'Error!';
     }
   }
 
-  createPrenda(imageUrls: string[]) {
+  async createPrenda(imageUrls: string[]): Promise<string> {
     const nuevaPrenda = new Prenda(
       this.prenda.value.id,
       this.prenda.value.nombre,
@@ -215,30 +285,13 @@ export class RegistroPrendaComponent {
       this.prenda.value.existencias
     );
 
-    const response = this.prendasService.addPrenda(nuevaPrenda);
+    const response = await this.prendasService.addPrenda(nuevaPrenda);
 
     if (response === 'Prenda registrada con exito') {
-      Swal.fire({
-        text: response,
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      return response;
     } else {
-      Swal.fire({
-        title: 'Error!',
-        text: response,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#CAA565',
-      });
+      return 'Error';
     }
-
-    this.prenda.reset();
-    this.imagenes = [];
-    this.imagenUrl = '';
-    this.colores = [];
-    this.categorias = [];
   }
 
   getImagenURL(): any {

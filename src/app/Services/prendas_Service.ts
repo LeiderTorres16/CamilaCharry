@@ -22,11 +22,11 @@ import { Venta } from '../Models/venta.class';
       private fireStorage: AngularFireStorage
     ) {}
   
-    addPrenda(prenda: Prenda): string {
+    async addPrenda(prenda: Prenda): Promise<string> {
       try {
         const prendaRef = collection(this.firestore, 'prendas');
   
-        setDoc(doc(this.firestore, 'prendas', prenda.id), {
+        await setDoc(doc(this.firestore, 'prendas', prenda.id), {
           id: prenda.id,
           nombre: prenda.nombre,
           precio: prenda.precio,
@@ -57,9 +57,9 @@ import { Venta } from '../Models/venta.class';
       }
     }
   
-    updatePrenda(prenda: Prenda): string {
+    async updatePrenda(prenda: Prenda): Promise<string> {
       try {
-        updateDoc(
+        await updateDoc(
           doc(this.firestore, 'prendas', prenda.id),
           {
             id: prenda.id,

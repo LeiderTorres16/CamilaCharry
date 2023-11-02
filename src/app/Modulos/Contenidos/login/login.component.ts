@@ -54,6 +54,10 @@ export class LoginComponent {
     this.router.navigateByUrl('/Registro');
   }
 
+  regreso(){
+    this.router.navigateByUrl('/Principal');
+  }
+
 
 }
 

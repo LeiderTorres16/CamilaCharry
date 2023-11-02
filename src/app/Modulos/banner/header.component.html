@@ -1,18 +1,18 @@
 <!-- En tu template HTML -->
-<div id="header" class="vh-100 carousel slide carrusel" data-bs-ride="carousel" style="padding-top: 104px">
+<div id="header" class="vh-100 carousel slide carrusel" data-bs-ride="carousel" style="padding-top: 104px" *ngIf="banners">
   <div class="container d-flex align-items-center carousel-inner" style="padding-top: 100px">
     <div class="text-center carousel-item" *ngFor="let item of banners; let i = index" [ngClass]="{ 'active': i === 0 }" [style.background-image]="'url(' + item.imagen + ')'">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.texto }}</p>
       <div *ngIf="login == 2" class="button-container">
         <button type="button" class="boton edit-button" (click)="editBanner(item)">
-          <i class="fas fa-edit"></i> Editar
+          <i class="fas fa-edit"></i>
         </button>
         <button type="button" class="boton delete-button" (click)="deleteBanner(item)">
-          <i class="fas fa-trash-alt"></i> Borrar
+          <i class="fas fa-trash-alt"></i>
         </button>
         <button type="button" class="boton add-button" (click)="addBanner()">
-          <i class="fas fa-plus-square"></i> Agregar
+          <i class="fas fa-plus-square"></i>
         </button>
       </div>
     </div>

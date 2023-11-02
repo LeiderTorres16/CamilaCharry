@@ -49,26 +49,20 @@
 }
 
 .boton {
-  background-color: #caa565;
-  color: #fff;
+  background-color: white;
   padding: 10px 20px;
   border-radius: 5px;
   margin: 5px;
   cursor: pointer;
+  width: auto;
+  border: none;
 }
 
-.edit-button {
-  background-color: #f2c327;
+.boton:hover{
+  background-color: rgb(226, 226, 226);
 }
 
-.delete-button {
-  background-color: #f24c27;
-}
-
-.add-button {
-  background-color: #27f24c;
-}
 
 .boton i {
-  margin-right: 5px;
+  color: black;
 }

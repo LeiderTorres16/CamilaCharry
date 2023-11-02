@@ -1,10 +1,10 @@
 <app-header></app-header>
 <section id="collection" class="py-5">
   <div class="container">
-    <!-- special products -->
+
     <div class="container">
       <div class="title text-center py-5">
-        <h2>Productos Destacados</h2>
+        <h2>Nuestros Productos</h2>
       </div>
       <div class="row d-flex align-items-center justify-content-center">
         <div class="col-md-3 mb-4" *ngFor="let producto of productosDestacados; let i = index">
@@ -23,66 +23,24 @@
 
       </div>
     </div>
-    <!-- end of special products -->
 
-    <!-- collection -->
-    <div class="row g-0">
-      <div class="title text-center py-5" style="padding-top: 50px;">
-        <h2>¡Ultimos Productos!</h2>
-      </div>
-      <!-- <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
-        <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*">
-          Todo
-        </button>
-        <button type="button" class="btn m-2 text-dark" data-filter=".best">
-          Nuevo
-        </button>
-        <button type="button" class="btn m-2 text-dark" data-filter=".feat">
-          Lo mas Vendido
-        </button>
-        <button type="button" class="btn m-2 text-dark" data-filter=".new">
-          Ofertas Especiales
-        </button>
-      </div> -->
-
-      <div class="container">
-        <div class="row d-flex align-items-center justify-content-center">
-          <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
-            <div class="product-card" (click)="detallePrenda(producto)" style="cursor: pointer;">
-              <div class="product-image">
-                <img src="{{producto.imagen}}" alt="Producto">
-              </div>
-              <div class="product-details">
-                <p>{{producto.nombreProducto}}</p>
-                <p>Codigo - {{producto.id}}</p>
-                <p>${{producto.precio}}</p>
-                <button (click)="addToCart(producto); $event.stopPropagation()">Agregar al Carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- end of collection -->
-
-    <!-- Informacion -->
     <div>
       <div class="title text-center" style="padding-top: 50px;">
         <h2>¡Que podemos ofrecerte!</h2>
       </div>
-      <div class="row d-flex align-items-center justify-content-center">
+      <div class="row d-flex align-items-center justify-content-center" style="padding-top: 20px">
         <div class="col-md-3" style="text-align: center">
-          <i class="fas fa-truck-loading fa-lg"></i>
-          <p>Envios Nacionales</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.</p>
+          <i class="fas fa-truck-loading fa-lg" style="font-size: 50px; padding-bottom: 10px;"></i>
+          <p style="font-size: 20px; font-weight: bold;">Envios Nacionales</p>
+          <p style="text-align: justify;">En Camila Charry Designer, te ofrecemos envíos nacionales seguros y veloces en todo el país. Compra con confianza, sin importar en qué parte de Colombia te encuentres. Tu satisfacción es nuestra prioridad.</p>
         </div>
         <div class="col-md-3" style="text-align: center">
-          <i class="fas fa-medal fa-lg"></i>
-          <p>Calidad de productos</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.</p>
+          <i class="fas fa-medal fa-lg" style="font-size: 50px; padding-bottom: 10px;"></i>
+          <p style="font-size: 20px; font-weight: bold;">Calidad de productos</p>
+          <p style="text-align: justify;">Desde la elección de los mejores materiales hasta un estricto control de calidad, nos esforzamos por superar tus expectativas. Confía en nosotros para ofrecerte calidad en cada detalle.</p>
         </div>
       </div>
     </div>
-    <!-- End of Informacion -->
+
   </div>
 </section>

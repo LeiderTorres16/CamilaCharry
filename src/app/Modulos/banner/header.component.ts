@@ -18,20 +18,6 @@ import Swal from 'sweetalert2';
 export class HeaderComponent {
   login: number;
   data: any;
-  items = [
-    {
-      title: 'Nueva Colección 2023',
-      buttonText: 'Ver aquí',
-      backgroundImage:
-        '../../../assets/images/daniele-franchi-GbAEJUJKJ88-unsplash.jpg',
-    },
-    {
-      title: 'Aprende de los cuidados del lino',
-      buttonText: 'Ver aquí',
-      backgroundImage:
-        '../../../assets/images/hannah-morgan-ycVFts5Ma4s-unsplash.jpg',
-    },
-  ];
 
   banners: Banner[] = [];
   bannerForm: FormGroup;
@@ -56,16 +42,31 @@ export class HeaderComponent {
   addBanner() {
     Swal.fire({
       title: 'Agregar Nuevo Banner',
-      html:
-        '<form id="bannerForm">' +
-        '<input type="text" id="title" class="swal2-input" placeholder="Título" required>' +
-        '<textarea id="text" class="swal2-input" placeholder="Texto" required></textarea>' +
-        '<input type="file" id="image" class="swal2-input" accept="image/*" required>' +
-        '</form>',
+      html: `
+      <form id="bannerForm">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input type="text" id="title" class="form-control" placeholder="Título" required>
+        </div>
+        <div class="form-group">
+          <label for="text">Texto</label>
+          <textarea id="text" class="form-control" placeholder="Texto" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="image">Imagen</label>
+          <input type="file" id="image" class="form-control" accept="image/*" required>
+        </div>
+      </form>`,
       showCancelButton: true,
       confirmButtonText: 'Guardar',
+      confirmButtonColor: '#28A745',
       cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#DC3545',
+      customClass: {
+        input: 'swal-input',
+      },
       preConfirm: async () => {
+        Swal.showLoading();
         const title = (document.getElementById('title') as HTMLInputElement)
           .value;
         const text = (document.getElementById('text') as HTMLTextAreaElement)
@@ -74,25 +75,39 @@ export class HeaderComponent {
           .files![0];
 
         if (title && text && image) {
-          const imagenUrl = await this.bannerService.addImage(image);
-          const nRegistros = await this.bannerService.getNumberOfBanners();
-          const textN = (nRegistros + 1).toString();
-          const newBanner = new Banner(textN, title, text, imagenUrl);
-          const response = this.bannerService.addBanner(newBanner);
-          if (response === 'Banner registrado con exito') {
-            Swal.fire(
-              'Añadido',
-              'El banner ha sido agregado con éxito.',
-              'success'
-            );
-          } else {
+          try {
+            const imagenUrl = await this.bannerService.addImage(image);
+            const nRegistros = await this.bannerService.getNumberOfBanners();
+            const textN = (nRegistros + 1).toString();
+            const newBanner = new Banner(textN, title, text, imagenUrl);
+            const response = this.bannerService.addBanner(newBanner);
+            if (response === 'Banner registrado con exito') {
+              Swal.fire({
+                title: 'Añadido!',
+                text: 'Se ha añadido el banner con exito',
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                confirmButtonColor: '#28A745',
+              });
+            } else {
+              Swal.fire({
+                title: 'Error!',
+                text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                confirmButtonColor: '#28A745',
+              });
+            }
+          } catch (error) {
             Swal.fire({
               title: 'Error!',
-              text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
+              text: 'Ha ocurrido un error inesperado.',
               icon: 'error',
               confirmButtonText: 'Ok',
               confirmButtonColor: '#CAA565',
             });
+          } finally {
+            Swal.hideLoading();
           }
         } else {
           Swal.showValidationMessage('Todos los campos son obligatorios');
@@ -104,20 +119,32 @@ export class HeaderComponent {
   editBanner(banner: Banner) {
     Swal.fire({
       title: 'Editar Banner',
-      html:
-        '<form id="bannerForm">' +
-        '<input type="text" id="title" class="swal2-input" placeholder="Título" required value="' +
-        banner.titulo +
-        '">' +
-        '<textarea id="text" class="swal2-input" placeholder="Texto" required>' +
-        banner.texto +
-        '</textarea>' +
-        '<input type="file" id="image" class="swal2-input" accept="image/*">' +
-        '</form>',
+      html: `
+        <form id="bannerForm">
+          <div class="form-group">
+            <label for="title">Título</label>
+            <input type="text" id="title" class="form-control" placeholder="Título" required value="${banner.titulo}">
+          </div>
+          <div class="form-group">
+            <label for="text">Texto</label>
+            <textarea id="text" class="form-control" placeholder="Texto" required>${banner.texto}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="image">Imagen</label>
+            <input type="file" id="image" class="form-control" accept="image/*">
+          </div>
+        </form>`,
       showCancelButton: true,
       confirmButtonText: 'Guardar',
+      confirmButtonColor: '#28A745',
       cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#DC3545',
+      customClass: {
+        input: 'swal-input',
+      },
       preConfirm: async () => {
+        Swal.showLoading();
+
         const title = (document.getElementById('title') as HTMLInputElement)
           .value;
         const text = (document.getElementById('text') as HTMLTextAreaElement)
@@ -126,55 +153,64 @@ export class HeaderComponent {
           .files![0];
 
         if (title && text) {
-          if (image) {
-            const imagenUrl = await this.bannerService.addImage(image);
-            const newBanner = new Banner(
-              banner.id,
-              title,
-              text,
-              imagenUrl
-            );
-            const response = await this.bannerService.updateBanner(newBanner);
+          try {
+            if (image) {
+              const imagenUrl = await this.bannerService.addImage(image);
+              const newBanner = new Banner(banner.id, title, text, imagenUrl);
+              const response = await this.bannerService.updateBanner(newBanner);
 
-            if (response === 'Banner actualizado con exito') {
-              Swal.fire(
-                'Actualizado',
-                'El banner ha sido actualizado con éxito.',
-                'success'
-              );
+              if (response === 'Banner actualizado con exito') {
+                Swal.fire({
+                  title: 'Actualizado!',
+                  text: 'Se ha actualizado el banner con exito',
+                  icon: 'success',
+                  confirmButtonText: 'Ok',
+                  confirmButtonColor: '#28A745',
+                });
+              } else {
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Formulario no válido. Por favor, verifica los campos.',
+                  icon: 'error',
+                  confirmButtonText: 'Ok',
+                  confirmButtonColor: '#CAA565',
+                });
+              }
             } else {
-              Swal.fire({
-                title: 'Error!',
-                text: 'Formulario no válido. Por favor, verifica los campos.',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-                confirmButtonColor: '#CAA565',
-              });
-            }
-          } else {
-            const newBanner = new Banner(
-              banner.id,
-              title,
-              text,
-              banner.imagen
-            );
-            const response = await this.bannerService.updateBanner(newBanner);
+              const newBanner = new Banner(
+                banner.id,
+                title,
+                text,
+                banner.imagen
+              );
+              const response = await this.bannerService.updateBanner(newBanner);
 
-            if (response === 'Banner actualizado con exito') {
-              Swal.fire(
-                'Actualizado',
-                'El banner ha sido actualizado con éxito.',
-                'success'
-              );
-            } else {
-              Swal.fire({ 
-                title: 'Error!',
-                text: 'Formulario no válido. Por favor, verifica los campos.',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-                confirmButtonColor: '#CAA565',
-              });
+              if (response === 'Banner actualizado con exito') {
+                Swal.fire(
+                  'Actualizado',
+                  'El banner ha sido actualizado con éxito.',
+                  'success'
+                );
+              } else {
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Formulario no válido. Por favor, verifica los campos.',
+                  icon: 'error',
+                  confirmButtonText: 'Ok',
+                  confirmButtonColor: '#CAA565',
+                });
+              }
             }
+          } catch (error) {
+            Swal.fire({
+              title: 'Error!',
+              text: 'Ha ocurrido un error inesperado.',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          } finally {
+            Swal.hideLoading();
           }
         } else {
           Swal.showValidationMessage('Título y Texto son obligatorios');
@@ -184,17 +220,41 @@ export class HeaderComponent {
   }
 
   async deleteBanner(banner: Banner) {
-    const response = await this.bannerService.borrarBanner(banner);
-    if (response === 'Banner eliminado con exito') {
-      Swal.fire(
-        'Eliminado',
-        'El banner ha sido agregado con éxito.',
-        'success'
-      );
+    if (this.banners.length > 1) {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: `¿Quieres eliminar este banner?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        confirmButtonColor: '#28A745',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#DC3545',
+        preConfirm: async () => {
+          const response = await this.bannerService.borrarBanner(banner);
+          if (response === 'Banner eliminado con exito') {
+            Swal.fire({
+              title: 'Eliminado!',
+              text: 'Se ha eliminado el banner con exito',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#28A745',
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: 'Hubo un error al tratar de eliminar el banner',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          }
+        },
+      });
     } else {
       Swal.fire({
         title: 'Error!',
-        text: 'Hubo un error al tratar de eliminar el banner',
+        text: 'No puedes quedarte sin al menos un banner',
         icon: 'error',
         confirmButtonText: 'Ok',
         confirmButtonColor: '#CAA565',
@@ -217,35 +277,5 @@ export class HeaderComponent {
         this.login = 2;
       }
     });
-  }
-
-  onFileSelected(event: any) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      // for (let i = 0; i < input.files.length; i++) {
-      //   const file = input.files[i];
-      //   this.imagenes.push(input.files[i]);
-      //   const maxSize = 3024 * 3024;
-      //   if (file.size <= maxSize) {
-      //     this.imagen = file;
-      //     const newFile = URL.createObjectURL(file);
-      //     this.imagenesPreview.push(newFile);
-      //     this.showAlert = false;
-      //   } else {
-      //     const mensaje =
-      //       'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
-      //     Swal.fire({
-      //       title: 'Error!',
-      //       text: mensaje,
-      //       icon: 'error',
-      //       confirmButtonText: 'Ok',
-      //       confirmButtonColor: '#CAA565',
-      //     });
-      //     this.imagen = null;
-      //     input.value = '';
-      //     this.showAlert = true;
-      //   }
-      // }
-    }
   }
 }

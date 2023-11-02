@@ -70,5 +70,9 @@ export class RegistroComponent {
     this.router.navigateByUrl('/InicioSesion');
   }
 
+  regreso(){
+    this.router.navigateByUrl('/Principal');
+  }
+
   
 }
