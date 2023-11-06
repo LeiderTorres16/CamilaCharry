@@ -9,6 +9,7 @@
   import {Cloudinary} from '@cloudinary/url-gen'
   import { ImageUploaderService } from 'src/app/Services/image_service';
   import { Subject, takeUntil } from 'rxjs';
+  import { mergeMap, toArray } from 'rxjs/operators';
 
 
   @Component({

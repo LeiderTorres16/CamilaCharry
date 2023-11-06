@@ -8,6 +8,8 @@ import { catchError } from 'rxjs/operators';
 import sharp from 'sharp';
 
 const uploadUrl = 'http://localhost:3000/image/upload';
+const uploadsUrl = 'http://localhost:3000/image/uploads';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -47,17 +49,17 @@ uploadImage(file: File): Observable<string> {
  }
   
 
-  uploadImages(imageFiles: ImageFile[]): Observable<CloudinaryAsset[]> {
-    const files = imageFiles.map((imageFile) => imageFile.file);
-    const files$ = from(files);
-    return files$.pipe(
-      map((file) => this.getFormData(file)),
-      mergeMap((formData) =>
-        this.httpClient.post<CloudinaryAsset>(uploadUrl, formData)
-      ),
-      toArray()
-    );
-  }
+ uploadImages(imageFiles: ImageFile[]): Observable<CloudinaryAsset[]> {
+  const files = imageFiles.map((imageFile) => imageFile.file);
+  const files$ = from(files);
+  return files$.pipe(
+     map((file) => this.getFormData(file)),
+     mergeMap((formData) =>
+       this.httpClient.post<CloudinaryAsset>(uploadsUrl, formData)
+     ),
+     toArray()
+  );
+ }
 
   private getFormData(file: File): FormData {
     const formData = new FormData();
