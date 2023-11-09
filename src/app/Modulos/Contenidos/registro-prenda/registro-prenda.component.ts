@@ -33,6 +33,7 @@ export class RegistroPrendaComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
   colores: string[] = [];
+  tallas: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,6 +86,37 @@ export class RegistroPrendaComponent {
       this.categorias[index] = value;
     }
   }
+
+  addTalla(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.tallas.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeTalla(talla: string): void {
+    const index = this.tallas.indexOf(talla);
+
+    if (index >= 0) {
+      this.tallas.splice(index, 1);
+
+      this.announcer.announce(`Eliminado ${talla}`);
+    }
+  }
+  editTalla(talla: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+    if (!value) {
+      this.remove(talla);
+      return;
+    }
+    const index = this.tallas.indexOf(talla);
+    if (index >= 0) {
+      this.tallas[index] = value;
+    }
+  }
+
   addColores(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {

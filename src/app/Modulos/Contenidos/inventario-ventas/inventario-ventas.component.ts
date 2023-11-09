@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 export class InventarioVentasComponent {
   mostrarInventario = false;
   mostrarVentas = false;
+  filtroCorreo: string = '';
 
   productosInventario: Prenda[] = [];
   productosVentas: any[] = [];
@@ -26,7 +27,6 @@ export class InventarioVentasComponent {
     this.mostrarVentas = false;
     this.cargarInventario();
     this.cargarVentas();
-    console.log(this.productosVentas)
   }
 
   agregarVentas(producto: any) {
@@ -63,6 +63,8 @@ export class InventarioVentasComponent {
             confirmButtonText: 'Ok',
             confirmButtonColor: '#28A745',
           });
+
+          this.cargarInventario();
         }else{
           Swal.fire({
             title: 'Error!',
@@ -107,6 +109,30 @@ export class InventarioVentasComponent {
       return '';
     }
   }
+
+  obtenerCorreosClientes(): string[] {
+    const correos: string[] = [];
+    this.productosVentas.forEach((venta) => {
+        if (venta?.usuario?.correo && !correos.includes(venta.usuario.correo)) {
+            correos.push(venta.usuario.correo);
+        }
+    });
+    return correos;
+}
+
+filtrarVentasPorCorreo(correoSeleccionado: string) {
+  this.filtroCorreo = correoSeleccionado;
+
+  // Si no se ha seleccionado ningún correo, muestra todas las ventas
+  if (!this.filtroCorreo) {
+      this.cargarVentas();
+      return;
+  }
+
+  // Filtra las ventas por el correo seleccionado
+  this.productosVentas = this.productosVentas.filter((venta) => venta?.usuario?.correo === this.filtroCorreo);
+}
+
 
 
 }

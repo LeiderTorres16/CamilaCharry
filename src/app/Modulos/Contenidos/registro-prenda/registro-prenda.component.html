@@ -60,6 +60,22 @@
           </mat-form-field>
 
           <mat-form-field class="example-chip-list">
+            <mat-label>Tallas</mat-label>
+            <mat-chip-grid #chipGridTallas aria-label="Ingrese Tallas">
+              <mat-chip-row *ngFor="let talla of tallas" (removed)="removeTalla(talla)" [editable]="true"
+                (edited)="editTalla(talla, $event)" [aria-description]="'Presione enter para editar' + talla">
+                {{ talla }}
+                <button matChipRemove [attr.aria-label]="'Remover ' + talla">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              <input placeholder="Nueva Talla..." [matChipInputFor]="chipGridTallas"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addTalla($event)"/>
+            </mat-chip-grid>
+          </mat-form-field>
+
+          <mat-form-field class="example-chip-list">
             <mat-label>Categorias</mat-label>
             <mat-chip-grid #chipGridCategorias aria-label="Ingrese Categorias">
               <mat-chip-row *ngFor="let categoria of categorias" (removed)="remove(categoria)" [editable]="true"

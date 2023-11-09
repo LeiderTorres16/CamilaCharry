@@ -44,6 +44,15 @@
 
 
     <div *ngIf="mostrarVentas">
+        <div style="margin-top: 20px;">
+            <label for="filtroCorreo">Filtrar por Correo:</label>
+            <div class="input-group">
+                <select id="filtroCorreo" class="form-control" [(ngModel)]="filtroCorreo" (ngModelChange)="filtrarVentasPorCorreo($event)">
+                    <option value="">Todos</option>
+                    <option *ngFor="let correo of obtenerCorreosClientes()" [value]="correo">{{correo}}</option>
+                </select>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover table-striped table-borderless">
                 <thead>
@@ -64,6 +73,5 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>

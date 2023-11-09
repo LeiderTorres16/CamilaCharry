@@ -186,11 +186,13 @@ export class HeaderComponent {
               const response = await this.bannerService.updateBanner(newBanner);
 
               if (response === 'Banner actualizado con exito') {
-                Swal.fire(
-                  'Actualizado',
-                  'El banner ha sido actualizado con éxito.',
-                  'success'
-                );
+                Swal.fire({
+                  title: 'Actualizado!',
+                  text: 'Se ha actualizado el banner con exito',
+                  icon: 'success',
+                  confirmButtonText: 'Ok',
+                  confirmButtonColor: '#28A745',
+                });
               } else {
                 Swal.fire({
                   title: 'Error!',
