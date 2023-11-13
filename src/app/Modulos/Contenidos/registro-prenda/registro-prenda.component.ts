@@ -202,6 +202,7 @@ export class RegistroPrendaComponent {
         }
       } catch (error) {
       } finally {
+        Swal.hideLoading();
       }
     } else {
       Swal.fire({
