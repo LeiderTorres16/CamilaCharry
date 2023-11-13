@@ -6,33 +6,45 @@ import { ImageFile } from '../Models/imagefile';
 import { CloudinaryAsset } from '../Models/cloudinary_asset';
 
 const uploadUrl = 'http://localhost:3000/image/upload';
+const uploadsUrl = 'http://localhost:3000/image/uploads';
 @Injectable({
   providedIn: 'root',
 })
 export class ImageUploaderService {
   constructor(private httpClient: HttpClient) {}
 
-async uploadImage(file: File): Promise<string> {
-  try {
+  // async uploadImage(file: File): Promise<string> {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+
+  //     const result = await this.httpClient
+  //       .post<string>(uploadUrl, formData)
+  //       .toPromise();
+
+  //     if (result) {
+  //       return result;
+  //     } else {
+  //       return 'error';
+  //     }
+  //   } catch (error) {
+  //     return 'error';
+  //   }
+  // }
+
+  uploadImage(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    
-    const result = await this.httpClient
-      .post<string>(uploadUrl, formData)
-      .toPromise(); // Devuelve la URL de la imagen como Promise<string>
-      
-    if (result) {
-      return result;
-    } else {
-      return 'error'; // Otra opción en caso de result sea undefined
-    }
-  } catch (error) {
-    return 'error';
-  }
-}
-
-  
-  
+   
+    return this.httpClient.post(uploadUrl, formData, { responseType: 'text' }).pipe(
+        map((imageUrl: string) => {
+          if (!imageUrl) {
+            throw new Error('Image upload failed.');
+          }
+          return imageUrl;
+        })
+    );
+   }
 
   uploadImages(imageFiles: ImageFile[]): Observable<CloudinaryAsset[]> {
     const files = imageFiles.map((imageFile) => imageFile.file);
@@ -40,7 +52,7 @@ async uploadImage(file: File): Promise<string> {
     return files$.pipe(
       map((file) => this.getFormData(file)),
       mergeMap((formData) =>
-        this.httpClient.post<CloudinaryAsset>(uploadUrl, formData)
+        this.httpClient.post<CloudinaryAsset>(uploadsUrl, formData)
       ),
       toArray()
     );
