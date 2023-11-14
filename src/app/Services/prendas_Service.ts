@@ -22,11 +22,11 @@ import { Venta } from '../Models/venta.class';
       private fireStorage: AngularFireStorage
     ) {}
   
-    async addPrenda(prenda: Prenda): Promise<string> {
+    addPrenda(prenda: Prenda): string {
       try {
         const prendaRef = collection(this.firestore, 'prendas');
   
-        await setDoc(doc(this.firestore, 'prendas', prenda.id), {
+         setDoc(doc(this.firestore, 'prendas', prenda.id), {
           id: prenda.id,
           nombre: prenda.nombre,
           precio: prenda.precio,

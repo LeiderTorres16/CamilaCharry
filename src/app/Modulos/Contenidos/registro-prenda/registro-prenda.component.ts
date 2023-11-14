@@ -13,6 +13,7 @@ import {
 import { Cloudinary } from '@cloudinary/url-gen';
 import { ImageUploaderService } from 'src/app/Services/image_service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-registro-prenda',
@@ -29,6 +30,7 @@ export class RegistroPrendaComponent {
   imagenesAntiguas: string[] = [];
   isEditMode = false;
   imagenesPreview: string[] = [];
+  destroy$ = new Subject();
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
@@ -53,97 +55,9 @@ export class RegistroPrendaComponent {
     });
   }
   showAlert: boolean = false;
-  imagenUrl: string = '';
+  imagenUrl: string[] = [];
 
   announcer = inject(LiveAnnouncer);
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.categorias.push(value);
-    }
-
-    event.chipInput!.clear();
-  }
-
-  remove(categoria: string): void {
-    const index = this.categorias.indexOf(categoria);
-
-    if (index >= 0) {
-      this.categorias.splice(index, 1);
-
-      this.announcer.announce(`Eliminado ${categoria}`);
-    }
-  }
-  edit(categoria: string, event: MatChipEditedEvent) {
-    const value = event.value.trim();
-    if (!value) {
-      this.remove(categoria);
-      return;
-    }
-    const index = this.categorias.indexOf(categoria);
-    if (index >= 0) {
-      this.categorias[index] = value;
-    }
-  }
-
-  addTalla(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.tallas.push(value);
-    }
-
-    event.chipInput!.clear();
-  }
-
-  removeTalla(talla: string): void {
-    const index = this.tallas.indexOf(talla);
-
-    if (index >= 0) {
-      this.tallas.splice(index, 1);
-
-      this.announcer.announce(`Eliminado ${talla}`);
-    }
-  }
-  editTalla(talla: string, event: MatChipEditedEvent) {
-    const value = event.value.trim();
-    if (!value) {
-      this.remove(talla);
-      return;
-    }
-    const index = this.tallas.indexOf(talla);
-    if (index >= 0) {
-      this.tallas[index] = value;
-    }
-  }
-
-  addColores(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.colores.push(value);
-    }
-    event.chipInput!.clear();
-  }
-
-  removeColores(color: string): void {
-    const index = this.colores.indexOf(color);
-
-    if (index >= 0) {
-      this.colores.splice(index, 1);
-      this.announcer.announce(`Eliminado ${color}`);
-    }
-  }
-  editColores(color: string, event: MatChipEditedEvent) {
-    const value = event.value.trim();
-    if (!value) {
-      this.remove(color);
-      return;
-    }
-    const index = this.colores.indexOf(color);
-    if (index >= 0) {
-      this.colores[index] = value;
-    }
-  }
 
   async submitForm() {
     if (this.isEditMode) {
@@ -165,7 +79,6 @@ export class RegistroPrendaComponent {
               this.imagenes[i]
             );
             if (response != 'error') {
-              this.imagenUrl = response;
               urlsNuevas.push(response);
             }
           }
@@ -215,22 +128,13 @@ export class RegistroPrendaComponent {
 
       try {
         if (this.prenda.valid && this.imagenes.length > 0) {
-          const urls: string[] = [];
+          const urls = await this.imageService.uploadImage(this.imagenes);
 
-          for (let i = 0; i < this.imagenes.length; i++) {
-            const response = await this.prendasService.addImage(
-              this.imagenes[i]
-            );
-            if (response != 'error') {
-              this.imagenUrl = response;
-              urls.push(response);
-            }
-          }
+          const result = await this.createPrenda(urls);
 
-          const response = await this.createPrenda(urls);
-          if (response === 'Prenda registrada con exito') {
+          if (result === 'Prenda registrada con exito') {
             Swal.fire({
-              text: response,
+              text: result,
               icon: 'success',
               showConfirmButton: false,
               timer: 1500,
@@ -238,27 +142,12 @@ export class RegistroPrendaComponent {
           } else {
             Swal.fire({
               title: 'Error!',
-              text: response,
+              text: result,
               icon: 'error',
               confirmButtonText: 'Ok',
               confirmButtonColor: '#CAA565',
             });
           }
-
-          this.prenda.reset();
-          this.imagenes = [];
-          this.imagenUrl = '';
-          this.colores = [];
-          this.categorias = [];
-          this.imagenesPreview = [];
-        } else {
-          Swal.fire({
-            title: 'Error!',
-            text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar al menos una imagen.',
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            confirmButtonColor: '#CAA565',
-          });
         }
       } catch (error) {
         Swal.fire({
@@ -305,7 +194,7 @@ export class RegistroPrendaComponent {
     }
   }
 
-  async createPrenda(imageUrls: string[]): Promise<string> {
+  async createPrenda(imageUrls: string[] | undefined): Promise<string> {
     const nuevaPrenda = new Prenda(
       this.prenda.value.id,
       this.prenda.value.nombre,
@@ -313,7 +202,7 @@ export class RegistroPrendaComponent {
       this.prenda.value.descripcion,
       this.colores,
       this.categorias,
-      imageUrls,
+      imageUrls!,
       'activo',
       this.prenda.value.existencias
     );
@@ -323,7 +212,7 @@ export class RegistroPrendaComponent {
     if (response === 'Prenda registrada con exito') {
       return response;
     } else {
-      return 'Error';
+      return 'Error al intentar crear la prenda';
     }
   }
 
@@ -381,8 +270,20 @@ export class RegistroPrendaComponent {
       // Estamos en modo de registro
       this.initNewPrendaForm();
     }
+
+    const cld = new Cloudinary({ cloud: { cloudName: 'prendas' } });
+
+    this.prendasService.getPrendas().subscribe((prendas) => {
+      console.log(prendas);
+    });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next;
+    this.destroy$.complete();
+  }
+
+  //Cargar Datos en Modo Edicion
   private loadPrendaForEdit(prendaId: string): void {
     this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
       this.initEditPrendaForm(prenda!);
@@ -423,5 +324,98 @@ export class RegistroPrendaComponent {
     });
     this.categorias = [];
     this.colores = [];
+  }
+
+  //Funciones de el MaterialChip (Campos de Categorias/Tallas/Colores)
+
+  //Categorias
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.categorias.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  remove(categoria: string): void {
+    const index = this.categorias.indexOf(categoria);
+
+    if (index >= 0) {
+      this.categorias.splice(index, 1);
+
+      this.announcer.announce(`Eliminado ${categoria}`);
+    }
+  }
+  edit(categoria: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+    if (!value) {
+      this.remove(categoria);
+      return;
+    }
+    const index = this.categorias.indexOf(categoria);
+    if (index >= 0) {
+      this.categorias[index] = value;
+    }
+  }
+
+  //Tallas
+  addTalla(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.tallas.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeTalla(talla: string): void {
+    const index = this.tallas.indexOf(talla);
+
+    if (index >= 0) {
+      this.tallas.splice(index, 1);
+
+      this.announcer.announce(`Eliminado ${talla}`);
+    }
+  }
+  editTalla(talla: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+    if (!value) {
+      this.remove(talla);
+      return;
+    }
+    const index = this.tallas.indexOf(talla);
+    if (index >= 0) {
+      this.tallas[index] = value;
+    }
+  }
+
+  //Colores
+  addColores(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.colores.push(value);
+    }
+    event.chipInput!.clear();
+  }
+
+  removeColores(color: string): void {
+    const index = this.colores.indexOf(color);
+
+    if (index >= 0) {
+      this.colores.splice(index, 1);
+      this.announcer.announce(`Eliminado ${color}`);
+    }
+  }
+  editColores(color: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+    if (!value) {
+      this.remove(color);
+      return;
+    }
+    const index = this.colores.indexOf(color);
+    if (index >= 0) {
+      this.colores[index] = value;
+    }
   }
 }
