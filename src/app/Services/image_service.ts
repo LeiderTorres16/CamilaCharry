@@ -21,10 +21,4 @@ export class ImageUploaderService {
    const result = await this.httpClient.post(uploadsUrl, formData).toPromise();
     return result as Promise<string[] | undefined>;
   }
-
-  private getFormData(file: File): FormData {
-    const formData = new FormData();
-    formData.append('file', file);
-    return formData;
-  }
 }

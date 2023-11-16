@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EmailService } from 'src/app/Services/Email.service';
 import { CartService } from 'src/app/Services/cart_service';
 import { DataService } from 'src/app/Services/data.service';
 import { PrendasService } from 'src/app/Services/prendas_Service';
@@ -21,7 +22,8 @@ export class CarritoComponent {
     private cartService: CartService,
     private prendasService: PrendasService,
     private ventaService: VentaService,
-    private dataService: DataService
+    private dataService: DataService,
+    private emailService: EmailService
   ) {
     this.productosCarrito = this.cartService.getItems();
     this.cantidades = new Array(this.productosCarrito.length).fill(1);
@@ -50,22 +52,56 @@ export class CarritoComponent {
 
     this.formatoFechaHora = year + month + day + hours + minutes;
   }
+
   async finalizarCompra() {
     this.dataService.data$.subscribe(async (data) => {
       this.data = data;
       if (this.data) {
-        await this.ventaService.addVenta(this.productosCarrito);
-        this.fechaHora();
+        // await this.ventaService.addVenta(this.productosCarrito);
+        this.emailService
+          .confirmPurchase(this.data, this.productosCarrito)
+          .subscribe(
+            (response) => {
+              this.fechaHora();
+              if (response) {
+                Swal.fire({
+                  icon: 'success',
+                  title: `Gracias por tu compra -REF221-${
+                    this.formatoFechaHora + data.id
+                  }`,
+                  text: 'El siguiente paso es consignar a nuestra cuenta de Ahorrro Bancolombia: 52369495445',
+                  showConfirmButton: false,
+                });
 
-        Swal.fire({
-          icon: 'success',
-          title: `Gracias por tu compra -REF:${this.formatoFechaHora+data.id}`,
-          text: 'El siguiente paso es consignar a xxxxxxxxxxxxxxxx',
-          showConfirmButton: false,
-        });
+                this.cartService.clearCart();
+                this.productosCarrito = [];
+              } else {
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Hubo un error',
+                  icon: 'error',
+                  confirmButtonText: 'Ok',
+                  confirmButtonColor: '#CAA565',
+                });
 
-        this.cartService.clearCart();
-        this.productosCarrito = [];
+                this.cartService.clearCart();
+                this.productosCarrito = [];
+              }
+            },
+            (error) => {
+              console.log(error);
+              Swal.fire({
+                title: 'Error!!!!!!!!!!!',
+                text: 'Hubo un error',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                confirmButtonColor: '#CAA565',
+              });
+
+              this.cartService.clearCart();
+              this.productosCarrito = [];
+            }
+          );
       } else {
         Swal.fire({
           title: 'Error!',
