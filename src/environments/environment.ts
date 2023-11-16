@@ -9,6 +9,3 @@ export const environment = {
     measurementId: 'G-JG5XS6NMP8',
   },
 };
-
-export const SENDGRID = {SENDGRID_API_KEY:'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'}
-;
