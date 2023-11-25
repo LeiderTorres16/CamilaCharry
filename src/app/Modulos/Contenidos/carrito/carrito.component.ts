@@ -5,6 +5,7 @@ import { DataService } from 'src/app/Services/data.service';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { VentaService } from 'src/app/Services/venta_service';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-carrito-compra',
@@ -53,9 +54,31 @@ export class CarritoComponent {
     this.formatoFechaHora = year + month + day + hours + minutes;
   }
 
+  fechaHoraBien(): string {
+    const fechaHoraActual = new Date();
+    const year = fechaHoraActual.getFullYear().toString();
+    const month = (fechaHoraActual.getMonth() + 1).toString().padStart(2, '0');
+    const day = fechaHoraActual.getDate().toString().padStart(2, '0');
+    const hours = fechaHoraActual.getHours().toString().padStart(2, '0');
+    const minutes = fechaHoraActual.getMinutes().toString().padStart(2, '0');
+
+    return `${year}/${month}/${day}  ${hours}:${minutes}`;
+  }
+
   async finalizarCompra() {
     this.dataService.data$.subscribe(async (data) => {
+      this.fechaHora();
       this.data = data;
+      const reciboInfo = {
+        referencia: `${this.formatoFechaHora + this.data.id}`,
+        user: this.data,
+        fechaCompra: this.fechaHoraBien(),
+        productos: this.productosCarrito,
+        bancoInfo: {
+          nombre: 'Banco Ejemplo',
+          cuentaN: '1234567890',
+        },
+      };
       if (this.data) {
         // await this.ventaService.addVenta(this.productosCarrito);
         this.emailService
@@ -65,12 +88,19 @@ export class CarritoComponent {
               this.fechaHora();
               if (response) {
                 Swal.fire({
-                  icon: 'success',
                   title: `Gracias por tu compra -REF221-${
                     this.formatoFechaHora + data.id
                   }`,
-                  text: 'El siguiente paso es consignar a nuestra cuenta de Ahorrro Bancolombia: 52369495445',
-                  showConfirmButton: false,
+                  text: 'El siguiente paso es descargar tu recibo y consignar el dinero en algunas de las cuentas mencionadas en el recibo',
+                  icon: 'success',
+                  showCancelButton: true,
+                  confirmButtonText: 'Descargar recibo',
+                  confirmButtonColor: '#CAA565',
+                  cancelButtonText: 'Cerrar',
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    this.downloadReceipt(reciboInfo);
+                  }
                 });
 
                 this.cartService.clearCart();
@@ -91,7 +121,7 @@ export class CarritoComponent {
             (error) => {
               console.log(error);
               Swal.fire({
-                title: 'Error!!!!!!!!!!!',
+                title: 'Error!',
                 text: 'Hubo un error',
                 icon: 'error',
                 confirmButtonText: 'Ok',
@@ -132,5 +162,56 @@ export class CarritoComponent {
         total + producto.precio * this.cantidades[index],
       0
     );
+  }
+
+  private downloadReceipt(reciboInfo: any): void {
+    const doc = new jsPDF();
+    // Establecer el título del documento PDF
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.text('Recibo de Compra', 10, 20);
+
+    // Agregar detalles del producto
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(14);
+    doc.text('Número de referencia de compra:', 10, 30);
+    doc.text(reciboInfo.referencia, 90, 30);
+
+    doc.text('Información del usuario:', 10, 40);
+    doc.text(`${reciboInfo.user.nombre}, ${reciboInfo.user.correo}`, 70, 40);
+
+    doc.text('Fecha y hora de la compra:', 10, 50);
+    doc.text(reciboInfo.fechaCompra, 80, 50);
+
+    doc.text('Lista de productos:', 10, 60);
+    let yPosition = 70;
+    reciboInfo.productos.forEach((product: any, index: number) => {
+      
+      const cantidad = this.cantidades[index];
+
+      doc.text(
+        `Nombre: ${product.nombre} - Código: ${product.id} - Cantidad: ${cantidad} - Total: $${cantidad * product.precio}`, 20, yPosition);
+      yPosition += 10;
+    });
+
+    doc.text('Información de cuentas para consignar:', 10, yPosition);
+    doc.text(`Banco: ${reciboInfo.bancoInfo.nombre}`, 20, yPosition + 10);
+    doc.text(
+      `Número de cuenta: ${reciboInfo.bancoInfo.cuentaN}`,
+      20,
+      yPosition + 20
+    );
+
+    // Guardar el PDF en un Blob
+    const pdfBlob = doc.output('blob');
+
+    // Crear un enlace HTML y disparar un clic en él para iniciar la descarga del PDF
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(pdfBlob);
+    link.download = 'recibo_compra.pdf';
+    link.click();
+
+    // Libera el objeto URL creado
+    window.URL.revokeObjectURL(link.href);
   }
 }
