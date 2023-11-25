@@ -207,7 +207,7 @@ export class RegistroPrendaComponent {
       this.prenda.value.existencias
     );
 
-    const response = await this.prendasService.addPrenda(nuevaPrenda);
+    const response = await this.prendasService.añadirPrenda(nuevaPrenda);
 
     if (response === 'Prenda registrada con exito') {
       return response;
