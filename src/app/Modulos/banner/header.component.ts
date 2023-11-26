@@ -19,7 +19,7 @@ export class HeaderComponent {
   login: number;
   data: any;
 
-  banners: Banner[] = [];
+  banners: any[] = [];
   bannerForm: FormGroup;
 
   constructor(
@@ -77,11 +77,12 @@ export class HeaderComponent {
         if (title && text && image) {
           try {
             const imagenUrl = await this.bannerService.addImage(image);
-            const nRegistros = await this.bannerService.getNumberOfBanners();
-            const textN = (nRegistros + 1).toString();
-            const newBanner = new Banner(textN, title, text, imagenUrl);
-            const response = this.bannerService.addBanner(newBanner);
-            if (response === 'Banner registrado con exito') {
+            const ultimoID = await this.bannerService.getLastPrendaId();
+            const textN = (ultimoID! + 1).toString();
+            const newBanner = new Banner(textN, title, text, imagenUrl![0]);
+            const response = await this.bannerService.addBanner(newBanner);
+    
+            if (response) {
               Swal.fire({
                 title: 'Añadido!',
                 text: 'Se ha añadido el banner con exito',
@@ -156,10 +157,10 @@ export class HeaderComponent {
           try {
             if (image) {
               const imagenUrl = await this.bannerService.addImage(image);
-              const newBanner = new Banner(banner.id, title, text, imagenUrl);
+              const newBanner = new Banner(banner.id, title, text, imagenUrl![0]);
               const response = await this.bannerService.updateBanner(newBanner);
 
-              if (response === 'Banner actualizado con exito') {
+              if (response) {
                 Swal.fire({
                   title: 'Actualizado!',
                   text: 'Se ha actualizado el banner con exito',
@@ -185,7 +186,7 @@ export class HeaderComponent {
               );
               const response = await this.bannerService.updateBanner(newBanner);
 
-              if (response === 'Banner actualizado con exito') {
+              if (response) {
                 Swal.fire({
                   title: 'Actualizado!',
                   text: 'Se ha actualizado el banner con exito',

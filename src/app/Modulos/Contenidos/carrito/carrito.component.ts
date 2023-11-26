@@ -14,6 +14,7 @@ import jsPDF from 'jspdf';
 })
 export class CarritoComponent {
   productosCarrito: any[] = [];
+  productosCompra: any[] = [];
   cantidades: number[] = [];
   totalCarrito: number = 0;
   formatoFechaHora: string;
@@ -54,7 +55,7 @@ export class CarritoComponent {
     this.formatoFechaHora = year + month + day + hours + minutes;
   }
 
-  fechaHoraBien(): string {
+  fechaHoraCompra(): string {
     const fechaHoraActual = new Date();
     const year = fechaHoraActual.getFullYear().toString();
     const month = (fechaHoraActual.getMonth() + 1).toString().padStart(2, '0');
@@ -69,28 +70,38 @@ export class CarritoComponent {
     this.dataService.data$.subscribe(async (data) => {
       this.fechaHora();
       this.data = data;
-      const reciboInfo = {
-        referencia: `${this.formatoFechaHora + this.data.id}`,
-        user: this.data,
-        fechaCompra: this.fechaHoraBien(),
-        productos: this.productosCarrito,
-        bancoInfo: {
-          nombre: 'Banco Ejemplo',
-          cuentaN: '1234567890',
-        },
-      };
+      const referencia = this.formatoFechaHora + data.id;
       if (this.data) {
+        this.productosCarrito.forEach((producto, index) => {
+          this.productosCompra.push({
+            producto: producto,
+            cantidad: this.cantidades[index],
+            color: 'Rojo',
+            talla: 'S',
+            totalProducto: producto.precio * this.cantidades[index]
+          });
+        });
+
+        const reciboInfo = {
+          referencia: referencia,
+          user: this.data,
+          fechaCompra: this.fechaHoraCompra(),
+          productos: this.productosCompra,
+          bancoInfo: {
+            nombre: 'Banco Ejemplo',
+            cuentaN: '1234567890',
+          },
+        };
+
         // await this.ventaService.addVenta(this.productosCarrito);
         this.emailService
-          .confirmPurchase(this.data, this.productosCarrito)
+          .confirmPurchase(this.data, this.productosCompra)
           .subscribe(
             (response) => {
               this.fechaHora();
               if (response) {
                 Swal.fire({
-                  title: `Gracias por tu compra -REF221-${
-                    this.formatoFechaHora + data.id
-                  }`,
+                  title: `Gracias por tu compra -REF221-${referencia}`,
                   text: 'El siguiente paso es descargar tu recibo y consignar el dinero en algunas de las cuentas mencionadas en el recibo',
                   icon: 'success',
                   showCancelButton: true,
@@ -99,7 +110,7 @@ export class CarritoComponent {
                   cancelButtonText: 'Cerrar',
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    this.downloadReceipt(reciboInfo);
+                    this.downloadReceipt(reciboInfo, referencia);
                   }
                 });
 
@@ -164,7 +175,7 @@ export class CarritoComponent {
     );
   }
 
-  private downloadReceipt(reciboInfo: any): void {
+  private downloadReceipt(reciboInfo: any, referencia: any): void {
     const doc = new jsPDF();
     // Establecer el título del documento PDF
     doc.setFont('helvetica', 'bold');
@@ -186,11 +197,17 @@ export class CarritoComponent {
     doc.text('Lista de productos:', 10, 60);
     let yPosition = 70;
     reciboInfo.productos.forEach((product: any, index: number) => {
-      
-      const cantidad = this.cantidades[index];
+      const cantidad = product.cantidad;
 
       doc.text(
-        `Nombre: ${product.nombre} - Código: ${product.id} - Cantidad: ${cantidad} - Total: $${cantidad * product.precio}`, 20, yPosition);
+        `Nombre: ${product.producto.nombre} - Código: ${
+          product.producto.id
+        } - Cantidad: ${cantidad} - Total: $${
+          cantidad * product.producto.precio
+        }`,
+        20,
+        yPosition
+      );
       yPosition += 10;
     });
 
@@ -208,7 +225,7 @@ export class CarritoComponent {
     // Crear un enlace HTML y disparar un clic en él para iniciar la descarga del PDF
     const link = document.createElement('a');
     link.href = URL.createObjectURL(pdfBlob);
-    link.download = 'recibo_compra.pdf';
+    link.download = `recibo_compra_${referencia}.pdf`;
     link.click();
 
     // Libera el objeto URL creado

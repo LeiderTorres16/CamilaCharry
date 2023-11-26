@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { CartService } from 'src/app/Services/cart_service';
   templateUrl: './detalle-prenda.component.html',
   styleUrls: ['./detalle-prenda.component.css'],
 })
-export class DetallePrendaComponent implements OnInit {
+export class DetallePrendaComponent implements OnInit, AfterViewInit {
   prenda: Prenda;
   prendaId: string;
   mostrarPersonalizacion = false;
@@ -29,7 +29,8 @@ export class DetallePrendaComponent implements OnInit {
 
     private prendasService: PrendasService,
 
-    private cartService: CartService
+    private cartService: CartService,
+    private el: ElementRef
   ) {}
 
   addToCart(prenda: Prenda): void {
@@ -49,15 +50,28 @@ export class DetallePrendaComponent implements OnInit {
     this.cartService.addToCart(prenda);
   }
 
+  ngAfterViewInit() {
+    const miSection = this.el.nativeElement.querySelector('#miSection');
+
+    if (miSection) {
+      miSection.addEventListener('transitionend', () => {
+        // Realiza el desplazamiento hacia la sección una vez que la transición ha terminado
+        if (this.mostrarPersonalizacion) {
+          miSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+  }
+
   ngOnInit(): void {
     const prendaId = this.route.snapshot.paramMap.get('id')!;
-
+    window.scrollTo(0, 0);
     this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
       if (prenda) {
         this.prenda = prenda;
         this.precioFinal = this.prenda.precio;
 
-        prenda.imagenes.forEach((imagen) => {
+        prenda.imagen.forEach((imagen) => {
           this.imagenesPrenda.push(imagen);
         });
       } else {
@@ -73,6 +87,27 @@ export class DetallePrendaComponent implements OnInit {
   ngOnDestroy() {
     if (this.autoChangeInterval) {
       clearInterval(this.autoChangeInterval);
+    }
+  }
+
+  cerrarPersonalizacion() {
+    this.mostrarPersonalizacion = false;
+    window.scrollTo(0, 0);
+  }
+
+  abrirPersonalizacion() {
+    // Cambia el estado para mostrar o ocultar el div
+    this.mostrarPersonalizacion = true;
+
+    // Si se muestra el div, realiza el desplazamiento hacia él
+    if (this.mostrarPersonalizacion) {
+      const miSection = document.getElementById('personalizacion');
+
+      if (miSection) {
+        setTimeout(() => {
+          miSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
     }
   }
 

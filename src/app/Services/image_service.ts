@@ -4,13 +4,18 @@ import { from, Observable } from 'rxjs';
 import { mergeMap, map, toArray } from 'rxjs/operators';
 import { ImageFile } from '../Models/imagefile';
 import { CloudinaryAsset } from '../Models/cloudinary_asset';
+import { imagenEnvironment } from 'src/environments/environment';
 
-const uploadsUrl = 'http://localhost:3000/image/uploads';
 @Injectable({
   providedIn: 'root',
 })
 export class ImageUploaderService {
-  constructor(private httpClient: HttpClient) {}
+
+  endpointCargarImagenes: string;
+
+  constructor(private httpClient: HttpClient) {
+    this.endpointCargarImagenes = imagenEnvironment.cargarImagenes;
+  }
 
   async uploadImage(files: File[]): Promise<string[] | undefined> {
     const formData = new FormData();
@@ -18,7 +23,7 @@ export class ImageUploaderService {
       formData.append('files', file, file.name);
    });
     
-   const result = await this.httpClient.post(uploadsUrl, formData).toPromise();
+   const result = await this.httpClient.post(this.endpointCargarImagenes, formData).toPromise();
     return result as Promise<string[] | undefined>;
   }
 }

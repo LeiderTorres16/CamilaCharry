@@ -72,19 +72,10 @@ export class RegistroPrendaComponent {
       try {
         if (this.prenda.valid && this.imagenesAntiguas.length > 0) {
           this.showAlert = false;
-          const urlsNuevas: string[] = [];
-
-          for (let i = 0; i < this.imagenes.length; i++) {
-            const response = await this.prendasService.addImage(
-              this.imagenes[i]
-            );
-            if (response != 'error') {
-              urlsNuevas.push(response);
-            }
-          }
+          const urls = await this.imageService.uploadImage(this.imagenes);
 
           const response = await this.updatePrenda(
-            urlsNuevas,
+            urls!,
             this.imagenesAntiguas
           );
           if (response === 'Prenda actualizada con exito') {
@@ -187,8 +178,8 @@ export class RegistroPrendaComponent {
 
     const response = await this.prendasService.updatePrenda(newPrenda);
 
-    if (response === 'Prenda actualizada con exito') {
-      return response;
+    if (response) {
+      return 'Prenda actualizada con exito';
     } else {
       return 'Error!';
     }
@@ -209,8 +200,8 @@ export class RegistroPrendaComponent {
 
     const response = await this.prendasService.añadirPrenda(nuevaPrenda);
 
-    if (response === 'Prenda registrada con exito') {
-      return response;
+    if (response) {
+      return 'Prenda registrada con exito';
     } else {
       return 'Error al intentar crear la prenda';
     }
@@ -262,6 +253,7 @@ export class RegistroPrendaComponent {
 
   ngOnInit(): void {
     this.imagenesAntiguas = [];
+    window.scrollTo(0, 0);
     const prendaId = this.route.snapshot.paramMap.get('id');
     if (prendaId) {
       this.isEditMode = true;
@@ -270,12 +262,7 @@ export class RegistroPrendaComponent {
       // Estamos en modo de registro
       this.initNewPrendaForm();
     }
-
     const cld = new Cloudinary({ cloud: { cloudName: 'prendas' } });
-
-    this.prendasService.getPrendas().subscribe((prendas) => {
-      console.log(prendas);
-    });
   }
 
   ngOnDestroy(): void {
@@ -290,7 +277,7 @@ export class RegistroPrendaComponent {
     });
   }
 
-  private initEditPrendaForm(prenda: Prenda): void {
+  private initEditPrendaForm(prenda: any): void {
     this.prenda = this.formBuilder.group({
       id: [prenda.id, Validators.required],
       nombre: [prenda.nombre, Validators.required],
@@ -307,8 +294,8 @@ export class RegistroPrendaComponent {
     this.categorias = prenda.categorias;
     this.colores = prenda.colores;
 
-    for (let i = 0; i < prenda.imagenes.length; i++) {
-      this.imagenesAntiguas.push(prenda.imagenes[i]);
+    for (let i = 0; i < prenda.imagen.length; i++) {
+      this.imagenesAntiguas.push(prenda.imagen[i]);
     }
   }
 

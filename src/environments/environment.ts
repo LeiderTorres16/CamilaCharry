@@ -9,3 +9,29 @@ export const environment = {
     measurementId: 'G-JG5XS6NMP8',
   },
 };
+
+
+let HostVenta
+
+let HostAuth
+
+let HostPrenda="http://localhost:4000/prendas"
+export const prendaEnvironment = {
+ crearPrenda: `${HostPrenda}/createPrenda`,
+ updatePrenda: `${HostPrenda}/updatePrenda/`,
+ getPrendas: `${HostPrenda}/getPrendas`
+};
+
+let HostBanner="http://localhost:4002/banner"
+export const bannerEnvironment = {
+  crearBanner: `${HostBanner}/createBanner`,
+  updateBanner: `${HostBanner}/updateBanner/`,
+  getBanners: `${HostBanner}/getBanner`,
+  getBannerById: `${HostBanner}/getBannerById/`
+ };
+
+ 
+let HostImagen="http://localhost:3000/image"
+export const imagenEnvironment = {
+  cargarImagenes: `${HostImagen}/uploads`
+}

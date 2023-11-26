@@ -15,12 +15,13 @@ export class InventarioVentasComponent {
   mostrarVentas = false;
   filtroCorreo: string = '';
 
-  productosInventario: Prenda[] = [];
+  productosInventario: any[] = [];
   productosVentas: any[] = [];
 
   constructor(private prendasService: PrendasService, private router: Router) {}
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.productosInventario=[];
     this.productosVentas = [];
     this.mostrarInventario = true;
@@ -55,7 +56,7 @@ export class InventarioVentasComponent {
       cancelButtonColor: '#DC3545',
       preConfirm: async () => {
         const response = await this.prendasService.desactivarPrenda(producto);
-        if(response == "Prenda eliminada con exito"){
+        if(response){
           Swal.fire({
             title: 'Se elimino con exito!',
             text: `El producto ${producto.nombre} se elimino`,
@@ -63,7 +64,6 @@ export class InventarioVentasComponent {
             confirmButtonText: 'Ok',
             confirmButtonColor: '#28A745',
           });
-
           this.cargarInventario();
         }else{
           Swal.fire({
@@ -80,7 +80,7 @@ export class InventarioVentasComponent {
 
   cargarInventario() {
     this.productosInventario = []; 
-    this.prendasService.getPrendas().subscribe((prendas) => {
+    this.prendasService.allPrendas().subscribe((prendas) => {
       prendas.forEach((prenda) => {
         if(prenda.estado == 'activo'){
           this.agregarInventario(prenda);
@@ -103,8 +103,8 @@ export class InventarioVentasComponent {
   }
 
   getImageUrl(producto: any): string {
-    if (producto.imagenes && producto.imagenes.length > 0) {
-      return producto.imagenes[0];
+    if (producto.imagen && producto.imagen.length > 0) {
+      return producto.imagen[0];
     } else {
       return '';
     }

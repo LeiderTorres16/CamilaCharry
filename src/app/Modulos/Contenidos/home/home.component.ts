@@ -59,8 +59,8 @@ export class HomeComponent {
   }
 
   getImageUrl(producto: any): string {
-    if (producto.imagenes && producto.imagenes.length > 0) {
-      return producto.imagenes[0];
+    if (producto.imagen && producto.imagen.length > 0) {
+      return producto.imagen[0];
     } else {
       return '';
     }
@@ -68,7 +68,8 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.productosDestacados = [];
-    this.prendasService.getPrendas().subscribe((prendas) => {
+    window.scrollTo(0, 0);
+    this.prendasService.allPrendas().subscribe((prendas) => {
       prendas.forEach((prenda) => {
         if(prenda.estado == "activo"){
           this.agregarProducto(prenda);

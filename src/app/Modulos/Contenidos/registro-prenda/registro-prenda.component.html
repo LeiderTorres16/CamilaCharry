@@ -6,7 +6,7 @@
           <h2>{{ isEditMode ? 'Editar Prenda' : 'Registrar Prenda' }}</h2>
           <div class="form-group">
             <label for="idPrenda">Codigo de la prenda:</label>
-            <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
+            <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id" [attr.readonly]="isEditMode ? true : null">
             <div *ngIf="prenda.controls['id'].invalid && prenda.controls['id'].touched" class="text-danger">
               Codigo de la prenda es requerido.
             </div>

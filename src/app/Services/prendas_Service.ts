@@ -2,93 +2,95 @@ import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
-  addDoc,
   collectionData,
 } from '@angular/fire/firestore';
 import { Prenda } from '../Models/prenda_class';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Venta } from '../Models/venta.class';
 import { HttpClient } from '@angular/common/http';
-
-const registroUrl = 'http://localhost:3000/createPrenda';
+import { prendaEnvironment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrendasService {
-  private prendas: Prenda[];
+
+  endpointCrearPrenda:string;
+  endpointUpdatePrenda:string;
+  endpointGetPrendas: string;
+
   constructor(
     private firestore: Firestore,
     private fireStorage: AngularFireStorage,
     private httpClient: HttpClient
-  ) {}
+  ) {
+    this.endpointCrearPrenda = prendaEnvironment.crearPrenda;
+    this.endpointUpdatePrenda = prendaEnvironment.updatePrenda;
+    this.endpointGetPrendas = prendaEnvironment.getPrendas;
+  }
 
-  addPrenda(prenda: Prenda): string {
+  async añadirPrenda(prenda: Prenda): Promise<string | undefined> {
     try {
-      const prendaRef = collection(this.firestore, 'prendas');
+      const result = await this.httpClient.post(this.endpointCrearPrenda, {
+        "id": prenda.id,
+        "nombre": prenda.nombre,
+        "precio": prenda.precio,
+        "descripcion": prenda.descripcion,
+        "colores": prenda.colores,
+        "imagen": prenda.imagen,
+        "estado":prenda.estado,
+        "existencias": prenda.existencias,
+        "categorias": prenda.categorias
+      }).toPromise(); 
+    
+      return result as Promise<string | undefined>;
+    } catch (error) {
+      return "error"
+    }
+  }
 
-      setDoc(doc(this.firestore, 'prendas', prenda.id), {
-        id: prenda.id,
-        nombre: prenda.nombre,
-        precio: prenda.precio,
-        descripcion: prenda.descripcion,
-        colores: prenda.colores,
-        imagenes: prenda.imagenes,
-        categorias: prenda.categorias,
-        estado: prenda.estado,
-        existencias: prenda.existencias,
-      });
-      return 'Prenda registrada con exito';
+  async desactivarPrenda(producto: Prenda): Promise<string> {
+    try {
+      const result = await this.httpClient.put(this.endpointUpdatePrenda+producto.id, {
+        "id": producto.id,
+        "nombre": producto.nombre,
+        "precio": producto.precio,
+        "descripcion": producto.descripcion,
+        "colores": producto.colores,
+        "imagen": producto.imagen,
+        "estado":'desactivado',
+        "existencias": producto.existencias,
+        "categorias": producto.categorias
+      }).toPromise(); 
+      return result as Promise<string>;
     } catch (error: string | any) {
       return error;
     }
   }
 
-  async añadirPrenda(prenda: Prenda) {
-    const result = await this.httpClient.post(registroUrl, prenda);
-    console.log(result);
-    if (result) {
-      return 'Prenda registrada con exito';
-    } else {
-      return 'Error';
-    }
-  }
-
-  async desactivarPrenda(producto: Prenda) {
-    try {
-      await updateDoc(doc(this.firestore, 'prendas', producto.id), {
-        estado: 'desactivado',
-      });
-      return 'Prenda eliminada con exito';
-    } catch (error) {
-      return 'error';
-    }
-  }
-
   async updatePrenda(prenda: Prenda): Promise<string> {
     try {
-      await updateDoc(doc(this.firestore, 'prendas', prenda.id), {
-        id: prenda.id,
-        nombre: prenda.nombre,
-        precio: prenda.precio,
-        descripcion: prenda.descripcion,
-        colores: prenda.colores,
-        imagenes: prenda.imagenes,
-        categorias: prenda.categorias,
-        estado: prenda.estado,
-        existencias: prenda.existencias,
-      });
-      return 'Prenda actualizada con exito';
+      const result = await this.httpClient.put(this.endpointUpdatePrenda+prenda.id, {
+        "id": prenda.id,
+        "nombre": prenda.nombre,
+        "precio": prenda.precio,
+        "descripcion": prenda.descripcion,
+        "colores": prenda.colores,
+        "imagen": prenda.imagen,
+        "estado":prenda.estado,
+        "existencias": prenda.existencias,
+        "categorias": prenda.categorias
+      }).toPromise(); 
+      return result as Promise<string>;
     } catch (error: string | any) {
       return error;
     }
   }
 
   getPrendaPorId(id: string): Observable<Prenda | undefined> {
-    return this.getPrendas().pipe(
+    return this.allPrendas().pipe(
       map((prendas) => {
         const prendaEncontrada = prendas.find((prenda) => prenda.id === id);
         return prendaEncontrada;
@@ -96,19 +98,10 @@ export class PrendasService {
     );
   }
 
-  async addImage(image: any) {
-    try {
-      const path = `prendas/${image.name}`;
-      const uploadTask = await this.fireStorage.upload(path, image);
-      return await uploadTask.ref.getDownloadURL();
-    } catch (error) {
-      return 'error';
-    }
-  }
 
-  getPrendas(): Observable<Prenda[]> {
-    const prendaRef = collection(this.firestore, 'prendas');
-    return collectionData(prendaRef, { idField: 'id' }) as Observable<Prenda[]>;
+  allPrendas(): Observable<any[]>{
+    const result = this.httpClient.get(this.endpointGetPrendas);
+    return result as Observable<any[]>;
   }
 
   getVentas(): Observable<any[]> {
