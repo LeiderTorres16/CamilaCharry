@@ -235,7 +235,7 @@ export class HeaderComponent {
         cancelButtonColor: '#DC3545',
         preConfirm: async () => {
           const response = await this.bannerService.borrarBanner(banner);
-          if (response === 'Banner eliminado con exito') {
+          if (response) {
             Swal.fire({
               title: 'Eliminado!',
               text: 'Se ha eliminado el banner con exito',
@@ -276,7 +276,7 @@ export class HeaderComponent {
   validadorSesion() {
     this.dataService.data$.subscribe(async (data) => {
       this.data = data;
-      if (this.data && this.data.rol == 'admin') {
+      if (this.data && this.data.usr.rol == 'admin') {
         this.login = 2;
       }
     });

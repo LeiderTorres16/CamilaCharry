@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Prenda } from 'src/app/Models/prenda_class';
 import { Venta } from 'src/app/Models/venta.class';
+import { LocalStorageService } from 'src/app/Services/localstorage.service';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import Swal from 'sweetalert2';
 
@@ -18,7 +19,7 @@ export class InventarioVentasComponent {
   productosInventario: any[] = [];
   productosVentas: any[] = [];
 
-  constructor(private prendasService: PrendasService, private router: Router) {}
+  constructor(private prendasService: PrendasService, private router: Router, private localstorageService: LocalStorageService) {}
 
   ngOnInit(): void {
     window.scrollTo(0, 0);

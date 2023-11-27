@@ -18,6 +18,7 @@ export class BannerService {
   endpointCrearBanner:string;
   endpointGetBanners: string;
   endpointUpdateBanner:string;
+  endpointBorrarBanner:string;
 
   constructor(
     private firestore: Firestore,
@@ -28,6 +29,7 @@ export class BannerService {
     this.endpointCrearBanner = bannerEnvironment.crearBanner;
     this.endpointGetBanners = bannerEnvironment.getBanners;
     this.endpointUpdateBanner = bannerEnvironment.updateBanner;
+    this.endpointBorrarBanner = bannerEnvironment.borrarBanner;
   }
 
   async addBanner(banner: Banner): Promise<string> {
@@ -45,12 +47,12 @@ export class BannerService {
     }
   }
 
-  async borrarBanner(banner: Banner) {
+  async borrarBanner(banner: Banner): Promise<string> {
     try {
-      await deleteDoc(doc(this.firestore, 'banner', banner.id));
-      return 'Banner eliminado con exito';
-    } catch (error) {
-      return 'error';
+      const result = await this.httpClient.delete(this.endpointBorrarBanner+banner.id).toPromise();
+      return result as Promise<string>;
+    } catch (error: string | any ) {
+      return error;
     }
   }
 

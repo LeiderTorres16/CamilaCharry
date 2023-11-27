@@ -83,7 +83,6 @@ export class CarritoComponent {
             totalProducto: producto.precio * this.cantidades[index]
           });
         });
-        console.log(this.productosCompra)
         const reciboInfo = {
           referencia: referencia,
           user: this.data,

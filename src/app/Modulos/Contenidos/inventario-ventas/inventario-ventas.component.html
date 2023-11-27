@@ -67,7 +67,7 @@
                     <tr *ngFor="let producto of productosVentas">
                         <td class="align-middle"><a (click)="navigateToReferencia(producto.referencia)" style="cursor: pointer; color: rgb(1, 141, 255)">{{producto.referencia}}</a></td>
                         <td class="align-middle">{{producto.total | currency}}</td>
-                        <td class="align-middle">{{producto?.usuario?.correo}}</td>
+                        <td class="align-middle">{{producto.usuario.correo}}</td>
                         <td class="align-middle">{{producto.fecha}}</td>
                     </tr>
                 </tbody>

@@ -64,7 +64,6 @@ export class SuperiorComponent {
 
   validadorSesion(){
     let dataUser = this.localstorageService.getItem();
-    console.log(dataUser)
     if(dataUser == null){
       this.login = 0;
     }else{

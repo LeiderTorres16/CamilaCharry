@@ -13,7 +13,8 @@ export const environment = {
 
 let HostVenta="http://localhost:4001/ventas"
 export const ventasEnvironment = {
-  crearVenta: `${HostVenta}/createVenta`
+  crearVenta: `${HostVenta}/createVenta`,
+  getVentas: `${HostVenta}/getVentas`
 }
 
 let HostAuth="http://localhost:3001/"
@@ -35,7 +36,8 @@ export const bannerEnvironment = {
   crearBanner: `${HostBanner}/createBanner`,
   updateBanner: `${HostBanner}/updateBanner/`,
   getBanners: `${HostBanner}/getBanner`,
-  getBannerById: `${HostBanner}/getBannerById/`
+  getBannerById: `${HostBanner}/getBannerById/`,
+  borrarBanner:  `${HostBanner}/delete/`
  };
 
  

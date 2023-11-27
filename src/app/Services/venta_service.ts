@@ -65,18 +65,6 @@ export class VentaService {
           (total, prenda) => total + prenda.totalProducto,
           0
         );
-        // const ventasDocRef = doc(
-        //   this.firestore,
-        //   'ventas',
-        //   this.fechaActualFormateada+data.id
-        // );
-        // await setDoc(ventasDocRef, {
-        //   referencia: this.fechaActualFormateada+data.id,
-        //   productos: prendas,
-        //   total: totalVenta,
-        //   usuario: this.data,
-        //   fecha: this.fecha
-        //  });
 
         const result = await this.httpClient.post(this.endpointCrearVenta, {
           "fecha": this.fecha,
