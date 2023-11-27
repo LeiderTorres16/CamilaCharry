@@ -1,0 +1,74 @@
+<div class="fixed-top" style="background-color: #caa565;">
+  <div id="UpData">
+    <div id="UpData" class="container">
+      <div class="row row-cols-3 info" style="margin-top:1%;margin-bottom:1%;">
+        <div class="location col-4">
+          <p class="d-flex justify-content-center align-items-center">
+            <i class="far fa-envelope" style="margin-right: 5px;"></i>
+            <span style="margin-left: 5px;">camilacharry@gmail.com</span>
+          </p>
+        </div>
+        <div class="location col-4">
+          <p class="d-flex justify-content-center align-items-center">
+            <i class="bi bi-geo-alt" style="margin-right: 5px;"></i>
+            <span style="margin-left: 5px;" class="">Cr. 12 # 9C-86 San Joaquín, Vup</span>
+          </p>
+        </div>
+        <div class="location col-4">
+          <p *ngIf="login==0" class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-user-alt" style="margin-right: 5px;" (click)="Login()" style="cursor: pointer;"><span class="texto-login" style="margin-left: 5px;">Ingresa</span></i>
+          </p>
+          <p *ngIf="login==1 || 2" class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-user-alt" style="margin-right: 5px;" (click)="Logout()" style="cursor: pointer;"><span class="texto-login" style="margin-left: 5px;">Cerrar Sesion</span></i>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
+      <div class="container">
+        <a (click)="Principal()" style="cursor: pointer">
+          <img class="Logo" src="../../../assets/images/LogoBG.png" alt="Logo" />
+        </a>
+
+        <div class="order-lg-2 nav-btns">
+          <button type="button" class="boton position-relative" (click)="Carrito()">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge badge-custom-color">{{ productosCarrito.length }}</span>
+
+          </button>
+          <button *ngIf="login==2" type="button" class="boton position-relative" (click)="InventarioVentas()">
+            <i class="fas fa-boxes"></i>
+          </button>
+          <button *ngIf="login==2" type="button" class="boton position-relative" (click)="registroPrenda()">
+            <i class="fas fa-plus-circle"></i>
+          </button>
+        </div>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse order-lg-1" id="navMenu">
+          <ul class="navbar-nav mx-auto text-center">
+            <li class="nav-item px-2 py-2">
+              <a class="nav-link text-uppercase text-dark" (click)="Principal()">Inicio</a>
+            </li>
+            <li class="nav-item px-2 py-2">
+              <a class="nav-link text-uppercase text-dark" >hombre</a>
+            </li>
+            <li class="nav-item px-2 py-2">
+              <a class="nav-link text-uppercase text-dark" >Mujer</a>
+            </li>
+            <li class="nav-item px-2 py-2">
+              <a class="nav-link text-uppercase text-dark" >Niños</a>
+            </li>
+            <li class="nav-item px-2 py-2 border-0">
+              <a class="nav-link text-uppercase text-dark" >Niñas</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

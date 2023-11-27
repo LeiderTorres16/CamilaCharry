@@ -1,12 +1,12 @@
-<section id="collection" style="padding-top: 50px; padding-bottom: 30px;">
+<section id="collection" style="padding-top: 180px;padding-bottom: 50px; min-height: 80vh;">
   <div class="container">
     <form [formGroup]="prenda" (ngSubmit)="submitForm()">
       <div class="row">
         <div class="col-md-8">
-          <h2>Registro de Prenda</h2>
+          <h2>{{ isEditMode ? 'Editar Prenda' : 'Registrar Prenda' }}</h2>
           <div class="form-group">
             <label for="idPrenda">Codigo de la prenda:</label>
-            <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id">
+            <input type="text" class="form-control" id="idPrenda" name="idPrenda" formControlName="id" [attr.readonly]="isEditMode ? true : null">
             <div *ngIf="prenda.controls['id'].invalid && prenda.controls['id'].touched" class="text-danger">
               Codigo de la prenda es requerido.
             </div>
@@ -34,6 +34,15 @@
               Descripción es requerida.
             </div>
           </div>
+          <div class="form-group">
+            <label for="existenciasPrenda">Existencias:</label>
+            <input type="number" class="form-control" id="existenciasPrenda" name="existenciasPrenda"
+              formControlName="existencias">
+            <div *ngIf="prenda.controls['existencias'].invalid && prenda.controls['existencias'].touched"
+              class="text-danger">
+              Necesitas registrar al menos una existencia.
+            </div>
+          </div>
           <mat-form-field class="example-chip-list">
             <mat-label>Colores</mat-label>
             <mat-chip-grid #chipGridColores aria-label="Ingrese Colores">
@@ -47,6 +56,22 @@
               <input placeholder="Nuevo Color..." [matChipInputFor]="chipGridColores"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                 (matChipInputTokenEnd)="addColores($event)" />
+            </mat-chip-grid>
+          </mat-form-field>
+
+          <mat-form-field class="example-chip-list">
+            <mat-label>Tallas</mat-label>
+            <mat-chip-grid #chipGridTallas aria-label="Ingrese Tallas">
+              <mat-chip-row *ngFor="let talla of tallas" (removed)="removeTalla(talla)" [editable]="true"
+                (edited)="editTalla(talla, $event)" [aria-description]="'Presione enter para editar' + talla">
+                {{ talla }}
+                <button matChipRemove [attr.aria-label]="'Remover ' + talla">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              <input placeholder="Nueva Talla..." [matChipInputFor]="chipGridTallas"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addTalla($event)"/>
             </mat-chip-grid>
           </mat-form-field>
 
@@ -66,25 +91,73 @@
             </mat-chip-grid>
           </mat-form-field>
 
-
-          <button type="submit" class="btn btn-primary">Registrar Prenda</button>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="imagenPrenda">Imagen de la prenda:</label>
-            <input type="file" class="form-control-file" id="imagenPrenda" name="imagenPrenda"
-              (change)="onFileSelected($event)" required>
-            <div *ngIf="showAlert" class="text-danger">
-              Por favor, selecciona una imagen.
+          <div class="col-md-8" *ngIf="isEditMode">
+            <div class="mb-3">
+              <label for="imagenPrenda" class="form-label">Imágenes de la prenda:</label>
+              <div class="mb-3" *ngIf="imagenesAntiguas.length > 0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let imagen of imagenesAntiguas; let i = index">
+                      <td>
+                        <img [src]="imagen" alt="Imagen seleccionada" width="100" class="img-thumbnail"
+                          id="imagenPrendaPreview">
+                      </td>
+                      <td>
+                        <button (click)="eliminarImagenE(i)" class="btn btn-danger">Eliminar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-          <div class="form-group" *ngIf="imagen">
-            <label>Imagen seleccionada:</label>
-            <div class="imagen-prenda">
-              <img [src]="getImagenURL()" alt="Imagen seleccionada">
+
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="imagenPrenda" class="form-label">Anañdir Nuevas Imagenes:</label>
+              <input type="file" class="form-control" id="imagenPrenda" name="imagenPrenda"
+                (change)="onFileSelected($event)" required multiple>
+              <div *ngIf="showAlert" class="text-danger">
+                Por favor, selecciona al menos una imagen.
+              </div>
+
+            </div>
+            <div class="mb-3">
+              <div class="mb-3" *ngIf="imagenesPreview.length > 0">
+                <label for="imagenSeleccionada" class="form-label">Imagen seleccionada:</label>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let imagen of imagenesPreview; let i = index">
+                      <td>
+                        <img [src]="imagen" alt="Imagen seleccionada" width="50" class="img-thumbnail"
+                          id="imagenPrendaPreview">
+                      </td>
+                      <td>
+                        <button (click)="eliminarImagen(i)" class="btn btn-danger">Eliminar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+
+
+
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Modificar Prenda' : 'Registrar Prenda'
+            }}</button>
         </div>
       </div>
     </form>

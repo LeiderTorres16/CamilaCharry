@@ -1,0 +1,25 @@
+<div class="container" *ngIf="venta" style="padding-top: 200px; min-height: 70vh;">
+  <h2 style="margin-bottom: 30px;">Detalles de la venta {{ referencia }}</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped table-borderless">
+      <thead>
+        <tr>
+          <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Imagen</th>
+          <th class="headers align-middle">Producto</th>
+          <th class="headers align-middle">Codigo</th>
+          <th class="headers align-middle">Cantidad</th>
+          <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of venta.productos">
+          <td><img [src]="producto.producto.imagen[0]" alt="Producto" width="50" style="border-radius: 5px;"></td>
+          <td class="align-middle">{{ producto.producto.nombre }}</td>
+          <td class="align-middle">{{ producto.producto.id }}</td>
+          <td class="align-middle">{{ producto.cantidad }}</td>
+          <td class="align-middle">{{ producto.totalProducto | currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

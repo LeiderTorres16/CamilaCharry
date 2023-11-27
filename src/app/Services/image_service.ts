@@ -4,51 +4,26 @@ import { from, Observable } from 'rxjs';
 import { mergeMap, map, toArray } from 'rxjs/operators';
 import { ImageFile } from '../Models/imagefile';
 import { CloudinaryAsset } from '../Models/cloudinary_asset';
+import { imagenEnvironment } from 'src/environments/environment';
 
-const uploadUrl = 'http://localhost:3000/image/upload';
 @Injectable({
   providedIn: 'root',
 })
 export class ImageUploaderService {
-  constructor(private httpClient: HttpClient) {}
 
-async uploadImage(file: File): Promise<string> {
-  try {
+  endpointCargarImagenes: string;
+
+  constructor(private httpClient: HttpClient) {
+    this.endpointCargarImagenes = imagenEnvironment.cargarImagenes;
+  }
+
+  async uploadImage(files: File[]): Promise<string[] | undefined> {
     const formData = new FormData();
-    formData.append('file', file);
+    files.forEach(file => {
+      formData.append('files', file, file.name);
+   });
     
-    const result = await this.httpClient
-      .post<string>(uploadUrl, formData)
-      .toPromise(); // Devuelve la URL de la imagen como Promise<string>
-      
-    if (result) {
-      return result;
-    } else {
-      return 'error'; // Otra opción en caso de result sea undefined
-    }
-  } catch (error) {
-    return 'error';
-  }
-}
-
-  
-  
-
-  uploadImages(imageFiles: ImageFile[]): Observable<CloudinaryAsset[]> {
-    const files = imageFiles.map((imageFile) => imageFile.file);
-    const files$ = from(files);
-    return files$.pipe(
-      map((file) => this.getFormData(file)),
-      mergeMap((formData) =>
-        this.httpClient.post<CloudinaryAsset>(uploadUrl, formData)
-      ),
-      toArray()
-    );
-  }
-
-  private getFormData(file: File): FormData {
-    const formData = new FormData();
-    formData.append('file', file);
-    return formData;
+   const result = await this.httpClient.post(this.endpointCargarImagenes, formData).toPromise();
+    return result as Promise<string[] | undefined>;
   }
 }

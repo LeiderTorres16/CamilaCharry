@@ -1,0 +1,114 @@
+/* Establece estilos base para el fondo del carousel */
+.carousel-item {
+  background-color: white;
+  background-size: cover; /* Utiliza cover para ajustar la imagen de fondo */
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  text-align: center;
+  height: 100%;
+  width: auto;
+  padding-top: 14em;
+  padding-bottom: 14em;
+  border-radius: 15px;
+  font-family: Lato, sans-serif;
+}
+
+.carrusel {
+  background-color: #f2f0ff;
+  height: auto;
+  margin-top: 4em;
+  padding-bottom: 4em;
+}
+
+/* Establece estilos base para el título en cada elemento del carousel */
+.carousel-item h2 {
+  font-size: 4em;
+  font-family: var(--lg-font);
+}
+
+/* Establece estilos base para el botón en cada elemento del carousel */
+.carousel-item .btn {
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 1em;
+}
+
+/* Establece estilos base para el botón al pasar el ratón por encima */
+.carousel-item .btn:hover {
+  background-color: #caa565;
+  color: #fff;
+}
+
+/* Estilos para los botones de edición, eliminación y añadir */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.boton {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  width: auto;
+  border: none;
+  font-size: 1em;
+}
+
+.boton:hover {
+  background-color: rgb(226, 226, 226);
+}
+
+.boton i {
+  color: black;
+}
+
+/* Media queries para hacer el carrusel más responsive */
+
+@media (max-width: 1130px) {
+  .carousel-item {
+    padding: 8em;
+  }
+
+  .carousel-item h2 {
+    font-size: 3em;
+  }
+
+  .carousel-item .btn {
+    font-size: 0.9em;
+  }
+}
+
+/* Para pantallas más pequeñas (ej. tablets) */
+@media (max-width: 768px) {
+  .carousel-item {
+    padding: 2em;
+  }
+
+  .carousel-item h2 {
+    font-size: 2em;
+  }
+
+  .carousel-item .btn {
+    font-size: 0.8em;
+  }
+}
+
+/* Para pantallas más pequeñas aún (ej. teléfonos) */
+@media (max-width: 576px) {
+  .carousel-item {
+    padding: 1em;
+  }
+
+  .carousel-item h2 {
+    font-size: 1.5em;
+  }
+
+  .carousel-item .btn {
+    font-size: 0.7em;
+  }
+}

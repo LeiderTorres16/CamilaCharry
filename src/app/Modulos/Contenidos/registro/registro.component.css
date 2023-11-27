@@ -1,0 +1,99 @@
+.registration-page {
+    position: relative;
+    height: 100vh;
+}
+
+.background-images {
+    display: flex;
+    height: 100%;
+}
+
+.background-image {
+    flex: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: -1;
+}
+
+.registration-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    width: 50%;
+    margin: auto;
+    position: absolute; /* Cambia relative a absolute */
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Centra vertical y horizontalmente */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.registration-form {
+    text-align: left;
+    max-width: 700px; /* Ajusta el valor según tu preferencia */
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.btn-register {
+    background-color: #D8A762;
+    border-color: #D8A762;
+    color: #fff;
+}
+
+
+.separator {
+    display: flex;
+    align-items: center;
+}
+
+.line, .or {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 18px;
+    color: #666666;
+}
+
+.line {
+    height: 1px;
+    background: rgba(102, 102, 102, 0.25);
+    margin: 0 5px; /* Ajusta el espacio entre las líneas y el "O" aquí */
+}
+
+.form-group {
+    margin-bottom: 50px; /* Espaciado entre los campos */
+}
+
+/* Estilos para el contenedor del botón de retorno */
+.return-button {
+    position: absolute;
+    top: 20px; /* Ajusta la separación desde la parte superior */
+    left: 20px; /* Ajusta la separación desde la izquierda */
+  }
+  
+  /* Estilos para el enlace de retorno */
+  .return-link {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  /* Estilos para el ícono de flecha izquierda */
+  .return-link i {
+    margin-right: 8px; /* Ajusta la separación entre el ícono y el texto */
+  }
+  
+  /* Estilos para el enlace de retorno al pasar el mouse */
+  .return-link:hover {
+    text-decoration: underline;
+  }
+

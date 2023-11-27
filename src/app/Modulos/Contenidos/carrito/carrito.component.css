@@ -1,3 +1,47 @@
 input[type="number"] {
     width: 60px; /* Puedes ajustar este valor según tus necesidades */
   }
+
+
+.container{
+  margin-top: 100px;
+  margin-bottom: 100px;
+  min-height: 40vh;
+}
+
+.f-compra{
+  background-color: #E8E6F1;
+  border-radius: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn-compra{
+  background-color: #19D16F;
+  color:white;
+  border-color: #19D16F;
+  width: 100%;
+  margin-top: 20px
+}
+
+.btn-compra:hover{
+  background-color: #16b661;
+  color:white;
+  border-color: #16b661;
+}
+
+.preciototal{
+  font-size: 20px;
+}
+
+.line {
+  height: 1px;
+  background: rgba(102, 102, 102, 0.25);
+  margin: 0 5px; /* Ajusta el espacio entre las líneas y el "O" aquí */
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #ddd; /* Puedes ajustar el color y el grosor del borde según tus preferencias */
+}

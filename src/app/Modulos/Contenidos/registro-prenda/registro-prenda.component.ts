@@ -1,47 +1,321 @@
-import { Component,inject } from '@angular/core';
-import Swal from 'sweetalert2'
+import { Component, inject } from '@angular/core';
+import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrendasService } from 'src/app/Services/prendas_Service';
 import { Prenda } from 'src/app/Models/prenda_class';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {Cloudinary} from '@cloudinary/url-gen'
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import {
+  MatChipEditedEvent,
+  MatChipInputEvent,
+  MatChipsModule,
+} from '@angular/material/chips';
+import { Cloudinary } from '@cloudinary/url-gen';
 import { ImageUploaderService } from 'src/app/Services/image_service';
-
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-registro-prenda',
   templateUrl: './registro-prenda.component.html',
   styleUrls: ['./registro-prenda.component.css'],
-
 })
-
 export class RegistroPrendaComponent {
   prenda: FormGroup;
-  prendas:Prenda[];
+  prendas: Prenda[];
   imagen: File | null;
   addOnBlur = true;
+  imagenes: File[] = [];
+  imagenesNuevas: string[] = [];
+  imagenesAntiguas: string[] = [];
+  isEditMode = false;
+  imagenesPreview: string[] = [];
+  destroy$ = new Subject();
+
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   categorias: string[] = ['Hombre'];
   colores: string[] = [];
+  tallas: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private prendasService: PrendasService, private imageService: ImageUploaderService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private prendasService: PrendasService,
+    private imageService: ImageUploaderService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.prenda = this.formBuilder.group({
-      id:['', Validators.required],
+      id: ['', Validators.required],
       nombre: ['', Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
       descripcion: ['', Validators.required],
       colores: [''],
-      imagenprenda: ['']
+      imagenprenda: [''],
+      existencias: [1, [Validators.required, Validators.min(1)]],
     });
   }
   showAlert: boolean = false;
-  imagenUrl: string = '';
+  imagenUrl: string[] = [];
 
   announcer = inject(LiveAnnouncer);
 
+  async submitForm() {
+    if (this.isEditMode) {
+      Swal.fire({
+        title: 'Por favor, espera...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      try {
+        if (this.prenda.valid && this.imagenesAntiguas.length > 0) {
+          this.showAlert = false;
+          const urls = await this.imageService.uploadImage(this.imagenes);
+
+          const response = await this.updatePrenda(
+            urls!,
+            this.imagenesAntiguas
+          );
+          if (response === 'Prenda actualizada con exito') {
+            this.router.navigateByUrl('/Principal');
+            Swal.fire({
+              text: response,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: response,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          }
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Formulario no válido. Por favor, verifica los campos y asegúrate tener al menos una imagen registrada de la prenda',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+        }
+      } catch (error) {
+      } finally {
+        Swal.hideLoading();
+      }
+    } else {
+      Swal.fire({
+        title: 'Por favor, espera...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      try {
+        if (this.prenda.valid && this.imagenes.length > 0) {
+          const urls = await this.imageService.uploadImage(this.imagenes);
+
+          const result = await this.createPrenda(urls);
+
+          if (result === 'Prenda registrada con exito') {
+            Swal.fire({
+              text: result,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: result,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              confirmButtonColor: '#CAA565',
+            });
+          }
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error inesperado.',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#CAA565',
+        });
+      } finally {
+        Swal.hideLoading();
+      }
+    }
+  }
+
+  async updatePrenda(
+    imageUrlsNuevas: string[],
+    imageUrlsViejas: string[]
+  ): Promise<string> {
+    const prendaId = this.prenda.value.id;
+
+    imageUrlsNuevas.forEach((img) => {
+      imageUrlsViejas.push(img);
+    });
+
+    const newPrenda = new Prenda(
+      prendaId,
+      this.prenda.value.nombre,
+      this.prenda.value.precio,
+      this.prenda.value.descripcion,
+      this.colores,
+      this.categorias,
+      imageUrlsViejas,
+      'activo',
+      this.prenda.value.existencias
+    );
+
+    const response = await this.prendasService.updatePrenda(newPrenda);
+
+    if (response) {
+      return 'Prenda actualizada con exito';
+    } else {
+      return 'Error!';
+    }
+  }
+
+  async createPrenda(imageUrls: string[] | undefined): Promise<string> {
+    const nuevaPrenda = new Prenda(
+      this.prenda.value.id,
+      this.prenda.value.nombre,
+      this.prenda.value.precio,
+      this.prenda.value.descripcion,
+      this.colores,
+      this.categorias,
+      imageUrls!,
+      'activo',
+      this.prenda.value.existencias
+    );
+
+    const response = await this.prendasService.añadirPrenda(nuevaPrenda);
+
+    if (response) {
+      return 'Prenda registrada con exito';
+    } else {
+      return 'Error al intentar crear la prenda';
+    }
+  }
+
+  getImagenURL(): any {
+    return this.imagen ? URL.createObjectURL(this.imagen) : null;
+  }
+
+  eliminarImagen(index: number) {
+    this.imagenesPreview.splice(index, 1);
+    this.imagenes.splice(index, 1);
+  }
+
+  eliminarImagenE(index: number) {
+    this.imagenesAntiguas.splice(index, 1);
+  }
+
+  onFileSelected(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      for (let i = 0; i < input.files.length; i++) {
+        const file = input.files[i];
+        this.imagenes.push(input.files[i]);
+        const maxSize = 3024 * 3024;
+
+        if (file.size <= maxSize) {
+          this.imagen = file;
+          const newFile = URL.createObjectURL(file);
+          this.imagenesPreview.push(newFile);
+          this.showAlert = false;
+        } else {
+          const mensaje =
+            'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
+          Swal.fire({
+            title: 'Error!',
+            text: mensaje,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          });
+          this.imagen = null;
+          input.value = '';
+          this.showAlert = true;
+        }
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    this.imagenesAntiguas = [];
+    window.scrollTo(0, 0);
+    const prendaId = this.route.snapshot.paramMap.get('id');
+    if (prendaId) {
+      this.isEditMode = true;
+      this.loadPrendaForEdit(prendaId);
+    } else {
+      // Estamos en modo de registro
+      this.initNewPrendaForm();
+    }
+    const cld = new Cloudinary({ cloud: { cloudName: 'prendas' } });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next;
+    this.destroy$.complete();
+  }
+
+  //Cargar Datos en Modo Edicion
+  private loadPrendaForEdit(prendaId: string): void {
+    this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
+      this.initEditPrendaForm(prenda!);
+    });
+  }
+
+  private initEditPrendaForm(prenda: any): void {
+    this.prenda = this.formBuilder.group({
+      id: [prenda.id, Validators.required],
+      nombre: [prenda.nombre, Validators.required],
+      precio: [prenda.precio, [Validators.required, Validators.min(0)]],
+      descripcion: [prenda.descripcion, Validators.required],
+      colores: [''],
+      imagenprenda: [''],
+      existencias: [
+        prenda.existencias,
+        [Validators.required, Validators.min(1)],
+      ],
+    });
+
+    this.categorias = prenda.categorias;
+    this.colores = prenda.colores;
+
+    for (let i = 0; i < prenda.imagen.length; i++) {
+      this.imagenesAntiguas.push(prenda.imagen[i]);
+    }
+  }
+
+  initNewPrendaForm() {
+    this.prenda = this.formBuilder.group({
+      id: ['', Validators.required],
+      nombre: ['', Validators.required],
+      precio: [null, [Validators.required, Validators.min(0)]],
+      descripcion: ['', Validators.required],
+      colores: [''],
+      imagenprenda: [''],
+      existencias: [1, [Validators.required, Validators.min(1)]],
+    });
+    this.categorias = [];
+    this.colores = [];
+  }
+
+  //Funciones de el MaterialChip (Campos de Categorias/Tallas/Colores)
+
+  //Categorias
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
@@ -71,6 +345,39 @@ export class RegistroPrendaComponent {
       this.categorias[index] = value;
     }
   }
+
+  //Tallas
+  addTalla(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.tallas.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  removeTalla(talla: string): void {
+    const index = this.tallas.indexOf(talla);
+
+    if (index >= 0) {
+      this.tallas.splice(index, 1);
+
+      this.announcer.announce(`Eliminado ${talla}`);
+    }
+  }
+  editTalla(talla: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+    if (!value) {
+      this.remove(talla);
+      return;
+    }
+    const index = this.tallas.indexOf(talla);
+    if (index >= 0) {
+      this.tallas[index] = value;
+    }
+  }
+
+  //Colores
   addColores(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
@@ -98,132 +405,4 @@ export class RegistroPrendaComponent {
       this.colores[index] = value;
     }
   }
-
- async submitForm() {
-
-// const response = await this.imageService.uploadImage(this.imagen!);
-  const response = await this.prendasService.addImage(this.imagen);
-  if (response!= 'error') {
-
-    // try {
-    //   const cloudinaryObject = JSON.parse(response);
-    //   const secureUrl = cloudinaryObject.secure_url;
-    //   console.log(secureUrl); // Imprime la URL segura
-    // } catch (error) {
-    //   console.error("Error al analizar el JSON:", error);
-    // }    
-    this.imagenUrl = response;
-    if (this.prenda.valid && this.imagen) {
-      const nuevaPrenda = new Prenda(
-        this.prenda.value.id,
-        this.prenda.value.nombre,
-        this.prenda.value.precio,
-        this.prenda.value.descripcion,
-        this.colores,
-        this.categorias,
-        this.imagenUrl,
-        'activo'
-      );
-     const response : string  = await this.prendasService.addPrenda(nuevaPrenda);
-     console.log(response);
-     if (response == 'Prenda registrada con exito') {
-      Swal.fire({
-        text: response,
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500
-  
-      });
-     }else{
-      Swal.fire({
-        title: 'Error!',
-        text: response,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#CAA565',
-
-      });
-     }
-
-     this.prenda.reset();
-     this.imagen = null;
-     this.imagenUrl = '';
-     this.colores = [];
-     this.categorias = [];
-              
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.',
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#CAA565',
-
-      });
-    } 
-  } else {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Formulario no válido. Por favor, verifica los campos y asegúrate de seleccionar una imagen.',
-      icon: 'error',
-      confirmButtonText: 'Ok',
-      confirmButtonColor: '#CAA565',
-
-    });
-  }
-
-  }
-  getImagenURL(): any {
-    return this.imagen ? URL.createObjectURL(this.imagen) : null;
-  }
-
-  onFileSelected(event: any) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const maxSize = 1024 * 1024;
-      const maxWidth = 370;
-      const maxHeight = 370;
-      const minWidth = 370;
-      const minHeight = 370;
-
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
-
-      image.onload = async () => {
-        // if (file.size <= maxSize && image.width <= maxWidth && image.height <= maxHeight && image.width >= minWidth && image.height >= minHeight) {
-        if (file.size > 0) {
-          this.imagen = file;
-          this.showAlert = false  ;
-
-        } else {
-
-          const mensaje = 'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
-          Swal.fire({
-            title: 'Error!',
-            text: mensaje,
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            confirmButtonColor: '#CAA565',
-    
-          });
-          this.imagen = null;
-          input.value = '';
-          this.showAlert = true;
-
-        }
-      };
-    }
-
-
-  }
-  
-  ngOnInit():void{
-    const cld = new Cloudinary({cloud: {cloudName: 'prendas'}});
-
-    this.prendasService.getPrendas().subscribe(prendas=> {
-      console.log(prendas);
-    })
-  }
 }
-

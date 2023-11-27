@@ -1,0 +1,13 @@
+.container {
+  text-align: center;
+  min-height: 80vh;
+}
+
+.headers {
+  background-color: #caa565;
+  color: white;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #ddd;
+}

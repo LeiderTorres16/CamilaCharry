@@ -1,61 +1,77 @@
-<div class="container" style="padding-top:30px;">
-    <h1 style="margin-bottom:30px;">Inventario y Ventas</h1>
+<div class="container" style="margin-top: 120px;">
+    <h1 style="margin-bottom: 30px;">Inventario y Ventas</h1>
     <div style="margin-bottom: 30px;">
-        <button type="button" class="btn active" [ngClass]="{'active': mostrarInventario}"
+        <button type="button" class="btn-filtro" [ngClass]="{'active': mostrarInventario}"
             (click)="mostrarInventario = true; mostrarVentas = false;">Inventario</button>
-        <button type="button" class="btn active" [ngClass]="{'active': mostrarVentas}"
+        <button type="button" class="btn-filtro" [ngClass]="{'active': mostrarVentas}"
             (click)="mostrarInventario = false; mostrarVentas = true;">Ventas</button>
     </div>
-
-
-
-    <!-- Contenido de inventario o ventas dependiendo de los flags -->
     <div *ngIf="mostrarInventario">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="col-md-3 mb-4" *ngFor="let producto of productosDestacados; let i = index">
-                <div class="product-card" style="cursor: pointer;">
-                    <div class="product-image">
-                        <img src="{{producto.imagen}}" alt="Producto">
-                    </div>
-                    <div class="product-details">
-                        <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
-                        <span class="fw-bold">$ {{producto.precio}}</span>
-                    </div>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-borderless">
+                <thead >
+                    <tr >
+                        <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Imagen</th>
+                        <th class="headers align-middle">Nombre</th>
+                        <th class="headers align-middle">Código</th>
+                        <th class="headers align-middle">Precio</th>
+                        <th class="headers align-middle">Existencias</th>
+                        <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of productosInventario">
+                        <td><img [src]="getImageUrl(producto)" alt="Producto" width="50" style="border-radius: 5px;"></td>
+                        <td class="align-middle">{{producto.nombre}}</td>
+                        <td class="align-middle">{{producto.id}}</td>
+                        <td class="align-middle">{{producto.precio | currency}}</td>
+                        <td class="align-middle">{{producto.existencias}}</td>
+                        <td class="align-middle">
+                            <button (click)="editarProducto(producto)" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <button (click)="eliminarProducto(producto)" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
 
 
     <div *ngIf="mostrarVentas">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
-                <div class="product-card" style="cursor: pointer;">
-                    <div class="product-image">
-                        <img src="{{producto.imagen}}" alt="Producto">
-                    </div>
-                    <div class="product-details">
-                        <p class="text-capitalize my-1">{{producto.nombreProducto}}</p>
-                        <span class="fw-bold">$ {{producto.precio}}</span>
-                    </div>
-                </div>
+        <div style="margin-top: 20px;">
+            <label for="filtroCorreo">Filtrar por Correo:</label>
+            <div class="input-group">
+                <select id="filtroCorreo" class="form-control" [(ngModel)]="filtroCorreo" (ngModelChange)="filtrarVentasPorCorreo($event)">
+                    <option value="">Todos</option>
+                    <option *ngFor="let correo of obtenerCorreosClientes()" [value]="correo">{{correo}}</option>
+                </select>
             </div>
         </div>
-    </div>
-</div>
-<!-- Contenido de inventario o ventas dependiendo de los flags -->
-<div *ngIf="mostrarInventario">
-    <div class="row d-flex align-items-center justify-content-center">
-        <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
-            <!-- Aquí va tu diseño de tarjeta -->
-        </div>
-    </div>
-</div>
-
-<div *ngIf="mostrarVentas">
-    <div class="row d-flex align-items-center justify-content-center">
-        <div class="col-md-3 mb-4" *ngFor="let producto of productosEspeciales; let i = index">
-            <!-- Aquí va tu diseño de tarjeta para ventas -->
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-borderless">
+                <thead>
+                    <tr>
+                        <th class="headers align-middle" style="border-radius: 15px 0 0 0;">Referencia</th>
+                        <th class="headers align-middle">Total</th>
+                        <th class="headers align-middle">Cliente</th>
+                        <th class="headers align-middle" style="border-radius: 0 15px 0 0;">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of productosVentas">
+                        <td class="align-middle"><a (click)="navigateToReferencia(producto.referencia)" style="cursor: pointer; color: rgb(1, 141, 255)">{{producto.referencia}}</a></td>
+                        <td class="align-middle">{{producto.total | currency}}</td>
+                        <td class="align-middle">{{producto.usuario.correo}}</td>
+                        <td class="align-middle">{{producto.fecha}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
