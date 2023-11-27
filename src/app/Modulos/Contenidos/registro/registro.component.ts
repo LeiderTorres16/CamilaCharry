@@ -27,9 +27,8 @@ export class RegistroComponent {
 
   async onSubmit() {
     if (this.registrationForm.valid) {
-      const nRegistros = await this.userService.getNumberOfUsers();
       const usuario = new User(
-        nRegistros+1,
+        0,
         this.registrationForm.value.nombre,
         this.registrationForm.value.apellido,
         this.registrationForm.value.direccion,
@@ -38,7 +37,7 @@ export class RegistroComponent {
         'estandar'  
       );
       const result = await this.authService.registerUser(usuario);
-      if (result == "Usuario Creado con exito") {
+      if (result) {
         Swal.fire({
           text: 'Registro Exitoso',
           icon: 'success',

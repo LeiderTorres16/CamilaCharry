@@ -6,6 +6,8 @@ import { PrendasService } from 'src/app/Services/prendas_Service';
 import { VentaService } from 'src/app/Services/venta_service';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
+import { PrendaCarrito } from 'src/app/Models/prendaCarrito.class';
+import { Prenda } from 'src/app/Models/prenda_class';
 
 @Component({
   selector: 'app-carrito-compra',
@@ -13,8 +15,8 @@ import jsPDF from 'jspdf';
   styleUrls: ['./carrito.component.css'],
 })
 export class CarritoComponent {
-  productosCarrito: any[] = [];
-  productosCompra: any[] = [];
+  productosCarrito: Prenda[] = [];
+  productosCompra: PrendaCarrito[] = [];
   cantidades: number[] = [];
   totalCarrito: number = 0;
   formatoFechaHora: string;
@@ -70,7 +72,7 @@ export class CarritoComponent {
     this.dataService.data$.subscribe(async (data) => {
       this.fechaHora();
       this.data = data;
-      const referencia = this.formatoFechaHora + data.id;
+      const referencia = this.formatoFechaHora + data.usr.nombre;
       if (this.data) {
         this.productosCarrito.forEach((producto, index) => {
           this.productosCompra.push({
@@ -81,7 +83,7 @@ export class CarritoComponent {
             totalProducto: producto.precio * this.cantidades[index]
           });
         });
-
+        console.log(this.productosCompra)
         const reciboInfo = {
           referencia: referencia,
           user: this.data,
@@ -93,7 +95,7 @@ export class CarritoComponent {
           },
         };
 
-        // await this.ventaService.addVenta(this.productosCarrito);
+        await this.ventaService.addVenta(this.productosCompra);
         this.emailService
           .confirmPurchase(this.data, this.productosCompra)
           .subscribe(
@@ -160,8 +162,8 @@ export class CarritoComponent {
   }
 
   getImageUrl(producto: any): string {
-    if (producto.imagenes && producto.imagenes.length > 0) {
-      return producto.imagenes[0];
+    if (producto.imagen && producto.imagen.length > 0) {
+      return producto.imagen[0];
     } else {
       return '';
     }
@@ -189,7 +191,7 @@ export class CarritoComponent {
     doc.text(reciboInfo.referencia, 90, 30);
 
     doc.text('Información del usuario:', 10, 40);
-    doc.text(`${reciboInfo.user.nombre}, ${reciboInfo.user.correo}`, 70, 40);
+    doc.text(`${reciboInfo.user.usr.nombre}, ${reciboInfo.user.usr.username}`, 70, 40);
 
     doc.text('Fecha y hora de la compra:', 10, 50);
     doc.text(reciboInfo.fechaCompra, 80, 50);

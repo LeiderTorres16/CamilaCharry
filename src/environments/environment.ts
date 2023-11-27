@@ -11,9 +11,17 @@ export const environment = {
 };
 
 
-let HostVenta
+let HostVenta="http://localhost:4001/ventas"
+export const ventasEnvironment = {
+  crearVenta: `${HostVenta}/createVenta`
+}
 
-let HostAuth
+let HostAuth="http://localhost:3001/"
+export const authEnviorment = {
+  registro: `${HostAuth}auth/signup`,
+  login: `${HostAuth}auth/login`,
+  getUser: `${HostAuth}`
+}
 
 let HostPrenda="http://localhost:4000/prendas"
 export const prendaEnvironment = {

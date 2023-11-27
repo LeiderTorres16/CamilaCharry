@@ -12,11 +12,19 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Venta } from '../Models/venta.class';
 import { DataService } from './data.service';
+import { HttpClient } from '@angular/common/http';
+import { ventasEnvironment } from 'src/environments/environment';
+import { PrendaCarrito } from '../Models/prendaCarrito.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VentaService {
+
+
+  endpointCrearVenta:string;
+
+
   fechaActual: Date;
   fechaActualFormateada: string;
   data: any;
@@ -24,12 +32,14 @@ export class VentaService {
   constructor(
     private firestore: Firestore,
     private fireStorage: AngularFireStorage,
-    private dataService: DataService
+    private dataService: DataService,
+    private httpClient: HttpClient
   ) {
+    this.endpointCrearVenta = ventasEnvironment.crearVenta;
+
     this.fechaActual = new Date();
     this.fechaActualFormateada = this.formatoFechaHora(this.fechaActual);
     this.fecha = this.formatoFecha(this.fechaActual);
-
   }
   formatoFechaHora(fecha: Date): string {
     const year = fecha.getFullYear().toString();
@@ -44,33 +54,43 @@ export class VentaService {
     const year = fecha.getFullYear().toString();
     const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
     const day = fecha.getDate().toString().padStart(2, '0');
-    return year + "/" + month +"/" + day;
+    return year + '/' + month + '/' + day;
   }
 
-  async addVenta(prendas: Prenda[]): Promise<string> {
+  async addVenta(prendas: PrendaCarrito[]): Promise<any> {
     try {
       this.dataService.data$.subscribe(async (data) => {
         this.data = data;
         const totalVenta = prendas.reduce(
-          (total, prenda) => total + prenda.precio,
+          (total, prenda) => total + prenda.totalProducto,
           0
         );
-        const ventasDocRef = doc(
-          this.firestore,
-          'ventas',
-          this.fechaActualFormateada+data.id
-        );
-        await setDoc(ventasDocRef, { 
-          referencia: this.fechaActualFormateada+data.id,
-          productos: prendas,
-          total: totalVenta,
-          usuario: this.data,
-          fecha: this.fecha
-         });
+        // const ventasDocRef = doc(
+        //   this.firestore,
+        //   'ventas',
+        //   this.fechaActualFormateada+data.id
+        // );
+        // await setDoc(ventasDocRef, {
+        //   referencia: this.fechaActualFormateada+data.id,
+        //   productos: prendas,
+        //   total: totalVenta,
+        //   usuario: this.data,
+        //   fecha: this.fecha
+        //  });
+
+        const result = await this.httpClient.post(this.endpointCrearVenta, {
+          "fecha": this.fecha,
+          "productos":prendas,
+          "referencia":this.fechaActualFormateada+data.usr.nombre,
+          "total":totalVenta,
+          "usuario":this.data.usr,
+          "estado":"Activo"
+        }).toPromise();
+
+        return result as Promise<any>;
       });
-      return 'Venta registrada con exito';
     } catch (error: string | any) {
-      return error;
+      return null;
     }
   }
 }

@@ -11,15 +11,22 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../Models/user_class';
+import { HttpClient } from '@angular/common/http';
+import { authEnviorment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
 
+  endpointGetUsers:string;
+
   constructor(
     private firestore: Firestore,
-  ) {}
+    private httpClient: HttpClient,
+  ) {
+    this.endpointGetUsers = authEnviorment.getUser;
+  }
 
   getUsers(): Observable<User[]> {
     const prendaRef = collection(this.firestore, 'usuarios');
@@ -33,11 +40,5 @@ export class UserService {
         return userEncontrado;
       })
     );
-  }
-
-  async getNumberOfUsers(): Promise<number> {
-    const userRef = collection(this.firestore, 'usuarios');
-    const querySnapshot = await getDocs(userRef);
-    return querySnapshot.size;
   }
 }

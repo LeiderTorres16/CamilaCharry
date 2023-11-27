@@ -1,41 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection } from '@angular/fire/firestore';
-import { doc, setDoc } from 'firebase/firestore';
 import { User } from '../Models/user_class';
 import { UserService } from './users_service';
 import { Router } from '@angular/router';
+import { authEnviorment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private firestore: Firestore, private userService: UserService, private router: Router) {}
+  endpointRegistro: string;
+  endpointLogin: string;
 
-  registerUser(user: User): string {
-    try {
-      setDoc(doc(this.firestore, 'usuarios', user.id.toString()), {
-        id: user.id,
-        nombre: user.nombre,
-        apellido: user.apellido,
-        direccion: user.direccion,
-        correo: user.correo,
-        contraseña: user.contraseña,
-        rol: user.rol,
-      });
-      return 'Usuario Creado con exito';
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private httpClient: HttpClient
+  ) {
+    this.endpointRegistro = authEnviorment.registro;
+    this.endpointLogin = authEnviorment.login;
+  }
+
+  async registerUser(user: User): Promise<any> {
+    try {      
+      const result = await this.httpClient.post(this.endpointRegistro, {
+        "username": user.correo,
+        "password": user.contraseña,
+        "apellido": user.apellido,
+        "direccion": user.direccion,
+        "ciudad": "Valledupar",
+        "nombre": user.nombre,
+        "rol": "estandar",
+      }).toPromise();
+
+      return result as Promise<any>;
     } catch (e) {
-      return 'Hubo un problema';
+      return null;
     }
   }
 
-    login(email: string, password: string) {
-    const resp = this.userService.getUserPorCorreo(email);
-    resp.subscribe((res) =>{
-      if (res?.contraseña == password) {
-        this.router.navigateByUrl('/InicioSesion');
-      } else {
-        
-      }
-    });
+  async loginUser(email: string, password: string): Promise<any> {
+    try {
+      const result = await this.httpClient.post(this.endpointLogin, {
+        "username": email,
+        "password": password,
+      }).toPromise()
+      
+      return result as Promise<any>;
+    } catch (error) {
+      return null;
+    }
   }
+
 }
