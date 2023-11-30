@@ -13,7 +13,7 @@ export class DetallePrendaComponent implements OnInit, AfterViewInit {
   prenda: Prenda;
   prendaId: string;
   mostrarPersonalizacion = false;
-  precioFinal: number = 0;
+  precioFinal: number;
   imagenesPrenda: string[] = [];
   currentIndex: number = 0;
   autoChangeInterval: any;
@@ -69,8 +69,7 @@ export class DetallePrendaComponent implements OnInit, AfterViewInit {
     this.prendasService.getPrendaPorId(prendaId).subscribe((prenda) => {
       if (prenda) {
         this.prenda = prenda;
-        this.precioFinal = this.prenda.precio;
-
+        this.precioFinal = Number(prenda.precio);
         prenda.imagen.forEach((imagen) => {
           this.imagenesPrenda.push(imagen);
         });
@@ -112,7 +111,7 @@ export class DetallePrendaComponent implements OnInit, AfterViewInit {
   }
 
   actualizarPrecio(): void {
-    this.precioFinal = this.prenda.precio;
+    this.precioFinal = Number(this.prenda.precio);
 
     if (this.cuelloSeleccionado !== 'Ninguno') {
       this.precioFinal += 20000;

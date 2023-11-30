@@ -12,6 +12,8 @@
               <tr>
                 <th>Producto</th>
                 <th>Precio</th>
+                <th>Color</th>
+                <th>Talla</th>
                 <th>Cantidad</th>
                 <th>Total</th>
                 <th>Acción</th>
@@ -26,6 +28,16 @@
                   </div>
                 </td>
                 <td>${{ producto.precio }}</td>
+                <td>
+                  <select [(ngModel)]="coloresSeleccionados[i]" (change)="actualizarColor(i)" class="form-control">
+                    <option *ngFor="let color of producto.colores" [value]="color" [selected]="producto.colores[0]">{{ color }} </option>
+                  </select>
+                </td>
+                <td>
+                  <select [(ngModel)]="tallasSeleccionadas[i]" (change)="actualizarTalla(i)" class="form-control">
+                    <option *ngFor="let talla of producto.tallas" [value]="talla" [selected]="talla === producto.tallas[0]">{{ talla }}</option>
+                  </select>
+                </td>
                 <td>
                   <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1"
                     class="form-control">

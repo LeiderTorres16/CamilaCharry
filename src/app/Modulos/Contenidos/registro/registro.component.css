@@ -96,4 +96,10 @@ h2 {
   .return-link:hover {
     text-decoration: underline;
   }
+  
+  .text-danger {
+    color: red;
+    position: absolute;
+    text-align: center; /* Ajusta el margen según sea necesario */
+}
 
