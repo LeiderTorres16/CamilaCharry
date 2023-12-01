@@ -1,45 +1,138 @@
+/* Sección de colección */
+#collection {
+  background-color: #FFFFFF;
+  padding-top: 120px;
+}
+
+/* #collection div {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  padding-top: 50px;
+} */
+
+#collection h1.titulo-detalle {
+  font-size: 2em; /* Ajusta el tamaño del texto según tus necesidades */
+}
+
+/* Sección de personalización */
+#personalizacion {
+  background-color: #F6F5FF;
+}
+
 .detalle-prenda {
-  display: flex;
-  margin-left: 300px;
-  margin-right: 300px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
+  background-color: #FFFFFF;
   box-shadow: 0px 0px 25px 10px #f6f4fd;
-  min-height: 600px;
+  border-radius: 5px;
+  max-width: 800px; /* Ajusta el ancho máximo según tus necesidades */
+  margin: 0 auto; /* Centra el div en la pantalla */
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  padding-top: 50px;/* Añade un espacio interno al div para mejorar el aspecto visual */
+  display: flex;
+  justify-content: space-between; /* Espacio entre las dos columnas */
 }
 
-.imagen-prenda {
-  flex: 1;
-  margin-right: 20px;
+/* Ajusta la imagen según el tamaño de la pantalla */
+.detalle-prenda img {
+  max-width: 100%; /* La imagen no será más ancha que su contenedor */
+  height: auto; /* Mantén la relación de aspecto de la imagen */
 }
 
-.imagen-prenda img {
-  max-width: 100%;
-  height: auto;
+/* Ajusta el texto según el tamaño de la pantalla */
+.detalle-prenda p {
+  font-size: 1em; /* Ajusta el tamaño del texto según tus necesidades */
 }
 
-.info-prenda {
-  flex: 2;
-  margin-left: 20px;
+.columna-imagen {
+  flex: 0 0 30%; /* 30% de ancho, no se expande ni encoge */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido verticalmente */
 }
 
-.titulo-detalle {
-  color: #333;
-  font-size: 36px;
-  font-weight: 400;
+.columna-imagen img {
+  max-width: 100%; /* La imagen no será más ancha que su contenedor */
+  height: auto; /* Mantén la relación de aspecto de la imagen */
 }
 
-h1 {
-  margin: 0;
-  font-size: 36px;
-  font-weight: 600;
-  color: #333;
+.columna-info {
+  flex: 0 0 55%; /* 70% de ancho, no se expande ni encoge */
+  display: flex;
+  flex-direction: column; /* Espacio entre elementos hijos */
 }
 
-p {
-  margin: 10px 0;
-  color: #555;
+/* Estilos para la información de la prenda */
+.columna-info h1 {
+  font-size: 1.9em;
+  font-weight: bold;
+}
+
+.columna-info div {
+  margin-bottom: 15px; /* Añade margen inferior para separar cada sección */
+}
+
+.columna-info p {
+  margin: 0 0 5px 0; 
+}
+
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.nav-icon {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.nav-icon.nav-left {
+  margin-right: 10px; /* Espacio entre el ícono de la izquierda y la imagen */
+}
+
+.nav-icon.nav-right {
+  margin-left: 10px; /* Espacio entre el ícono de la derecha y la imagen */
+}
+
+.btn-personalizar,
+.btn {
+  width: 150px; /* Establece el ancho deseado para ambos botones */
+  text-align: center; /* Centra el texto horizontalmente */
+  display: inline-block; /* Permite establecer un ancho y alto */
+  margin: 0; /* Elimina el margen para asegurar que ambos botones tengan el mismo tamaño */
+  box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto */
+}
+
+.btn-personalizar {
+  background-color: #caa565;
+  color: #fff;
+  padding: 10px 0; /* Ajusta el padding según sea necesario */
+  border-radius: 25px;
+  border: 1px solid #caa565;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-personalizar:hover {
+  background-color: #fff !important;
+  color: #caa565;
+  border-color: #caa565 !important;
+}
+
+.btn {
+  background-color: #fff;
+  color: rgb(85, 85, 85);
+  padding: 10px 0; /* Ajusta el padding según sea necesario */
+  border-radius: 25px;
+  border: 1px solid rgb(85, 85, 85);
+}
+
+.btn:hover {
+  background-color: #caa565 !important;
+  color: #fff;
+  border-color: #caa565 !important;
 }
 
 .personalizacion-prenda {
@@ -61,12 +154,14 @@ p {
   box-shadow: 0px 0px 25px 10px #f6f4fd;
   flex: 2;
   margin-left: 70px;
-  margin-right: 70px;
+  margin-right: 70px; 
+  text-align: center; /* Centra el contenido horizontalmente */
 }
 
 .imagen-personalizacion img {
   max-width: 100%;
   height: auto;
+  display: inline-block; /* Permite que el contenedor se ajuste al tamaño de la imagen */
 }
 
 .btn-personalizar {
@@ -84,53 +179,36 @@ p {
   border-color: #caa565 !important;
 }
 
-.btn {
-  background-color: #fff;
-  color: rgb(85, 85, 85);
-  padding: 10px 28px;
-  border-radius: 25px;
-  border: 1px solid rgb(85, 85, 85);
-}
-
-.btn:hover {
-  background-color: #caa565 !important;
-  color: #fff;
-  border-color: #caa565 !important;
-}
-
-.carousel-container {
+.fila-segunda {
   display: flex;
-  overflow: hidden;
-  width: 100%; /* Ancho máximo del carrusel visible en la pantalla */
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Media queries para ajustes específicos en tamaños de pantalla */
+@media only screen and (max-width: 600px) {
+  /* Estilos específicos para pantallas con un ancho máximo de 600px (puedes ajustar este valor) */
+  #collection h1.titulo-detalle {
+      font-size: 1.5em;
+  }
 
-.imagen-prenda {
-  flex: 0 0 auto; /* Evita que las imágenes cambien de tamaño */
-  margin-right: 10px; /* Espacio entre las imágenes */
+  .detalle-prenda {
+    flex-direction: column; /* Cambia la dirección del contenedor a column */
+    align-items: center; /* Centra los elementos horizontalmente */
+    text-align: center; /* Centra el texto dentro del contenedor */
+  }
+
+  .columna-imagen,
+  .columna-info {
+    flex: 1; /* Ocupa todo el ancho disponible */
+    margin-bottom: 20px; /* Añade espacio entre los elementos */
+  }
+
+  .detalle-prenda p {
+      font-size: 0.8em;
+  }
+
+  .nav-icon {
+    font-size: 20px;
 }
-
-.carousel-container.centered {
-  display: flex;
-  align-items: center; /* Alinear verticalmente al centro */
-  justify-content: center; /* Alinear horizontalmente al centro */
-  height: 100%;
 }
-
-/* Estilos para los botones de navegación */
-.nav-icon {
-  cursor: pointer;
-  font-size: 24px;
-}
-
-/* Estilos para el ícono de flecha izquierda */
-.nav-icon.nav-left {
-  margin-right: 10px; /* Espacio entre el ícono de la izquierda y la imagen */
-}
-
-/* Estilos para el ícono de flecha derecha */
-.nav-icon.nav-right {
-  margin-left: 10px; /* Espacio entre el ícono de la derecha y la imagen */
-}
-
-

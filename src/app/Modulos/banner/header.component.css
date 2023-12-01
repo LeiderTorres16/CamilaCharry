@@ -86,7 +86,7 @@
 /* Para pantallas más pequeñas (ej. tablets) */
 @media (max-width: 768px) {
   .carousel-item {
-    padding: 2em;
+    padding: 5em;
   }
 
   .carousel-item h2 {
@@ -101,7 +101,7 @@
 /* Para pantallas más pequeñas aún (ej. teléfonos) */
 @media (max-width: 576px) {
   .carousel-item {
-    padding: 1em;
+    padding: 3em;
   }
 
   .carousel-item h2 {
