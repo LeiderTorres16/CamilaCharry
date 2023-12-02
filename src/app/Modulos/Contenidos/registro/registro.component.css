@@ -1,105 +1,196 @@
 .registration-page {
-    position: relative;
-    height: 100vh;
+  position: relative;
+  height: 100vh;
+}
+
+.container-fluid{
+    padding: 0;
 }
 
 .background-images {
-    display: flex;
-    height: 100%;
+  display: flex;
+  height: 100%;
+  
 }
 
 .background-image {
-    flex: 1;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100%;
-    width: 100%;
-    position: relative;
-    z-index: -1;
+  flex: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: -1;
 }
 
 .registration-container {
-    background-color: white;
-    border-radius: 15px;
-    padding: 20px;
-    width: 50%;
-    margin: auto;
-    position: absolute; /* Cambia relative a absolute */
-    top: 50%; /* Centra verticalmente */
-    left: 50%; /* Centra horizontalmente */
-    transform: translate(-50%, -50%); /* Centra vertical y horizontalmente */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 40%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-.registration-form {
-    text-align: left;
-    max-width: 700px; /* Ajusta el valor según tu preferencia */
-    margin: 0 auto;
-}
-
-h2 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.btn-register {
-    background-color: #D8A762;
-    border-color: #D8A762;
-    color: #fff;
-}
-
-
-.separator {
-    display: flex;
-    align-items: center;
-}
-
-.line, .or {
-    flex-grow: 1;
-    text-align: center;
-    font-size: 18px;
-    color: #666666;
-}
-
-.line {
-    height: 1px;
-    background: rgba(102, 102, 102, 0.25);
-    margin: 0 5px; /* Ajusta el espacio entre las líneas y el "O" aquí */
+.card {
+  border: none;
 }
 
 .form-group {
-    margin-bottom: 50px; /* Espaciado entre los campos */
+  margin-bottom: 40px; /* Espaciado entre los campos */
 }
 
-/* Estilos para el contenedor del botón de retorno */
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.btn-register {
+  background-color: #d8a762;
+  border-color: #d8a762;
+  color: #fff;
+  width: 200px;
+}
+
 .return-button {
-    position: absolute;
-    top: 20px; /* Ajusta la separación desde la parte superior */
-    left: 20px; /* Ajusta la separación desde la izquierda */
-  }
-  
-  /* Estilos para el enlace de retorno */
-  .return-link {
-    text-decoration: none;
-    color: #333;
-    font-size: 16px;
-  }
-  
-  /* Estilos para el ícono de flecha izquierda */
-  .return-link i {
-    margin-right: 8px; /* Ajusta la separación entre el ícono y el texto */
-  }
-  
-  /* Estilos para el enlace de retorno al pasar el mouse */
-  .return-link:hover {
-    text-decoration: underline;
-  }
-  
-  .text-danger {
+  position: absolute;
+  top: 20px; /* Ajusta la separación desde la parte superior */
+  left: 20px; /* Ajusta la separación desde la izquierda */
+}
+
+.text-danger {
     color: red;
     position: absolute;
     text-align: center; /* Ajusta el margen según sea necesario */
 }
 
+@media (max-width: 1400px) {
+  .registration-container {
+    padding-top: 30px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 60%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 1000px) {
+  .registration-container {
+    padding-top: 30px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 900px) {
+  .registration-container {
+    padding-top: 30px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 767px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+  .registration-container {
+    padding-top: 30px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 600px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+
+  .registration-container {
+    margin-top: 100px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 440px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+  .registration-container {
+    margin-top: 0px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 400px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+  .registration-container {
+    margin-top: 20px;
+    margin-bottom: 120px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 375px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+
+  .registration-container {
+    margin-top: 120px;
+    margin-bottom: 120px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}
+
+@media (max-width: 360px) {
+  .background-images {
+    display: none; /* Oculta las imágenes de fondo */
+  }
+
+  .return-button{
+    display: none;
+  }
+
+
+  .registration-container {
+    margin-top: 90px;
+    margin-bottom: 120px; /* Ajusta el valor según sea necesario */
+    font-size: 14px;
+    width: 80%; /* Ajusta el ancho del contenedor para dispositivos pequeños */
+  }
+}

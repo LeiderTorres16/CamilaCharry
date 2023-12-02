@@ -19,11 +19,9 @@ import Swal from 'sweetalert2';
 export class RegistroComponent {
   registrationForm: FormGroup;
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  imagenesFondo: string[] = ["mq-fondo.jpg", "regis.jpg", "c-fondo.jpg"]
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
@@ -32,42 +30,8 @@ export class RegistroComponent {
       direccion: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       contraseña: new FormControl('', [Validators.required]),
-      cContraseña: new FormControl('', [Validators.required]),
+      ciudad: new FormControl('', [Validators.required]),
     });
-
-    // Configurar el validador en ngOnInit
-    this.registrationForm
-      .get('cContraseña')
-      ?.setValidators(this.passwordMatchValidator.bind(this));
-  }
-
-  ngAfterViewInit() {
-    this.registrationForm
-      .get('cContraseña')
-      ?.setValidators(this.passwordMatchValidator.bind(this));
-  }
-
-  // Función de validación personalizada
-  passwordMatchValidator(control: AbstractControl) {
-    const password = this.registrationForm.get('contraseña')?.value;
-    const confirmPassword = control.value;
-
-    if (password === confirmPassword) {
-      return null; // La validación es exitosa
-    } else {
-      return { passwordMismatch: true }; // La validación falla
-    }
-  }
-
-  // Función para obtener mensajes de error de campos obligatorios
-  getErrorMessage(controlName: string): string {
-    const control = this.registrationForm.get(controlName);
-
-    if (control?.hasError('required') && (control?.touched || control?.dirty)) {
-      return 'Este campo es obligatorio';
-    }
-
-    return '';
   }
 
   async onSubmit() {
@@ -78,6 +42,7 @@ export class RegistroComponent {
         this.registrationForm.value.apellido,
         this.registrationForm.value.direccion,
         this.registrationForm.value.email,
+        this.registrationForm.value.ciudad,
         this.registrationForm.value.contraseña,
         'estandar'
       );
@@ -116,5 +81,16 @@ export class RegistroComponent {
 
   regreso() {
     this.router.navigateByUrl('/Principal');
+  }
+
+  // Función para obtener mensajes de error de campos obligatorios
+  getErrorMessage(controlName: string): string {
+    const control = this.registrationForm.get(controlName);
+
+    if (control?.hasError('required') && (control?.touched || control?.dirty)) {
+      return 'Este campo es obligatorio';
+    }
+
+    return '';
   }
 }

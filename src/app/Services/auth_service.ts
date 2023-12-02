@@ -28,7 +28,7 @@ export class AuthService {
         "password": user.contraseña,
         "apellido": user.apellido,
         "direccion": user.direccion,
-        "ciudad": "Valledupar",
+        "ciudad": user.ciudad,
         "nombre": user.nombre,
         "rol": "estandar",
       }).toPromise();

@@ -3,6 +3,7 @@ export class User{
     nombre: string;
     apellido: number;
     direccion: string;
+    ciudad:string;
     correo: string;
     contraseña:string;
     rol:string = "estandar";
@@ -13,6 +14,7 @@ export class User{
         apellido: number,
         direccion: string,
         correo: string,
+        ciudad: string,
         contraseña:string,
         rol:string
 
@@ -23,6 +25,7 @@ export class User{
         this.direccion = direccion;
         this.correo = correo;
         this.contraseña = contraseña;
+        this.ciudad = ciudad;
         this.rol = rol;
       }
 }
