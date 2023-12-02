@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/Services/cart_service';
 import { Subscription } from 'rxjs';
@@ -15,16 +21,23 @@ export class SuperiorComponent {
   @Output() stateLogin = new EventEmitter<number>();
 
   productosCarrito: any[] = [];
+  isResponsive = false;
   private cartItemsSubscription: Subscription;
   login: number;
 
-  constructor(private router: Router, private cartService: CartService, private localstorageService: LocalStorageService, private dataService: DataService, ) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private localstorageService: LocalStorageService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit(): void {
-    this.validadorSesion()
+    this.validadorSesion();
     this.productosCarrito = this.cartService.getItems();
 
-    this.cartItemsSubscription = this.cartService.getItemsChangedObservable()
+    this.cartItemsSubscription = this.cartService
+      .getItemsChangedObservable()
       .subscribe((cartItems: any[]) => {
         this.productosCarrito = cartItems;
       });
@@ -51,27 +64,27 @@ export class SuperiorComponent {
     this.router.navigateByUrl('/InventarioVentas');
   }
 
-  Login(){
+  Login() {
     this.router.navigateByUrl('/InicioSesion');
   }
 
-  Logout(){
+  Logout() {
     this.localstorageService.removeItem();
     this.login = 0;
     this.router.navigateByUrl('/Principal');
     window.location.reload();
   }
 
-  validadorSesion(){
+  validadorSesion() {
     let dataUser = this.localstorageService.getItem();
-    if(dataUser == null){
+    if (dataUser == null) {
       this.login = 0;
-    }else{
-      if(dataUser != null && dataUser.usr.rol == "estandar"){
+    } else {
+      if (dataUser != null && dataUser.usr.rol == 'estandar') {
         this.login = 1;
         this.stateLogin.emit(this.login);
         this.dataService.sendData(dataUser);
-      }else{
+      } else {
         this.login = 2;
         this.stateLogin.emit(this.login);
         this.dataService.sendData(dataUser);
@@ -79,4 +92,7 @@ export class SuperiorComponent {
     }
   }
   
+  toggleResponsive() {
+    this.isResponsive = !this.isResponsive;
+  }
 }

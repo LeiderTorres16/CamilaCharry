@@ -1,56 +1,38 @@
-#UpData { height: 30px; 
-font-family: Lato;
-color: #fff;}
-
-.Logo{
-    width: 200px;
-    height: 70px;
+.nav-item {
+  cursor: pointer;
 }
 
-
-/* navbar */
-.navbar{
-    -webkit-box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
-            box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
-}
-.navbar-brand img{
-    width: 30px;
-}
-.navbar-brand span{
-    letter-spacing: 2px;
-    font-family: var(--lg-font);
+.nav-link:hover {
+  color: #caa565 !important;
 }
 
-.texto-login{
-    font-family: Lato
+.navbar {
+  -webkit-box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+  font-family: Lato;
 }
 
-.nav-link:hover{
-    color: #caa565!important;
-}
-.nav-item{
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-}
-
-.boton{
-    background-color: none;
-    border:none;
-    background: none;
-    transition: color 0.2s;
-    margin: 5px;
-}
-
-.boton:hover{
-    color: #caa565!important;
-}
-
-/* header */
-
-/* media queries */
-@media(min-width: 992px){
-    .nav-item{
-        border-bottom: none;
+/* Estilo predeterminado para el texto */
+.bg-dark p {
+    font-size: 16px; /* Tamaño predeterminado del texto */
+    margin: 0; /* Eliminar el margen predeterminado de los párrafos */
+  }
+  
+  /* Estilos específicos para pantallas más pequeñas (celulares) */
+  @media (max-width: 767px) {
+    .bg-dark p {
+      font-size: 14px; /* Tamaño de texto reducido para pantallas más pequeñas */
     }
-}
+  }
 
+  @media (max-width: 440px) {
+    .bg-dark p {
+      font-size: 10px; /* Tamaño de texto reducido para pantallas más pequeñas */
+    }
+  }
+
+  @media (max-width: 324px) {
+    .bg-dark p {
+      font-size: 9px; /* Tamaño de texto reducido para pantallas más pequeñas */
+    }
+  }
