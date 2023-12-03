@@ -1,10 +1,9 @@
 input[type="number"] {
-    width: 60px; /* Puedes ajustar este valor según tus necesidades */
+    width: 60px;
   }
 
 
 .container{
-  margin-top: 100px;
   margin-bottom: 100px;
   min-height: 40vh;
 }
@@ -44,4 +43,9 @@ input[type="number"] {
 
 .table tbody tr {
   border-bottom: 1px solid #ddd; /* Puedes ajustar el color y el grosor del borde según tus preferencias */
+}
+
+.small-card {
+  width: 250px;
+  margin: 10px;
 }

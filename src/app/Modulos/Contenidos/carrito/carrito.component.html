@@ -6,7 +6,8 @@
     </div>
     <ng-template #carritoNotEmpty>
       <div class="row">
-        <div class="col-md-8">
+        <!-- Columna de productos en dispositivos grandes -->
+        <div class="col-md-8 d-none d-md-block">
           <table class="table table-borderless">
             <thead>
               <tr>
@@ -23,19 +24,22 @@
               <tr *ngFor="let producto of productosCarrito; let i = index">
                 <td>
                   <div class="d-flex align-items-center">
-                    <img src="{{ getImageUrl(producto) }}" alt="{{ producto.nombre }}" width="50" class="mr-2" style="border-radius: 5px;">
+                    <img src="{{ getImageUrl(producto) }}" alt="{{ producto.nombre }}" width="50" class="mr-2"
+                      style="border-radius: 5px;">
                     {{ producto.nombre }}
                   </div>
                 </td>
                 <td>${{ producto.precio }}</td>
                 <td>
                   <select [(ngModel)]="coloresSeleccionados[i]" (change)="actualizarColor(i)" class="form-control">
-                    <option *ngFor="let color of producto.colores" [value]="color" [selected]="producto.colores[0]">{{ color }} </option>
+                    <option *ngFor="let color of producto.colores" [value]="color" [selected]="producto.colores[0]">{{
+                      color }} </option>
                   </select>
                 </td>
                 <td>
                   <select [(ngModel)]="tallasSeleccionadas[i]" (change)="actualizarTalla(i)" class="form-control">
-                    <option *ngFor="let talla of producto.tallas" [value]="talla" [selected]="talla === producto.tallas[0]">{{ talla }}</option>
+                    <option *ngFor="let talla of producto.tallas" [value]="talla"
+                      [selected]="talla === producto.tallas[0]">{{ talla }}</option>
                   </select>
                 </td>
                 <td>
@@ -50,10 +54,46 @@
             </tbody>
           </table>
         </div>
+        <!-- Columna de productos en dispositivos pequeños -->
+        <div class="d-md-none">
+          <div *ngFor="let producto of productosCarrito; let i = index" class="d-flex justify-content-center mb-4">
+            <div class="card small-card">
+              <div class="d-flex justify-content-center" style="margin: 20px;">
+                <img [src]="getImageUrl(producto)" [alt]="producto.nombre" width="100" style="border-radius: 5px;">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ producto.nombre }}</h5>
+                <p class="card-text">
+                  Precio: ${{ producto.precio }}<br>
+                </p>
+                <div class="form-group">
+                  <label for="talla{{ i }}">Talla:</label>
+                  <select [(ngModel)]="tallasSeleccionadas[i]" (change)="actualizarTalla(i)" class="form-control" id="talla{{ i }}">
+                    <option *ngFor="let talla of producto.tallas" [value]="talla" [selected]="talla === producto.tallas[0]">{{ talla }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="color{{ i }}">Color:</label>
+                  <select [(ngModel)]="coloresSeleccionados[i]" (change)="actualizarColor(i)" class="form-control" id="color{{ i }}">
+                    <option *ngFor="let color of producto.colores" [value]="color" [selected]="color === producto.colores[0]">{{ color }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="cantidad{{ i }}">Cantidad:</label>
+                  <input type="number" [(ngModel)]="cantidades[i]" (change)="actualizarCantidad(i)" min="1" class="form-control" id="cantidad{{ i }}">
+                </div>
+                <p>Total: ${{ producto.precio * cantidades[i] }}</p>
+                <button class="btn btn-danger btn-sm" (click)="eliminarProducto(i)">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Columna de resumen del carrito -->
         <div class="container-carrito col-md-4">
           <h3 class="mb-3 preciototal text-center">Total de Carrito</h3>
-          <div class="f-compra" style="width: 100%;"> 
-            <div class="row" >
+          <div class="f-compra" style="width: 100%;">
+            <div class="row">
               <div class="col-auto" style="width: auto; text-align: start;">
                 <h3 class="mb-3 preciototal">Precio Total:</h3>
               </div>
