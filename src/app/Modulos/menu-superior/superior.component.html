@@ -78,12 +78,11 @@
     </a>
 
     <!-- Botón de hamburguesa para dispositivos móviles -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMobile"
-      aria-controls="navbarNavMobile" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" (click)="toggleResponsive()" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarNavMobile">
+    <div class="collapse navbar-collapse" id="navbarNavMobile" [ngStyle]="{'display': isResponsive ? 'block' : 'none'}">
       <!-- Opciones de Inicio y Esas Cosas para dispositivos móviles -->
       <ul class="navbar-nav">
         <li class="nav-item">

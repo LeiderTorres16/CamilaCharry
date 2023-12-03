@@ -12,6 +12,16 @@
   font-family: Lato;
 }
 
+.collapsing {
+  transition: height 0.35s ease;
+}
+
+.collapsed {
+  height: 0 !important;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+
 /* Estilo predeterminado para el texto */
 .bg-dark p {
     font-size: 16px; /* Tamaño predeterminado del texto */
