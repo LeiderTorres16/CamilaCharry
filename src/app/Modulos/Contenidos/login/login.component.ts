@@ -19,7 +19,6 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private userService: UserService,
     private localstorageService: LocalStorageService,
     private authService: AuthService
   ) {
@@ -30,21 +29,43 @@ export class LoginComponent {
   }
 
   async onSubmit() {
+
+    Swal.fire({
+      title: 'Por favor, espera...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    
     const result = await this.authService.loginUser(
       this.loginForm.value.email,
       this.loginForm.value.password
     );
 
-    if (result) {
-      this.localstorageService.setItem(result);
-      this.router.navigateByUrl('/Principal');
-      Swal.fire({
-        text: 'Ingreso Exitoso',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } else {
+    try {
+      if (result) {
+        this.localstorageService.setItem(result);
+        this.router.navigateByUrl('/Principal');
+        Swal.fire({
+          text: 'Ingreso Exitoso',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        Swal.hideLoading();
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Hubo un error al iniciar sesion',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#CAA565',
+        });
+        this.loginForm.markAllAsTouched();
+        Swal.hideLoading();
+      }
+    } catch (error) {
       Swal.fire({
         title: 'Error!',
         text: 'Hubo un error al iniciar sesion',
@@ -52,7 +73,10 @@ export class LoginComponent {
         confirmButtonText: 'Ok',
         confirmButtonColor: '#CAA565',
       });
+      Swal.hideLoading();
       this.loginForm.markAllAsTouched();
+    } finally {
+      Swal.hideLoading();
     }
   }
 

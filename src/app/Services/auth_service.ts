@@ -24,7 +24,7 @@ export class AuthService {
   async registerUser(user: User): Promise<any> {
     try {      
       const result = await this.httpClient.post(this.endpointRegistro, {
-        "username": user.correo,
+        "correo": user.correo,
         "password": user.contraseña,
         "apellido": user.apellido,
         "direccion": user.direccion,

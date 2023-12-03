@@ -47,5 +47,30 @@
   text-decoration: underline;
 }
 
+@media (max-width: 1300px) {
+  .col-sm-6 img {
+    object-position: center;
+  }
+}
 
+@media (max-width: 1000px) {
+  .col-md-6.px-0 {
+    display: none;
+  }
 
+  .col-md-6.text-black {
+    width: 100%;
+  }
+
+  .align-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ajusta la altura según tus necesidades */
+  }
+
+  .align-center form {
+    width: 90%; /* Ajusta el ancho del formulario según tus necesidades */
+  }
+
+}
