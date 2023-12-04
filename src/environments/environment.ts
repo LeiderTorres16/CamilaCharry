@@ -11,27 +11,27 @@ export const environment = {
 };
 
 
-let HostVenta="http://localhost:4001/ventas"
+let HostVenta="https://ventas.camilacharry.xyz:8081/ventas"
 export const ventasEnvironment = {
   crearVenta: `${HostVenta}/createVenta`,
   getVentas: `${HostVenta}/getVentas`
 }
 
-let HostAuth="http://localhost:3001/"
+let HostAuth="https://auth.camilacharry.xyz:8080/"
 export const authEnviorment = {
   registro: `${HostAuth}auth/signup`,
   login: `${HostAuth}auth/login`,
   getUser: `${HostAuth}`
 }
 
-let HostPrenda="http://localhost:4000/prendas"
+let HostPrenda="https://camilacharry.xyz/prendas"
 export const prendaEnvironment = {
  crearPrenda: `${HostPrenda}/createPrenda`,
  updatePrenda: `${HostPrenda}/updatePrenda/`,
  getPrendas: `${HostPrenda}/getPrendas`
 };
 
-let HostBanner="http://localhost:4002/banner"
+let HostBanner="https://banner.camilacharry.xyz:8083/banner"
 export const bannerEnvironment = {
   crearBanner: `${HostBanner}/createBanner`,
   updateBanner: `${HostBanner}/updateBanner/`,
@@ -41,7 +41,7 @@ export const bannerEnvironment = {
  };
 
  
-let HostImagen="http://localhost:3000/image"
+let HostImagen="https://imagen.camilacharry.xyz:8082/image"
 export const imagenEnvironment = {
   cargarImagenes: `${HostImagen}/uploads`
 }
