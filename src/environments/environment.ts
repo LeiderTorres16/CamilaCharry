@@ -17,6 +17,11 @@ export const ventasEnvironment = {
   getVentas: `${HostVenta}/getVentas`
 }
 
+let HostEmail="https://ventas.camilacharry.xyz:8081/email"
+export const emailEnvironment = {
+  sendEmail: `${HostEmail}/sendPurchaseNotification`
+}
+
 let HostAuth="https://auth.camilacharry.xyz:8080/"
 export const authEnviorment = {
   registro: `${HostAuth}auth/signup`,

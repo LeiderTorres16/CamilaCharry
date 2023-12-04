@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { emailEnvironment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailService {
-  private apiUrl = 'http://localhost:4001/email';
+  endpointSendEmail: string
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { this.endpointSendEmail = emailEnvironment.sendEmail}
 
   confirmPurchase(customerData: any, orderDetails: any[]): Observable<any> {
     const payload = { customerData, orderDetails };
-    return this.httpClient.post(`${this.apiUrl}/sendPurchaseNotification`, payload);
+    return this.httpClient.post(this.endpointSendEmail, payload);
   }
 }

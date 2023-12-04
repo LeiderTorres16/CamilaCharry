@@ -23,7 +23,7 @@ export class SuperiorComponent {
   productosCarrito: any[] = [];
   isResponsive = false;
   private cartItemsSubscription: Subscription;
-  login: number;
+  login: number = 0;
 
   constructor(
     private router: Router,
@@ -77,10 +77,11 @@ export class SuperiorComponent {
 
   validadorSesion() {
     let dataUser = this.localstorageService.getItem();
+    let rol = dataUser.usr.rol;
     if (dataUser == null) {
       this.login = 0;
     } else {
-      if (dataUser != null && dataUser.usr.rol == 'estandar') {
+      if (dataUser != null && rol == 'estandar') {
         this.login = 1;
         this.stateLogin.emit(this.login);
         this.dataService.sendData(dataUser);
