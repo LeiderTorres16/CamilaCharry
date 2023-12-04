@@ -71,7 +71,7 @@ export class HomeComponent {
     window.scrollTo(0, 0);
     this.prendasService.allPrendas().subscribe((prendas) => {
       prendas.forEach((prenda) => {
-        if(prenda.estado == "activo"){
+        if(prenda.estado == "activo" && prenda.existencias > 0){
           this.agregarProducto(prenda);
         }
       });

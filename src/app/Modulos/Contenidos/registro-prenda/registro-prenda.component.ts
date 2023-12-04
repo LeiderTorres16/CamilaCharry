@@ -50,6 +50,7 @@ export class RegistroPrendaComponent {
       precio: [null, [Validators.required, Validators.min(0)]],
       descripcion: ['', Validators.required],
       colores: [''],
+      tallas: [''],
       imagenprenda: [''],
       existencias: [1, [Validators.required, Validators.min(1)]],
     });
@@ -173,7 +174,9 @@ export class RegistroPrendaComponent {
       this.categorias,
       imageUrlsViejas,
       'activo',
-      this.prenda.value.existencias
+      this.prenda.value.existencias,
+      [],
+      this.tallas
     );
 
     const response = await this.prendasService.updatePrenda(newPrenda);
@@ -195,7 +198,9 @@ export class RegistroPrendaComponent {
       this.categorias,
       imageUrls!,
       'activo',
-      this.prenda.value.existencias
+      this.prenda.value.existencias,
+      [],
+      this.tallas
     );
 
     const response = await this.prendasService.añadirPrenda(nuevaPrenda);
@@ -285,6 +290,7 @@ export class RegistroPrendaComponent {
       descripcion: [prenda.descripcion, Validators.required],
       colores: [''],
       imagenprenda: [''],
+      tallas: [''],
       existencias: [
         prenda.existencias,
         [Validators.required, Validators.min(1)],
@@ -293,6 +299,7 @@ export class RegistroPrendaComponent {
 
     this.categorias = prenda.categorias;
     this.colores = prenda.colores;
+    this.tallas = prenda.tallas;
 
     for (let i = 0; i < prenda.imagen.length; i++) {
       this.imagenesAntiguas.push(prenda.imagen[i]);
@@ -306,11 +313,13 @@ export class RegistroPrendaComponent {
       precio: [null, [Validators.required, Validators.min(0)]],
       descripcion: ['', Validators.required],
       colores: [''],
+      tallas: [''],
       imagenprenda: [''],
       existencias: [1, [Validators.required, Validators.min(1)]],
     });
     this.categorias = [];
     this.colores = [];
+    this.tallas = [];
   }
 
   //Funciones de el MaterialChip (Campos de Categorias/Tallas/Colores)

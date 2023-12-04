@@ -1,74 +1,121 @@
-<div class="fixed-top" style="background-color: #caa565;">
-  <div id="UpData">
-    <div id="UpData" class="container">
-      <div class="row row-cols-3 info" style="margin-top:1%;margin-bottom:1%;">
-        <div class="location col-4">
-          <p class="d-flex justify-content-center align-items-center">
-            <i class="far fa-envelope" style="margin-right: 5px;"></i>
-            <span style="margin-left: 5px;">camilacharry@gmail.com</span>
-          </p>
-        </div>
-        <div class="location col-4">
-          <p class="d-flex justify-content-center align-items-center">
-            <i class="bi bi-geo-alt" style="margin-right: 5px;"></i>
-            <span style="margin-left: 5px;" class="">Cr. 12 # 9C-86 San Joaquín, Vup</span>
-          </p>
-        </div>
-        <div class="location col-4">
-          <p *ngIf="login==0" class="d-flex justify-content-center align-items-center">
-            <i class="fas fa-user-alt" style="margin-right: 5px;" (click)="Login()" style="cursor: pointer;"><span class="texto-login" style="margin-left: 5px;">Ingresa</span></i>
-          </p>
-          <p *ngIf="login==1 || 2" class="d-flex justify-content-center align-items-center">
-            <i class="fas fa-user-alt" style="margin-right: 5px;" (click)="Logout()" style="cursor: pointer;"><span class="texto-login" style="margin-left: 5px;">Cerrar Sesion</span></i>
-          </p>
+<div class="bg-dark text-light text-center d-flex align-items-center justify-content-center py-2"
+  style="background-color: #caa565 !important;">
+  <p class="mb-0 mx-2">
+    <i class="far fa-envelope" style="margin-right: 5px;"></i>
+    <span>camilacharry@gmail.com</span>
+  </p>
+  <p class="mb-0 mx-2">
+    <i class="bi bi-geo-alt" style="margin-right: 5px;"></i>
+    <span>Cr. 12 # 9C-86 San Joaquín, Vup</span>
+  </p>
+</div>
+<!-- navbar.component.html -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-lg-block">
+  <!-- Navbar para resoluciones de computadora -->
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/LogoBG.png" alt="Logo de Mi Aplicación" style="max-width: 250px; height: auto;" (click)="Principal()">
+    </a>
+
+
+    <!-- Columna 2: Opciones de Inicio y Esas Cosas -->
+    <ul class="navbar-nav mx-auto text-center">
+      <li class="nav-item px-2 py-2">
+        <a class="nav-link text-uppercase text-dark" (click)="Principal()">Inicio</a>
+      </li>
+      <li class="nav-item px-2 py-2">
+        <a class="nav-link text-uppercase text-dark">hombre</a>
+      </li>
+      <li class="nav-item px-2 py-2">
+        <a class="nav-link text-uppercase text-dark">Mujer</a>
+      </li>
+      <li class="nav-item px-2 py-2">
+        <a class="nav-link text-uppercase text-dark">Niños</a>
+      </li>
+      <li class="nav-item px-2 py-2">
+        <a class="nav-link text-uppercase text-dark">Niñas</a>
+      </li>
+    </ul>
+
+    <!-- Columna 3: Opciones adicionales -->
+    <div class="d-flex">
+      <!-- Icono de carrito -->
+      <a class="nav-link me-3">
+        <i class="fas fa-shopping-cart" (click)="Carrito()"></i>
+        <span class="badge bg-danger position-absolute top-30 start-70 translate-middle"
+          style="font-size: 0.6rem; background: #caa565!important;">
+          {{ productosCarrito.length }}
+        </span>
+      </a>
+      <!-- Icono de añadir prenda -->
+      <a class="nav-link me-3" *ngIf="login==2" (click)="registroPrenda()">
+        <i class="fas fa-plus-circle"></i>
+      </a>
+      <!-- Icono de inventario -->
+      <a class="nav-link me-3" *ngIf="login==2" (click)="InventarioVentas()">
+        <i class="fas fa-box"></i>
+      </a>
+      <!-- Menú desplegable de usuario -->
+      <div class="nav-item dropdown me-3">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" *ngIf="login === 0" (click)="Login()">Iniciar sesión</a>
+          <a class="dropdown-item" *ngIf="login === 1 || login === 2" (click)="Logout()">Cerrar sesión</a>
         </div>
       </div>
     </div>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
-      <div class="container">
-        <a (click)="Principal()" style="cursor: pointer">
-          <img class="Logo" src="../../../assets/images/LogoBG.png" alt="Logo" />
-        </a>
-
-        <div class="order-lg-2 nav-btns">
-          <button type="button" class="boton position-relative" (click)="Carrito()">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge badge-custom-color">{{ productosCarrito.length }}</span>
-
-          </button>
-          <button *ngIf="login==2" type="button" class="boton position-relative" (click)="InventarioVentas()">
-            <i class="fas fa-boxes"></i>
-          </button>
-          <button *ngIf="login==2" type="button" class="boton position-relative" (click)="registroPrenda()">
-            <i class="fas fa-plus-circle"></i>
-          </button>
-        </div>
-
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse order-lg-1" id="navMenu">
-          <ul class="navbar-nav mx-auto text-center">
-            <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" (click)="Principal()">Inicio</a>
-            </li>
-            <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" >hombre</a>
-            </li>
-            <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" >Mujer</a>
-            </li>
-            <li class="nav-item px-2 py-2">
-              <a class="nav-link text-uppercase text-dark" >Niños</a>
-            </li>
-            <li class="nav-item px-2 py-2 border-0">
-              <a class="nav-link text-uppercase text-dark" >Niñas</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
   </div>
-</div>
+</nav>
+
+<!-- Navbar para dispositivos móviles -->
+<nav class="navbar navbar-light bg-light d-lg-none">
+  <div class="container">
+    <!-- Columna 1: Logo -->
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/LogoBG.png" alt="Logo de Mi Aplicación" style="max-width: 200px; height: auto;">
+    </a>
+
+    <!-- Botón de hamburguesa para dispositivos móviles -->
+    <button class="navbar-toggler" type="button" (click)="toggleResponsive()" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavMobile" [ngStyle]="{'display': isResponsive ? 'block' : 'none'}">
+      <!-- Opciones de Inicio y Esas Cosas para dispositivos móviles -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" (click)="Principal()">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark">Hombre</a> 
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark">Mujer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark">Niños</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark">Niñas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" (click)="Carrito()">Carrito [ {{productosCarrito.length}} ] </a>
+        </li>
+        <li class="nav-item" *ngIf="login === 2">
+          <a class="nav-link text-uppercase text-dark" (click)="registroPrenda()">Añadir Prenda</a>
+        </li>
+        <li class="nav-item" *ngIf="login === 2">
+          <a class="nav-link text-uppercase text-dark" (click)="InventarioVentas()">Inventario / Ventas</a>
+        </li>
+        <li class="nav-item" *ngIf="login === 0">
+          <a class="nav-link text-uppercase text-dark" (click)="Login()">Iniciar Sesión</a>
+        </li>
+        <li class="nav-item" *ngIf="login === 1 || login === 2">
+          <a class="nav-link text-uppercase text-dark" (click)="Logout()">Cerrar Sesión</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

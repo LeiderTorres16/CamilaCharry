@@ -18,6 +18,8 @@ export class CarritoComponent {
   productosCarrito: Prenda[] = [];
   productosCompra: PrendaCarrito[] = [];
   cantidades: number[] = [];
+  coloresSeleccionados: string[] = [];
+  tallasSeleccionadas: string[] = [];
   totalCarrito: number = 0;
   formatoFechaHora: string;
   data: any;
@@ -34,6 +36,13 @@ export class CarritoComponent {
     this.actualizarTotal();
   }
 
+  ngOnInit(){
+      this.productosCarrito.forEach((producto,i) => {
+        this.coloresSeleccionados[i] = producto.colores[0];
+        this.tallasSeleccionadas[i] = producto.tallas[0];
+      });
+  }
+
   agregarProducto(producto: any, index: number) {
     this.productosCarrito.push({ ...producto });
     this.cantidades.push(1);
@@ -42,6 +51,7 @@ export class CarritoComponent {
 
   eliminarProducto(index: number) {
     this.productosCarrito.splice(index, 1);
+    this.cartService.eliminarProducto(index);
     this.cantidades.splice(index, 1);
     this.actualizarTotal();
   }
@@ -73,28 +83,36 @@ export class CarritoComponent {
       this.fechaHora();
       this.data = data;
       const referencia = this.formatoFechaHora + data.usr.nombre;
+
       if (this.data) {
-        this.productosCarrito.forEach((producto, index) => {
+        this.productosCarrito.forEach(async (producto, index) => {
           this.productosCompra.push({
             producto: producto,
             cantidad: this.cantidades[index],
-            color: 'Rojo',
-            talla: 'S',
-            totalProducto: producto.precio * this.cantidades[index]
+            color: this.coloresSeleccionados[index],
+            talla: this.tallasSeleccionadas[index],
+            totalProducto: producto.precio * this.cantidades[index],
           });
+
+          await this.prendasService.updateExistencias(
+            producto,
+            this.cantidades[index]
+          );
         });
+
         const reciboInfo = {
           referencia: referencia,
           user: this.data,
           fechaCompra: this.fechaHoraCompra(),
           productos: this.productosCompra,
           bancoInfo: {
-            nombre: 'Banco Ejemplo',
-            cuentaN: '1234567890',
+            nombre: 'Bancolombia',
+            cuentaN: '52369495445',
           },
         };
 
         await this.ventaService.addVenta(this.productosCompra);
+
         this.emailService
           .confirmPurchase(this.data, this.productosCompra)
           .subscribe(
@@ -145,6 +163,9 @@ export class CarritoComponent {
             }
           );
       } else {
+        this.cartService.clearCart();
+        this.productosCarrito = [];
+
         Swal.fire({
           title: 'Error!',
           text: 'No puedes comprar sin haber iniciado sesion',
@@ -176,6 +197,17 @@ export class CarritoComponent {
     );
   }
 
+  // Agregar métodos para actualizar las selecciones de colores y tallas
+  actualizarColor(index: number) {
+    // Puedes realizar acciones adicionales aquí si es necesario
+    console.log('Color seleccionado:', this.coloresSeleccionados[index]);
+  }
+
+  actualizarTalla(index: number) {
+    // Puedes realizar acciones adicionales aquí si es necesario
+    console.log('Talla seleccionada:', this.tallasSeleccionadas[index]);
+  }
+
   private downloadReceipt(reciboInfo: any, referencia: any): void {
     const doc = new jsPDF();
     // Establecer el título del documento PDF
@@ -190,7 +222,11 @@ export class CarritoComponent {
     doc.text(reciboInfo.referencia, 90, 30);
 
     doc.text('Información del usuario:', 10, 40);
-    doc.text(`${reciboInfo.user.usr.nombre}, ${reciboInfo.user.usr.username}`, 70, 40);
+    doc.text(
+      `${reciboInfo.user.usr.nombre}, ${reciboInfo.user.usr.username}`,
+      70,
+      40
+    );
 
     doc.text('Fecha y hora de la compra:', 10, 50);
     doc.text(reciboInfo.fechaCompra, 80, 50);

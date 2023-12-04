@@ -58,3 +58,21 @@ button.btn-outline-secondary {
   margin-right: 37%;
   margin-bottom: 50px;
 }
+
+/* Aplica estilos específicos para pantallas pequeñas */
+@media screen and (max-width: 767px) {
+  .table tbody tr td:last-child {
+      text-align: center; /* Centra el contenido de la última columna en dispositivos móviles */
+  }
+
+  .table tbody tr td:last-child button {
+      margin-bottom: 5px; /* Añade un espacio entre los botones en dispositivos móviles */
+      display: block; /* Convierte los botones en bloques para que estén en líneas separadas */
+      width: 100%; /* Ocupa el ancho completo de la columna */
+  }
+
+  .btn + .btn {
+    margin-left: 0px;
+  }
+}
+

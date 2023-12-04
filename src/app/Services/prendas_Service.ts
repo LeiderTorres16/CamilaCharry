@@ -95,6 +95,27 @@ export class PrendasService {
     }
   }
 
+  async updateExistencias(prenda: Prenda, cantidad: number): Promise<string> {
+    try {
+      const result = await this.httpClient
+        .put(this.endpointUpdatePrenda + prenda.id, {
+          id: prenda.id,
+          nombre: prenda.nombre,
+          precio: prenda.precio,
+          descripcion: prenda.descripcion,
+          colores: prenda.colores,
+          imagen: prenda.imagen,
+          estado: prenda.estado,
+          existencias: (prenda.existencias - cantidad),
+          categorias: prenda.categorias,
+        })
+        .toPromise();
+      return result as Promise<string>;
+    } catch (error: string | any) {
+      return error;
+    }
+  }
+
   getPrendaPorId(id: string): Observable<Prenda | undefined> {
     return this.allPrendas().pipe(
       map((prendas) => {
