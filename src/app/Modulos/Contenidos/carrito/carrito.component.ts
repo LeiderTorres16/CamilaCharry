@@ -228,7 +228,7 @@ export class CarritoComponent {
 
     doc.text('Información del usuario:', 10, 40);
     doc.text(
-      `${reciboInfo.user.usr.nombre}, ${reciboInfo.user.usr.username}`,
+      `${reciboInfo.user.usr.nombre}, ${reciboInfo.user.usr.correo}, ${reciboInfo.user.usr.direccion}`,
       70,
       40
     );
@@ -250,15 +250,16 @@ export class CarritoComponent {
         20,
         yPosition
       );
+      doc.text(`Personalizaciones: ${product.producto.personalizacion}`,20, yPosition+10)
       yPosition += 10;
     });
 
-    doc.text('Información de cuentas para consignar:', 10, yPosition);
-    doc.text(`Banco: ${reciboInfo.bancoInfo.nombre}`, 20, yPosition + 10);
+    doc.text('Información de cuentas para consignar:', 10, yPosition+10);
+    doc.text(`Banco: ${reciboInfo.bancoInfo.nombre}`, 20, yPosition + 20);
     doc.text(
       `Número de cuenta: ${reciboInfo.bancoInfo.cuentaN}`,
       20,
-      yPosition + 20
+      yPosition + 30
     );
 
     // Guardar el PDF en un Blob

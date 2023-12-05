@@ -77,11 +77,11 @@ export class SuperiorComponent {
 
   validadorSesion() {
     let dataUser = this.localstorageService.getItem();
-    let rol = dataUser.usr.rol;
+
     if (dataUser == null) {
       this.login = 0;
     } else {
-      if (dataUser != null && rol == 'estandar') {
+      if (dataUser != null && dataUser.usr.rol == 'estandar') {
         this.login = 1;
         this.stateLogin.emit(this.login);
         this.dataService.sendData(dataUser);
