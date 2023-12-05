@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import { PrendaCarrito } from 'src/app/Models/prendaCarrito.class';
 import { Prenda } from 'src/app/Models/prenda_class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito-compra',
@@ -29,7 +30,8 @@ export class CarritoComponent {
     private prendasService: PrendasService,
     private ventaService: VentaService,
     private dataService: DataService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private router: Router,
   ) {
     this.productosCarrito = this.cartService.getItems();
     this.cantidades = new Array(this.productosCarrito.length).fill(1);
@@ -82,9 +84,11 @@ export class CarritoComponent {
     this.dataService.data$.subscribe(async (data) => {
       this.fechaHora();
       this.data = data;
-      const referencia = this.formatoFechaHora + data.usr.nombre;
+
 
       if (this.data) {
+        const referencia = this.formatoFechaHora + data.usr.nombre;
+
         this.productosCarrito.forEach(async (producto, index) => {
           this.productosCompra.push({
             producto: producto,
@@ -163,15 +167,16 @@ export class CarritoComponent {
             }
           );
       } else {
-        this.cartService.clearCart();
-        this.productosCarrito = [];
-
         Swal.fire({
           title: 'Error!',
           text: 'No puedes comprar sin haber iniciado sesion',
           icon: 'error',
           confirmButtonText: 'Ok',
           confirmButtonColor: '#CAA565',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/InicioSesion');
+          }
         });
       }
     });
