@@ -48,92 +48,89 @@
     </div>
 </section>
 
-<section id="personalizacion" *ngIf="mostrarPersonalizacion" style="background-color: #F6F5FF;padding-bottom: 40px;">
-    <div style="width: 100%; height: 100%; background: #F6F5FF; padding-top: 50px;text-align: center;">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="titulo-detalle">Personalización</h1>
-                <button (click)="cerrarPersonalizacion()" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="personalizacion-prenda">
-        <!-- Comboboxes a la izquierda -->
-        <div class="personalizacion" style="width: 100%;flex: 2;">
-            <div style="width: 100%;">
-                <p>Cuello</p>
-                <select class="form-select mb-3" [(ngModel)]="cuelloSeleccionado" (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Cuello 1</option>
-                    <option>Cuello 2</option>
-                    <option>Cuello 3</option>
-                </select>
-            </div>
-            <div>
-                <p>Manga</p>
-                <select class="form-select mb-3" [(ngModel)]="mangaSeleccionada" (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Manga 1</option>
-                    <option>Manga 2</option>
-                    <option>Manga 3</option>
-                </select>
-            </div>
-            <div>
-                <p>Estampado</p>
-                <select class="form-select mb-3" [(ngModel)]="estampadoSeleccionado"
-                    (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Estampado 1</option>
-                    <option>Estampado 2</option>
-                    <option>Estampado 3</option>
-                </select>
-            </div>
+<section id="personalizacion" *ngIf="mostrarPersonalizacion" style="background-color: #F6F5FF; padding-bottom: 40px; padding-top: 40px;">
+    <div class="container" style="background-color: white; padding: 20px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="titulo-detalle mb-3 mb-md-0 fs-5 fs-md-4">Personalización</h1>
+            <button (click)="cerrarPersonalizacion()" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times"></i> Cerrar
+            </button>
         </div>
 
-        <!-- Imagen en el centro -->
-        <div class="imagen-personalizacion">
-            <img src="{{prenda.imagen[0]}}" alt="Prenda Personalizada">
+        <div class="row mt-4">
+            <!-- Columna de imagen en el centro -->
+            <div class="col-md-4 order-md-2 text-center" style="padding-top: 20px;padding-bottom: 20px;">
+                <img id="imagen" [src]="imagenesPrenda[currentIndex]" alt="Prenda" class="img-fluid rounded" />
+            </div>
+        
+            <!-- Columna de comboxes izquierda -->
+            <div class="col-md-4 order-md-1 mb-3">
+                <div class="mb-3">
+                    <label for="cuello">Cuello</label>
+                    <select class="form-select" id="cuello" [(ngModel)]="cuelloSeleccionado" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Cuello 1</option>
+                        <option>Cuello 2</option>
+                        <option>Cuello 3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="manga">Manga</label>
+                    <select class="form-select" id="manga" [(ngModel)]="mangaSeleccionada" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Manga 1</option>
+                        <option>Manga 2</option>
+                        <option>Manga 3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="estampado">Estampado</label>
+                    <select class="form-select" id="estampado" [(ngModel)]="estampadoSeleccionado" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Estampado 1</option>
+                        <option>Estampado 2</option>
+                        <option>Estampado 3</option>
+                    </select>
+                </div>
+            </div>
+        
+            <!-- Columna de comboxes derecha -->
+            <div class="col-md-4 order-md-3 mb-3">
+                <div class="mb-3">
+                    <label for="engaje">Engaje</label>
+                    <select class="form-select" id="engaje" [(ngModel)]="encajeSeleccionado" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Encaje 1</option>
+                        <option>Encaje 2</option>
+                        <option>Encaje 3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="boton">Boton</label>
+                    <select class="form-select" id="boton" [(ngModel)]="botonSeleccionado" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Boton 1</option>
+                        <option>Boton 2</option>
+                        <option>Boton 3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="doblez">Doblez</label>
+                    <select class="form-select" id="doblez" [(ngModel)]="doblezSeleccionado" (ngModelChange)="actualizarPrecio()">
+                        <option selected>Ninguno</option>
+                        <option>Doblez 1</option>
+                        <option>Doblez 2</option>
+                        <option>Doblez 3</option>
+                    </select>
+                </div>
+            </div>
         </div>
-
-
-        <!-- Comboboxes a la derecha -->
-        <div class="personalizacion" style="width: 100%;flex: 2;">
-            <div style="width: 100%;">
-                <p>Encaje</p>
-                <select class="form-select mb-3" [(ngModel)]="encajeSeleccionado" (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Encaje 1</option>
-                    <option>Encaje 2</option>
-                    <option>Encaje 3</option>
-                </select>
-            </div>
-            <div>
-                <p>Botones</p>
-                <select class="form-select mb-3" [(ngModel)]="botonSeleccionado" (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Boton 1</option>
-                    <option>Boton 2</option>
-                    <option>Boton 3</option>
-                </select>
-            </div>
-            <div>
-                <p>Doblez</p>
-                <select class="form-select mb-3" [(ngModel)]="doblezSeleccionado" (ngModelChange)="actualizarPrecio()">
-                    <option selected>Ninguno</option>
-                    <option>Doblez 1</option>
-                    <option>Doblez 2</option>
-                    <option>Doblez 3</option>
-                </select>
-            </div>
+        
+        <!-- Sección del precio y botón de añadir al carrito -->
+        <div class="text-center mt-4">
+            <p class="fw-bold" style="font-size: 25px;">Precio Total: {{ precioFinal}}</p>
+            <!-- Agrega el precio total dinámicamente -->
+            <button class="btn btn-primary" (click)="addToCart(prenda)">Añadir al Carrito</button>
         </div>
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-        <p style="font-size: 40px;">Precio Total: {{ precioFinal}}</p>
-    </div>
-
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary" (click)="addToCart(prenda)">Añadir al carrito</button>
     </div>
 </section>
