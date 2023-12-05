@@ -17,8 +17,8 @@ export const ventasEnvironment = {
   getVentas: `${HostVenta}/getVentas`
 }
 
-// let HostEmail="https://ventas.camilacharry.xyz:8081/email"
-let HostEmail="http://localhost:4001/email"
+let HostEmail="https://ventas.camilacharry.xyz:8081/email"
+// let HostEmail="http://localhost:4001/email"
 export const emailEnvironment = {
   sendEmail: `${HostEmail}/sendPurchaseNotification`
 }
