@@ -81,65 +81,88 @@ export class CarritoComponent {
   }
 
   async finalizarCompra() {
-    this.dataService.data$.subscribe(async (data) => {
-      this.fechaHora();
-      this.data = data;
+    Swal.fire({
+      title: 'Por favor, espera...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
-
-      if (this.data) {
-        const referencia = this.formatoFechaHora + data.usr.nombre;
-
-        this.productosCarrito.forEach(async (producto, index) => {
-          this.productosCompra.push({
-            producto: producto,
-            cantidad: this.cantidades[index],
-            color: this.coloresSeleccionados[index],
-            talla: this.tallasSeleccionadas[index],
-            totalProducto: producto.precio * this.cantidades[index],
+    try {
+      this.dataService.data$.subscribe(async (data) => {
+        this.fechaHora();
+        this.data = data;
+  
+  
+        if (this.data) {
+          const referencia = this.formatoFechaHora + data.usr.nombre;
+  
+          this.productosCarrito.forEach(async (producto, index) => {
+            this.productosCompra.push({
+              producto: producto,
+              cantidad: this.cantidades[index],
+              color: this.coloresSeleccionados[index],
+              talla: this.tallasSeleccionadas[index],
+              totalProducto: producto.precio * this.cantidades[index],
+            });
+  
+            await this.prendasService.updateExistencias(
+              producto,
+              this.cantidades[index]
+            );
           });
-
-          await this.prendasService.updateExistencias(
-            producto,
-            this.cantidades[index]
-          );
-        });
-
-        const reciboInfo = {
-          referencia: referencia,
-          user: this.data,
-          fechaCompra: this.fechaHoraCompra(),
-          productos: this.productosCompra,
-          bancoInfo: {
-            nombre: 'Bancolombia',
-            cuentaN: '52369495445',
-          },
-        };
-
-        await this.ventaService.addVenta(this.productosCompra);
-
-        this.emailService
-          .confirmPurchase(this.data, this.productosCompra)
-          .subscribe(
-            (response) => {
-              this.fechaHora();
-              if (response) {
-                Swal.fire({
-                  title: `Gracias por tu compra -REF221-${referencia}`,
-                  text: 'El siguiente paso es descargar tu recibo y consignar el dinero en algunas de las cuentas mencionadas en el recibo',
-                  icon: 'success',
-                  showCancelButton: true,
-                  confirmButtonText: 'Descargar recibo',
-                  confirmButtonColor: '#CAA565',
-                  cancelButtonText: 'Cerrar',
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    this.downloadReceipt(reciboInfo, referencia);
-                  }
-                });
-
-                this.cartService.clearCart();
-                this.productosCarrito = [];
-              } else {
+  
+          const reciboInfo = {
+            referencia: referencia,
+            user: this.data,
+            fechaCompra: this.fechaHoraCompra(),
+            productos: this.productosCompra,
+            bancoInfo: {
+              nombre: 'Bancolombia',
+              cuentaN: '52369495445',
+            },
+          };
+  
+          await this.ventaService.addVenta(this.productosCompra);
+  
+          this.emailService
+            .confirmPurchase(this.data, this.productosCompra)
+            .subscribe(
+              (response) => {
+                this.fechaHora();
+                if (response) {
+                  Swal.fire({
+                    title: `Gracias por tu compra -REF221-${referencia}`,
+                    text: 'El siguiente paso es descargar tu recibo y consignar el dinero en algunas de las cuentas mencionadas en el recibo',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Descargar recibo',
+                    confirmButtonColor: '#CAA565',
+                    cancelButtonText: 'Cerrar',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      this.downloadReceipt(reciboInfo, referencia);
+                    }
+                  });
+                  Swal.hideLoading();
+                  this.cartService.clearCart();
+                  this.productosCarrito = [];
+                } else {
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Hubo un error',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#CAA565',
+                  });
+                  Swal.hideLoading();
+                  this.cartService.clearCart();
+                  this.productosCarrito = [];
+                }
+              },
+              (error) => {
+                console.log(error);
                 Swal.fire({
                   title: 'Error!',
                   text: 'Hubo un error',
@@ -147,39 +170,39 @@ export class CarritoComponent {
                   confirmButtonText: 'Ok',
                   confirmButtonColor: '#CAA565',
                 });
-
+                Swal.hideLoading();
                 this.cartService.clearCart();
                 this.productosCarrito = [];
               }
-            },
-            (error) => {
-              console.log(error);
-              Swal.fire({
-                title: 'Error!',
-                text: 'Hubo un error',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-                confirmButtonColor: '#CAA565',
-              });
-
-              this.cartService.clearCart();
-              this.productosCarrito = [];
+            );
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'No puedes comprar sin haber iniciado sesion',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#CAA565',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigateByUrl('/InicioSesion');
             }
-          );
-      } else {
-        Swal.fire({
-          title: 'Error!',
-          text: 'No puedes comprar sin haber iniciado sesion',
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#CAA565',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigateByUrl('/InicioSesion');
-          }
-        });
-      }
-    });
+          });
+          Swal.hideLoading();
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Hubo un error',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#CAA565',
+      });
+      Swal.hideLoading();
+    }finally{
+      Swal.hideLoading();
+    }
+
   }
 
   actualizarCantidad(index: number) {

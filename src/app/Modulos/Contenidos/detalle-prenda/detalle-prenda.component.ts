@@ -112,24 +112,43 @@ export class DetallePrendaComponent implements OnInit, AfterViewInit {
 
   actualizarPrecio(): void {
     this.precioFinal = Number(this.prenda.precio);
+  
+    this.precioFinal += this.getPrecioPorOpcion(this.cuelloSeleccionado);
+    this.precioFinal += this.getPrecioPorOpcion(this.mangaSeleccionada);
+    this.precioFinal += this.getPrecioPorOpcion(this.estampadoSeleccionado);
+    this.precioFinal += this.getPrecioPorOpcion(this.encajeSeleccionado);
+    this.precioFinal += this.getPrecioPorOpcion(this.botonSeleccionado);
+    this.precioFinal += this.getPrecioPorOpcion(this.doblezSeleccionado);
+  }
 
-    if (this.cuelloSeleccionado !== 'Ninguno') {
-      this.precioFinal += 20000;
-    }
-    if (this.mangaSeleccionada !== 'Ninguno') {
-      this.precioFinal += 25000;
-    }
-    if (this.estampadoSeleccionado !== 'Ninguno') {
-      this.precioFinal += 24000;
-    }
-    if (this.encajeSeleccionado !== 'Ninguno') {
-      this.precioFinal += 30000;
-    }
-    if (this.botonSeleccionado !== 'Ninguno') {
-      this.precioFinal += 10000;
-    }
-    if (this.doblezSeleccionado !== 'Ninguno') {
-      this.precioFinal += 15000;
+  getPrecioPorOpcion(opcion: string): number {
+    switch (opcion) {
+      case 'Cuello 1':
+      case 'Manga 1':
+      case 'Estampado 1':
+      case 'Encaje 1':
+      case 'Boton 1':
+      case 'Doblez 1':
+        return 20000;
+  
+      case 'Cuello 2':
+      case 'Manga 2':
+      case 'Estampado 2':
+      case 'Encaje 2':
+      case 'Boton 2':
+      case 'Doblez 2':
+        return 25000;
+  
+      case 'Cuello 3':
+      case 'Manga 3':
+      case 'Estampado 3':
+      case 'Encaje 3':
+      case 'Boton 3':
+      case 'Doblez 3':
+        return 24000;
+  
+      default:
+        return 0; // Puedes cambiar esto según tus necesidades
     }
   }
 
