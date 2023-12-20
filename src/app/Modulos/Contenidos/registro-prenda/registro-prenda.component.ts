@@ -231,27 +231,10 @@ export class RegistroPrendaComponent {
       for (let i = 0; i < input.files.length; i++) {
         const file = input.files[i];
         this.imagenes.push(input.files[i]);
-        const maxSize = 3024 * 3024;
-
-        if (file.size <= maxSize) {
           this.imagen = file;
           const newFile = URL.createObjectURL(file);
           this.imagenesPreview.push(newFile);
           this.showAlert = false;
-        } else {
-          const mensaje =
-            'La imagen seleccionada es demasiado grande o excede las dimensiones permitidas.';
-          Swal.fire({
-            title: 'Error!',
-            text: mensaje,
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            confirmButtonColor: '#CAA565',
-          });
-          this.imagen = null;
-          input.value = '';
-          this.showAlert = true;
-        }
       }
     }
   }
